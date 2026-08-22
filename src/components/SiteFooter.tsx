@@ -8,7 +8,7 @@ export function SiteFooter({ extra }: SiteFooterProps) {
   return (
     <footer className="app-chrome site-footer">
       <ul className="trust-row">
-        <li>Paiement sécurisé</li>
+        <li>PDF prêts à tirer</li>
         <li>Calligraphie soignée</li>
         <li>Louis Segond 1910</li>
       </ul>

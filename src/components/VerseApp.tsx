@@ -22,7 +22,6 @@ import {
   printTicket,
   ticketUnlocks,
   PRINT_FULFILLMENT_LABEL,
-  PRINT_PRICE_LABEL,
 } from "@/lib/print-ticket";
 import type { Bible, VerseChoice } from "@/lib/types";
 import { CloseupTableau } from "./CloseupTableau";
@@ -220,7 +219,6 @@ export function VerseApp() {
               <p className="buy-kicker">Votre composition</p>
               <p className="buy-ref">{reference}</p>
               <p className="buy-price">
-                {PRINT_PRICE_LABEL}{" "}
                 <span>{PRINT_FULFILLMENT_LABEL}</span>
               </p>
             </div>
@@ -457,15 +455,14 @@ export function VerseApp() {
           <details className="faq-item">
             <summary>Comment je retrouve mes fichiers ?</summary>
             <p>
-              Après paiement, un email vous emmène vers Mes impressions. Vous pouvez aussi
-              y revenir depuis le haut de page, avec le même email.
+              Un email vous emmène vers Mes impressions. Vous pouvez aussi y revenir
+              depuis le haut de page, avec le même email.
             </p>
           </details>
           <details className="faq-item">
-            <summary>Que contient le fichier à 5 € ?</summary>
+            <summary>Que contiennent les fichiers ?</summary>
             <p>
               Les 12 PDF de votre verset : toutes les tailles, vertical et horizontal.
-              Un paiement, tous les formats.
             </p>
           </details>
           <details className="faq-item">
@@ -487,7 +484,7 @@ export function VerseApp() {
 
       <SiteFooter extra={`${bible.translation} · ${bible.copyright}`} />
       <p className="print-denied" aria-hidden="true">
-        Impression disponible après paiement ({PRINT_PRICE_LABEL}).
+        Téléchargez les PDF depuis le bouton, plutôt que d’imprimer cette page.
       </p>
     </div>
   );

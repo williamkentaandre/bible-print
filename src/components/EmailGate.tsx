@@ -74,7 +74,7 @@ export function EmailGate({ ticket, reference }: EmailGateProps) {
         {busy ? "Un instant…" : "Recevoir mes PDF"}
       </button>
       <p className="email-hint">
-        On vous envoie le lien. Le paiement s’ouvrira dès que Stripe sera validé.
+        On vous envoie le lien vers vos fichiers.
       </p>
       <button
         className="text-link"
