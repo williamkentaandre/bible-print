@@ -39,8 +39,8 @@ export async function POST(request: NextRequest) {
           currency: "eur",
           unit_amount: PRINT_PRICE_CENTS,
           product_data: {
-            name: "Bible Print — fichier d’impression",
-            description: reference,
+            name: "Bible Print - toutes tailles et formats",
+            description: `${reference}. Un paiement : toutes les tailles, vertical et horizontal.`,
           },
         },
       },

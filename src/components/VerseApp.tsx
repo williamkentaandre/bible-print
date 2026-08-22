@@ -17,7 +17,7 @@ import {
   getPrintSize,
   PRINT_SIZES,
 } from "@/lib/sizes";
-import { printTicket, PRINT_PRICE_LABEL } from "@/lib/print-ticket";
+import { printTicket, ticketUnlocks, PRINT_OFFER_LABEL, PRINT_PRICE_LABEL } from "@/lib/print-ticket";
 import type { Bible, VerseChoice } from "@/lib/types";
 import { CloseupTableau } from "./CloseupTableau";
 import { LifestyleCarousel } from "./LifestyleCarousel";
@@ -100,8 +100,8 @@ export function VerseApp() {
     [bible, liveChoice],
   );
   const reference = bible && liveChoice ? formatReference(bible.books, liveChoice) : "";
-  const ticket = liveChoice ? printTicket(liveChoice, sizeId) : null;
-  const isPaid = Boolean(ticket && paidTicket === ticket);
+  const ticket = liveChoice ? printTicket(liveChoice) : null;
+  const isPaid = Boolean(liveChoice && paidTicket && ticketUnlocks(paidTicket, liveChoice));
 
   useEffect(() => {
     document.body.classList.toggle("is-paid", isPaid);
@@ -187,7 +187,7 @@ export function VerseApp() {
         <h1>Un verset. Une feuille. Chez vous.</h1>
         <p>
           Calligraphie soignée, filet doré, prête à encadrer. Vous voyez le rendu dans la pièce.
-          Le fichier d’impression : {PRINT_PRICE_LABEL}.
+          Le fichier d’impression : {PRINT_PRICE_LABEL}, {PRINT_OFFER_LABEL}.
         </p>
       </section>
 
@@ -210,7 +210,8 @@ export function VerseApp() {
               <p className="buy-kicker">Votre composition</p>
               <p className="buy-ref">{reference}</p>
               <p className="buy-price">
-                {PRINT_PRICE_LABEL} <span>fichier unique, prêt à imprimer</span>
+                {PRINT_PRICE_LABEL}{" "}
+                <span>un paiement, {PRINT_OFFER_LABEL}, prêts à imprimer</span>
               </p>
             </div>
             {isPaid ? (
@@ -264,7 +265,7 @@ export function VerseApp() {
           </div>
           <p className="app-chrome size-caption">
             {isPaid
-              ? `${formatSizeLabel(printSize)} · le double filet doré est imprimé, le cadre mural non`
+              ? `${formatSizeLabel(printSize)} · toutes les tailles sont débloquées · le double filet doré est imprimé, le cadre mural non`
               : "Vertical et horizontal · salon et entrée en portrait, chambre et salle à manger en paysage · le cadre d’intérieur n’est pas imprimé"}
           </p>
           <div className="print-sheet" aria-hidden="true">
@@ -433,11 +434,11 @@ export function VerseApp() {
       <footer className="app-chrome site-footer">
         <ul className="trust-row">
           <li>Paiement sécurisé</li>
-          <li>Un verset, une feuille</li>
+          <li>Un verset, toutes tailles</li>
           <li>Louis Segond 1910</li>
         </ul>
         <p className="footnote">
-          {bible.translation} · {bible.copyright} · {PRINT_PRICE_LABEL} par feuille
+          {bible.translation} · {bible.copyright} · {PRINT_PRICE_LABEL}, {PRINT_OFFER_LABEL}
         </p>
       </footer>
       <p className="print-denied" aria-hidden="true">
