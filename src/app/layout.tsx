@@ -48,15 +48,15 @@ const ebGaramond = EB_Garamond({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://bibledeco.com"),
-  title: "Bible Print",
+  title: "Bible Deco",
   description:
     "Choisissez un verset, voyez-le chez vous, téléchargez 12 PDF prêts à faire tirer.",
   openGraph: {
-    title: "Bible Print",
+    title: "Bible Deco",
     description: "Le verset que vous aimez, accroché chez vous.",
     locale: "fr_FR",
     type: "website",
-    siteName: "Bible Print",
+    siteName: "Bible Deco",
   },
 };
 

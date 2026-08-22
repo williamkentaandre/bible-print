@@ -165,7 +165,7 @@ export function VerseApp() {
   return (
     <div className="app-shell">
       <header className="app-chrome site-header">
-        <p className="brand-mark">Bible Print</p>
+        <p className="brand-mark">Bible Deco</p>
         <p className="header-meta">Votre verset, au mur</p>
       </header>
 

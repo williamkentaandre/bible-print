@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
           currency: "eur",
           unit_amount: PRINT_PRICE_CENTS,
           product_data: {
-            name: "Bible Print - 12 PDF",
+            name: "Bible Deco - 12 PDF",
             description: `${reference}. 12 PDF, toutes tailles. Vous faites tirer le format choisi chez un imprimeur, le cadre se trouve ensuite.`,
           },
         },
