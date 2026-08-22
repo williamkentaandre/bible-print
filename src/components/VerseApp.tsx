@@ -18,6 +18,7 @@ import {
 } from "@/lib/sizes";
 import { printTicket, PRINT_PRICE_LABEL } from "@/lib/print-ticket";
 import type { Bible, VerseChoice } from "@/lib/types";
+import { CloseupTableau } from "./CloseupTableau";
 import { LifestyleCarousel } from "./LifestyleCarousel";
 import { VerseSheet } from "./VerseSheet";
 
@@ -231,17 +232,26 @@ export function VerseApp() {
 
       {liveChoice ? (
         <>
-          <LifestyleCarousel
-            text={text}
-            reference={reference}
-            verseRef={liveChoice}
-            size={printSize}
-            finish={frameFinish}
-          />
+          <div className="app-chrome showroom">
+            <CloseupTableau
+              text={text}
+              reference={reference}
+              verseRef={liveChoice}
+              size={printSize}
+              finish={frameFinish}
+            />
+            <LifestyleCarousel
+              text={text}
+              reference={reference}
+              verseRef={liveChoice}
+              size={printSize}
+              finish={frameFinish}
+            />
+          </div>
           <p className="app-chrome size-caption">
             {isPaid
               ? `${formatSizeLabel(printSize)} · le double filet doré est imprimé, le cadre mural non`
-              : "Aperçu à l’échelle réelle dans la pièce · le cadre d’intérieur n’est pas imprimé"}
+              : "À gauche, le tableau de près · à droite, dans la pièce · le cadre d’intérieur n’est pas imprimé"}
           </p>
           <div className="print-sheet" aria-hidden="true">
             <VerseSheet

@@ -66,8 +66,9 @@ input[type="number"]::-webkit-inner-spin-button {
 .site-footer,
 .size-caption,
 .field-error,
-.hint {
-  width: min(100%, 920px);
+.hint,
+.showroom {
+  width: min(100%, 1080px);
 }
 
 .site-header {
@@ -453,17 +454,40 @@ input[type="number"]::-webkit-inner-spin-button {
   opacity: 0;
 }
 
+.showroom {
+  display: grid;
+  grid-template-columns: minmax(220px, 34%) minmax(0, 1fr);
+  gap: 0.85rem;
+  align-items: stretch;
+  min-height: min(58vw, 520px);
+}
+
+.closeup {
+  min-width: 0;
+  height: 100%;
+}
+
+.closeup .room {
+  height: 100%;
+  min-height: min(58vw, 520px);
+}
+
 .lifestyle-carousel {
-  width: min(100%, 920px);
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: min(58vw, 520px);
   overflow: hidden;
   border: 1px solid var(--line);
   background: #e6dfd3;
   box-shadow: 0 22px 48px rgba(42, 36, 28, 0.1);
+  container-type: inline-size;
 }
 
 .lifestyle-track {
   display: flex;
   width: max-content;
+  height: 100%;
   animation: lifestyle-scroll 36s linear infinite;
 }
 
@@ -473,12 +497,19 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .lifestyle-slide {
   position: relative;
-  flex: 0 0 min(88vw, 900px);
-  height: min(56vw, 520px);
-  margin-right: 14px;
-  overflow: visible;
+  flex: 0 0 100cqw;
+  height: 100%;
+  min-height: min(58vw, 520px);
+  overflow: hidden;
+}
+
+.lifestyle-scene {
+  position: absolute;
+  inset: 0;
   background-size: cover;
   background-position: center;
+  transform: scale(1.32);
+  transform-origin: var(--zoom-x, 50%) var(--zoom-y, 42%);
 }
 
 .lifestyle-hang {
@@ -654,17 +685,18 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .room {
   display: flex;
+  align-items: center;
   justify-content: center;
-  padding: 2.4rem 1.2rem 2.8rem;
+  padding: 1.35rem 1.15rem 1.5rem;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.24), transparent 28%),
-    #e9e4db;
-  border: 1px solid rgba(196, 165, 116, 0.18);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent 32%),
+    #ebe4d8;
+  border: 1px solid var(--line);
 }
 
 .picture-frame {
-  width: 100%;
-  max-width: 100%;
+  width: min(100%, 340px);
+  max-height: 100%;
   box-sizing: border-box;
 }
 
@@ -706,6 +738,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .preview-frame {
   width: 100%;
+  aspect-ratio: var(--preview-ratio, 8.3 / 11.7);
   overflow: hidden;
   background: #fff;
 }
@@ -863,6 +896,21 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 @media (max-width: 840px) {
+  .showroom {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .closeup .room,
+  .lifestyle-carousel,
+  .lifestyle-slide {
+    min-height: min(64vw, 420px);
+  }
+
+  .picture-frame {
+    width: min(100%, 280px);
+  }
+
   .buy-bar {
     flex-direction: column;
     align-items: stretch;
@@ -900,6 +948,8 @@ input[type="number"]::-webkit-inner-spin-button {
   }
 
   body:not(.is-paid) .preview-wrap,
+  body:not(.is-paid) .showroom,
+  body:not(.is-paid) .closeup,
   body:not(.is-paid) .lifestyle-carousel,
   body:not(.is-paid) .print-sheet,
   body:not(.is-paid) .sheet,
@@ -918,6 +968,8 @@ input[type="number"]::-webkit-inner-spin-button {
     color: #333;
   }
 
+  body.is-paid .showroom,
+  body.is-paid .closeup,
   body.is-paid .lifestyle-carousel {
     display: none !important;
   }

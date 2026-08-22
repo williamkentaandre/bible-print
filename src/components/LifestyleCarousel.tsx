@@ -4,6 +4,7 @@ import { breakVerseLines, pickComposition, quoteLines } from "@/lib/composition"
 import { hangStyle, LIFESTYLE_SCENES, type FrameFinish } from "@/lib/scenes";
 import type { PrintSize } from "@/lib/sizes";
 import type { VerseRef } from "@/lib/types";
+import type { CSSProperties } from "react";
 import { useFitText } from "@/lib/use-fit-text";
 
 type LifestyleCarouselProps = {
@@ -57,13 +58,20 @@ export function LifestyleCarousel(props: LifestyleCarouselProps) {
     <div className="app-chrome lifestyle-carousel" aria-label="Aperçus du verset dans un intérieur">
       <div className="lifestyle-track">
         {slides.map((scene, index) => (
-          <figure
-            key={`${scene.id}-${index}`}
-            className="lifestyle-slide"
-            style={{ backgroundImage: `url(${scene.src})` }}
-          >
-            <div className="lifestyle-hang" data-scene={scene.id} style={hangStyle(scene, props.size)}>
-              <LifestyleArt {...props} />
+          <figure key={`${scene.id}-${index}`} className="lifestyle-slide">
+            <div
+              className="lifestyle-scene"
+              style={
+                {
+                  backgroundImage: `url(${scene.src})`,
+                  "--zoom-x": scene.left,
+                  "--zoom-y": `calc(100% - ${scene.bottom} - 8%)`,
+                } as CSSProperties
+              }
+            >
+              <div className="lifestyle-hang" data-scene={scene.id} style={hangStyle(scene, props.size)}>
+                <LifestyleArt {...props} />
+              </div>
             </div>
             <figcaption className="lifestyle-label">{scene.label}</figcaption>
           </figure>
