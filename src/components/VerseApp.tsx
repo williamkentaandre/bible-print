@@ -6,7 +6,6 @@ import {
   formatReference,
   getChoiceText,
   getVerseText,
-  isValidRef,
   loadBible,
 } from "@/lib/bible";
 import { sentencePreview, splitSentences } from "@/lib/sentences";
@@ -28,22 +27,14 @@ type DraftPick = {
 
 const EMPTY_PICK: DraftPick = { book: null, chapter: null, verse: null, sentence: 0 };
 
-type Stage = "edit" | "confirm" | "preview";
-
 export function VerseApp() {
   const [bible, setBible] = useState<Bible | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [draft, setDraft] = useState<DraftPick>(EMPTY_PICK);
-  const [typedError, setTypedError] = useState<string | null>(null);
-  const [pending, setPending] = useState<VerseChoice | null>(null);
-  const [preview, setPreview] = useState<VerseChoice | null>(null);
   const [sizeId, setSizeId] = useState(DEFAULT_SIZE_ID);
   const [scale, setScale] = useState(0.55);
   const frameRef = useRef<HTMLDivElement>(null);
   const printSize = getPrintSize(sizeId);
-  const confirmRef = useRef<HTMLDivElement>(null);
-
-  const stage: Stage = preview ? "preview" : pending ? "confirm" : "edit";
 
   useEffect(() => {
     let cancelled = false;
@@ -65,7 +56,7 @@ export function VerseApp() {
 
   useEffect(() => {
     const frame = frameRef.current;
-    if (!frame || stage !== "preview") return;
+    if (!frame) return;
 
     const updateScale = () => {
       const sheetWidth = printSize.widthIn * 96;
@@ -76,13 +67,7 @@ export function VerseApp() {
     const observer = new ResizeObserver(updateScale);
     observer.observe(frame);
     return () => observer.disconnect();
-  }, [stage, preview, printSize.widthIn]);
-
-  useEffect(() => {
-    if (stage === "confirm") {
-      confirmRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  }, [stage]);
+  }, [draft.verse, printSize.widthIn]);
 
   const book = draft.book != null ? bible?.books[draft.book] : undefined;
   const chapterCount = book?.chapters.length ?? 0;
@@ -90,51 +75,30 @@ export function VerseApp() {
     book && draft.chapter != null ? (book.chapters[draft.chapter - 1]?.length ?? 0) : 0;
   const verseReady = draft.book != null && draft.chapter != null && draft.verse != null;
 
-  const shownRef = preview ?? pending;
-  const draftSentences = useMemo(() => {
+  const liveChoice = useMemo((): VerseChoice | null => {
     if (!bible || draft.book == null || draft.chapter == null || draft.verse == null) {
-      return [];
+      return null;
     }
-    return splitSentences(
-      getVerseText(bible.books, {
-        book: draft.book,
-        chapter: draft.chapter,
-        verse: draft.verse,
-      }),
-    );
-  }, [bible, draft.book, draft.chapter, draft.verse]);
-  const text = useMemo(
-    () => (bible && shownRef ? getChoiceText(bible.books, shownRef) : ""),
-    [bible, shownRef],
-  );
-  const reference = bible && shownRef ? formatReference(bible.books, shownRef) : "";
-  const phraseOnly = (shownRef?.sentence ?? 0) > 0;
-
-  const updateDraft = (next: DraftPick) => {
-    setDraft(next);
-    setTypedError(null);
-    setPending(null);
-    setPreview(null);
-  };
-
-  const submitSelection = () => {
-    if (!bible || draft.book == null || draft.chapter == null || draft.verse == null) return;
-    const choice = clampChoice(bible.books, {
+    return clampChoice(bible.books, {
       book: draft.book,
       chapter: draft.chapter,
       verse: draft.verse,
       sentence: draft.sentence,
     });
-    if (!isValidRef(bible.books, choice)) {
-      setTypedError("Ce chapitre ou ce verset n’existe pas dans ce livre.");
-      setPending(null);
-      setPreview(null);
-      return;
-    }
+  }, [bible, draft.book, draft.chapter, draft.verse, draft.sentence]);
 
-    setTypedError(null);
-    setPending(choice);
-    setPreview(null);
+  const draftSentences = useMemo(() => {
+    if (!bible || liveChoice == null) return [];
+    return splitSentences(getVerseText(bible.books, liveChoice));
+  }, [bible, liveChoice]);
+  const text = useMemo(
+    () => (bible && liveChoice ? getChoiceText(bible.books, liveChoice) : ""),
+    [bible, liveChoice],
+  );
+  const reference = bible && liveChoice ? formatReference(bible.books, liveChoice) : "";
+
+  const updateDraft = (next: DraftPick) => {
+    setDraft(next);
   };
 
   if (error) {
@@ -161,18 +125,14 @@ export function VerseApp() {
           <h1>Bible Print</h1>
         </div>
         <p className="brand-tagline">
-          Choisissez, confirmez, puis imprimez une page unique.
+          Choisissez un verset, puis imprimez une page unique.
         </p>
       </header>
 
-      <form
+      <div
         className={`app-chrome toolbar picker ${
           draft.verse != null ? "has-ref" : draft.chapter != null ? "has-chapter" : "book-only"
         }`}
-        onSubmit={(event) => {
-          event.preventDefault();
-          submitSelection();
-        }}
       >
         <label className="field field-grow">
           <span>Livre</span>
@@ -305,53 +265,19 @@ export function VerseApp() {
             </select>
           </label>
         ) : null}
+      </div>
 
-        {verseReady ? (
-          <button className="print-button validate-button" type="submit">
-            Valider
-          </button>
-        ) : null}
-      </form>
-
-      {typedError ? <p className="app-chrome field-error">{typedError}</p> : null}
-
-      {stage === "edit" ? (
+      {!liveChoice ? (
         <p className="app-chrome hint">
           {draft.book == null
             ? "Commencez par choisir un livre."
             : draft.chapter == null
               ? "Choisissez ensuite le chapitre."
-              : draft.verse == null
-                ? "Choisissez ensuite le verset."
-                : draftSentences.length > 1
-                  ? "Vous pouvez ne garder qu’une phrase, choisir la taille, puis valider."
-                  : "Choisissez la taille, puis validez."}
+              : "Choisissez ensuite le verset."}
         </p>
       ) : null}
 
-      {stage === "confirm" && pending ? (
-        <div className="app-chrome confirm-card" ref={confirmRef}>
-          <p className="confirm-kicker">
-            {phraseOnly ? "Confirmer cette phrase" : "Confirmer ce verset"}
-          </p>
-          <p className="confirm-ref">{formatReference(bible.books, pending)}</p>
-          <p className="confirm-excerpt">« {text} »</p>
-          <p className="confirm-copy">
-            {phraseOnly
-              ? "Cette phrase seule sera composée, au format choisi."
-              : "Une composition unique sera créée pour cette référence, au format choisi."}
-          </p>
-          <button
-            className="print-button confirm-button"
-            type="button"
-            onClick={() => setPreview(pending)}
-          >
-            Voir l’aperçu
-          </button>
-        </div>
-      ) : null}
-
-      {stage === "preview" && preview ? (
+      {liveChoice ? (
         <>
           <style>{`
             @media print {
@@ -376,28 +302,18 @@ export function VerseApp() {
                 }}
               >
                 <VerseSheet
-                  key={`${printSize.id}-${preview.sentence}`}
+                  key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}`}
                   text={text}
                   reference={reference}
-                  verseRef={preview}
+                  verseRef={liveChoice}
                   size={printSize}
                 />
               </div>
             </div>
           </div>
           <div className="app-chrome preview-actions">
-            <button className="print-button" type="button" onClick={() => window.print()}>
+            <button className="print-button validate-button" type="button" onClick={() => window.print()}>
               Imprimer
-            </button>
-            <button
-              className="ghost-button"
-              type="button"
-              onClick={() => {
-                setPreview(null);
-                setPending(null);
-              }}
-            >
-              Choisir un autre verset
             </button>
           </div>
         </>
