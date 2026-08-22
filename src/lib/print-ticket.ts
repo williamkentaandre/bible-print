@@ -6,7 +6,7 @@ export const PRINT_PRICE_LABEL = "5 €";
 export const PRINT_OFFER_LABEL = `${PRINT_FORMAT_COUNT} PDF, toutes tailles`;
 export const PRINT_FULFILLMENT_LABEL =
   `${PRINT_FORMAT_COUNT} PDF, toutes tailles. Vous faites tirer le format choisi chez un imprimeur, le cadre se trouve ensuite.`;
-export const CONTACT_EMAIL = "bonjour@bibledeco.com";
+export const CONTACT_EMAIL = "contact@bibledeco.com";
 export const PAYWALL_ENABLED = true;
 
 export function printTicket(choice: VerseChoice): string {
