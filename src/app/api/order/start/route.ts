@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sendLoginEmail } from "@/lib/mail";
+import { sendLoginEmail, sendReadyEmail } from "@/lib/mail";
 import { createCheckout, hasPaidTicket, listPaidOrders } from "@/lib/orders";
 import { isPrintTicket } from "@/lib/print-ticket";
-import { isEmail, normalizeEmail } from "@/lib/session";
+import { addPreviewOrder, isEmail, normalizeEmail, setSessionEmail } from "@/lib/session";
+import { isStripeConfigured } from "@/lib/stripe-client";
 
 export async function POST(request: NextRequest) {
   let body: { email?: string; ticket?: string; reference?: string; intent?: string };
@@ -22,7 +23,7 @@ export async function POST(request: NextRequest) {
 
   if (intent === "login") {
     const orders = await listPaidOrders(email);
-    if (orders.length === 0) {
+    if (isStripeConfigured() && orders.length === 0) {
       return NextResponse.json(
         { error: "Aucune impression à ce nom. Commencez par commander un verset." },
         { status: 404 },
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
       sent,
       message: sent
         ? "Un lien a été envoyé. Ouvrez votre boîte mail."
-        : "Email non configuré. Ajoutez RESEND_API_KEY, ou payez depuis cette page pour ouvrir votre espace.",
+        : "Email non configuré. Vérifiez RESEND_API_KEY, ou ouvrez Mes impressions sur ce navigateur.",
     });
   }
 
@@ -51,6 +52,30 @@ export async function POST(request: NextRequest) {
       message: sent
         ? "Ce verset est déjà à vous. Un lien a été envoyé."
         : "Ce verset est déjà à vous. Ouvrez Mes impressions.",
+    });
+  }
+
+  if (!isStripeConfigured()) {
+    await addPreviewOrder(email, {
+      id: `preview-${ticket}`,
+      ticket,
+      reference,
+      created: Math.floor(Date.now() / 1000),
+    });
+    await setSessionEmail(email);
+    let sent = false;
+    try {
+      sent = await sendReadyEmail(email, origin, reference);
+    } catch {
+      sent = false;
+    }
+    return NextResponse.json({
+      preview: true,
+      sent,
+      redirect: "/mes-impressions",
+      message: sent
+        ? "Essai sans paiement : un email vient de partir. Vos PDF sont aussi dans Mes impressions."
+        : "Essai sans paiement : vos PDF sont dans Mes impressions. (L’email n’est pas encore parti : vérifiez RESEND_API_KEY.)",
     });
   }
 

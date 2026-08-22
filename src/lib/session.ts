@@ -1,7 +1,9 @@
 import { createHmac, timingSafeEqual } from "crypto";
 import { cookies } from "next/headers";
+import type { OrderRecord } from "./order-types";
 
 const COOKIE = "bd_session";
+const PREVIEW_COOKIE = "bd_preview_orders";
 const DAY = 60 * 60 * 24;
 
 function secret() {
@@ -75,4 +77,41 @@ export async function getSessionEmail(): Promise<string | null> {
 export async function clearSession() {
   const jar = await cookies();
   jar.delete(COOKIE);
+}
+
+function cookieOptions() {
+  return {
+    httpOnly: true,
+    sameSite: "lax" as const,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 30 * DAY,
+  };
+}
+
+export async function addPreviewOrder(email: string, order: OrderRecord) {
+  const current = await getPreviewOrders(email);
+  const next = [order, ...current.filter((item) => item.ticket !== order.ticket)].slice(0, 20);
+  const jar = await cookies();
+  jar.set(PREVIEW_COOKIE, pack(`prev:${normalizeEmail(email)}:${JSON.stringify(next)}`), cookieOptions());
+}
+
+export async function getPreviewOrders(email: string): Promise<OrderRecord[]> {
+  if (!secret()) return [];
+  const jar = await cookies();
+  const raw = jar.get(PREVIEW_COOKIE)?.value;
+  if (!raw) return [];
+  const payload = unpack(raw);
+  if (!payload?.startsWith("prev:")) return [];
+  const rest = payload.slice(5);
+  const sep = rest.indexOf(":");
+  if (sep < 1) return [];
+  const owner = rest.slice(0, sep);
+  if (owner !== normalizeEmail(email)) return [];
+  try {
+    const parsed = JSON.parse(rest.slice(sep + 1)) as OrderRecord[];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
 }

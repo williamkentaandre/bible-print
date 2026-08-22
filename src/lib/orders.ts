@@ -1,14 +1,10 @@
 import type Stripe from "stripe";
+import type { OrderRecord } from "./order-types";
 import { isPrintTicket, PRINT_PRICE_CENTS } from "./print-ticket";
-import { getStripe } from "./stripe-client";
-import { normalizeEmail } from "./session";
+import { getStripe, isStripeConfigured } from "./stripe-client";
+import { getPreviewOrders, normalizeEmail } from "./session";
 
-export type OrderRecord = {
-  id: string;
-  ticket: string;
-  reference: string;
-  created: number;
-};
+export type { OrderRecord };
 
 export async function findOrCreateCustomer(email: string) {
   const stripe = getStripe();
@@ -32,6 +28,9 @@ function orderFromSession(session: Stripe.Checkout.Session): OrderRecord | null 
 }
 
 export async function listPaidOrders(email: string): Promise<OrderRecord[]> {
+  if (!isStripeConfigured()) {
+    return getPreviewOrders(email);
+  }
   const stripe = getStripe();
   if (!stripe) return [];
   const customers = await stripe.customers.list({

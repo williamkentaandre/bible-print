@@ -5,3 +5,7 @@ export function getStripe() {
   if (!secret) return null;
   return new Stripe(secret);
 }
+
+export function isStripeConfigured() {
+  return Boolean(process.env.STRIPE_SECRET_KEY);
+}

@@ -49,9 +49,13 @@ export function MesImpressions() {
           const data = (await response.json()) as {
             email?: string;
             orders?: OrderRecord[];
+            preview?: boolean;
           };
           setEmail(data.email ?? null);
           setOrders(data.orders ?? []);
+          if (data.preview) {
+            setNotice("Essai sans Stripe : le paiement arrivera après la vérification d’identité.");
+          }
         })
         .catch(() => setError("Impossible de charger vos impressions."));
 

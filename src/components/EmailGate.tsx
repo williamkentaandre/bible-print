@@ -25,6 +25,7 @@ export function EmailGate({ ticket, reference }: EmailGateProps) {
       });
       const data = (await response.json()) as {
         url?: string;
+        redirect?: string;
         sent?: boolean;
         alreadyPaid?: boolean;
         message?: string;
@@ -35,6 +36,10 @@ export function EmailGate({ ticket, reference }: EmailGateProps) {
       }
       if (data.url) {
         window.location.href = data.url;
+        return;
+      }
+      if (data.redirect) {
+        window.location.href = data.redirect;
         return;
       }
       setMessage(data.message || "Regardez votre boîte mail.");
@@ -68,7 +73,9 @@ export function EmailGate({ ticket, reference }: EmailGateProps) {
       <button className="print-button validate-button" type="submit" disabled={busy}>
         {busy ? "Un instant…" : "Recevoir mes PDF"}
       </button>
-      <p className="email-hint">On vous envoie le lien. Le paiement vient juste après.</p>
+      <p className="email-hint">
+        On vous envoie le lien. Le paiement s’ouvrira dès que Stripe sera validé.
+      </p>
       <button
         className="text-link"
         type="button"
