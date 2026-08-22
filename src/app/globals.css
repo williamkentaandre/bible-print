@@ -301,14 +301,30 @@ input[type="number"]::-webkit-inner-spin-button {
   margin-right: 14px;
   background-size: cover;
   background-position: center;
+  perspective: 1400px;
+  perspective-origin: 50% 38%;
+  transform-style: preserve-3d;
 }
 
 .lifestyle-hang {
   position: absolute;
-  transform: translateX(-50%);
+  transform: translateX(-50%) rotateY(var(--wall-y, 0deg)) rotateX(var(--wall-x, 0deg))
+    skewY(var(--wall-skew, 0deg));
+  transform-origin: 50% 80%;
+  transform-style: preserve-3d;
   height: auto;
   container-type: size;
-  filter: drop-shadow(5px 8px 10px rgba(30, 16, 4, 0.28));
+}
+
+.lifestyle-hang::before {
+  content: "";
+  position: absolute;
+  inset: 3% 0 -4% 6%;
+  background: rgba(42, 28, 14, 0.28);
+  filter: blur(7px);
+  transform: translate3d(7px, 5px, -2px);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .lifestyle-art[data-script="vibes"] {
@@ -331,6 +347,25 @@ input[type="number"]::-webkit-inner-spin-button {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 248, 230, 0.38),
+    inset -2px -2px 0 rgba(42, 24, 8, 0.28);
+}
+
+.lifestyle-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    118deg,
+    rgba(255, 250, 235, 0.22) 0%,
+    transparent 38%,
+    rgba(48, 30, 12, 0.2) 100%
+  );
+  mix-blend-mode: multiply;
 }
 
 .lifestyle-art[data-finish="oak"] {
@@ -362,7 +397,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .lifestyle-paper {
   height: 100%;
-  background: #fffcf6;
+  background: #f4eee3;
   display: flex;
 }
 

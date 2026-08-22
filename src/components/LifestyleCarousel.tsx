@@ -56,7 +56,7 @@ export function LifestyleCarousel(props: LifestyleCarouselProps) {
             className="lifestyle-slide"
             style={{ backgroundImage: `url(${scene.src})` }}
           >
-            <div className="lifestyle-hang" style={hangStyle(scene, props.size)}>
+            <div className="lifestyle-hang" data-scene={scene.id} style={hangStyle(scene, props.size)}>
               <LifestyleArt {...props} />
             </div>
             <figcaption className="lifestyle-label">{scene.label}</figcaption>
