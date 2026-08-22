@@ -51,6 +51,10 @@ export const metadata: Metadata = {
   title: "Bible Deco",
   description:
     "Choisissez un verset, voyez-le chez vous, téléchargez 12 PDF prêts à faire tirer.",
+  icons: {
+    icon: [{ url: "/favicon.ico", sizes: "any" }],
+    apple: "/apple-icon",
+  },
   openGraph: {
     title: "Bible Deco",
     description: "Le verset que vous aimez, accroché chez vous.",

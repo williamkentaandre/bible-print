@@ -3,9 +3,9 @@ import { ImageResponse } from "next/og";
 export const size = { width: 512, height: 512 };
 export const contentType = "image/png";
 
-async function loadScript() {
+async function loadRoman() {
   const css = await fetch(
-    "https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap",
+    "https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500&display=swap",
     {
       headers: {
         "User-Agent":
@@ -21,7 +21,7 @@ async function loadScript() {
 }
 
 export default async function Icon() {
-  const script = await loadScript();
+  const roman = await loadRoman();
 
   return new ImageResponse(
     (
@@ -33,7 +33,7 @@ export default async function Icon() {
           alignItems: "center",
           justifyContent: "center",
           background: "#ffffff",
-          padding: 36,
+          padding: 32,
         }}
       >
         <div
@@ -41,7 +41,7 @@ export default async function Icon() {
             display: "flex",
             width: "100%",
             height: "100%",
-            border: "4px solid #c6a14d",
+            border: "7px solid #c6a14d",
             padding: 10,
           }}
         >
@@ -52,20 +52,21 @@ export default async function Icon() {
               justifyContent: "center",
               width: "100%",
               height: "100%",
-              border: "2px solid #c6a14d",
-              fontFamily: "Script",
-              fontSize: 220,
-              color: "#111111",
+              border: "3px solid #c6a14d",
+              fontFamily: "Roman",
+              fontSize: 168,
+              color: "#2a241c",
+              letterSpacing: 2,
             }}
           >
-            B
+            BD
           </div>
         </div>
       </div>
     ),
     {
       ...size,
-      fonts: [{ name: "Script", data: script, weight: 400, style: "normal" }],
+      fonts: [{ name: "Roman", data: roman, weight: 500, style: "normal" }],
     },
   );
 }
