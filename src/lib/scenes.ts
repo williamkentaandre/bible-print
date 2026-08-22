@@ -71,6 +71,7 @@ export function sceneStyle(scene: LifestyleScene): CSSProperties {
     "--zoom-x": scene.left,
     "--zoom-y": `calc(100% - ${scene.bottom} - 7%)`,
     "--scene-zoom": String(scene.zoom),
+    "--scene-zoom-mobile": String(Math.max(1.55, scene.zoom * 0.58)),
   } as CSSProperties;
 }
 

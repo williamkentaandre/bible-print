@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import {
   Alex_Brush,
   Allura,
@@ -50,6 +50,11 @@ export const metadata: Metadata = {
   title: "Bible Print",
   description:
     "Choisissez un verset biblique, voyez-le chez vous, et obtenez un fichier d’impression soigné. 5 € la feuille.",
+};
+
+export const viewport: Viewport = {
+  colorScheme: "light",
+  themeColor: "#f4efe7",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
