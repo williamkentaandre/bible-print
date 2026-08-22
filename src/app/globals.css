@@ -508,14 +508,15 @@ input[type="number"]::-webkit-inner-spin-button {
   inset: 0;
   background-size: cover;
   background-position: center;
-  transform: scale(1.32);
+  transform: scale(var(--scene-zoom, 2.2));
   transform-origin: var(--zoom-x, 50%) var(--zoom-y, 42%);
 }
 
 .lifestyle-hang {
   position: absolute;
-  transform: translateX(-50%);
-  transform-origin: 50% 100%;
+  transform: translateX(-50%) perspective(920px) rotateY(var(--wall-y, 0deg))
+    rotateX(var(--wall-x, 0deg));
+  transform-origin: 50% 70%;
   container-type: inline-size;
   overflow: visible;
 }

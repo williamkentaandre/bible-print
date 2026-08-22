@@ -12,6 +12,10 @@ export type LifestyleScene = {
   bottom: string;
   /** Visible width of the photo, in cm, used to scale the print. */
   roomWidthCm: number;
+  /** Wall plane vs camera. Applied as a 2D projection, not a parent 3D scene. */
+  rotateY: number;
+  rotateX: number;
+  zoom: number;
 };
 
 export const LIFESTYLE_SCENES: LifestyleScene[] = [
@@ -22,32 +26,53 @@ export const LIFESTYLE_SCENES: LifestyleScene[] = [
     left: "50%",
     bottom: "53%",
     roomWidthCm: 330,
+    rotateY: 0,
+    rotateX: 2.5,
+    zoom: 2.25,
   },
   {
     id: "chambre",
     src: "/scenes/scene-chambre.png",
     label: "Chambre",
-    left: "51%",
-    bottom: "51%",
+    left: "52%",
+    bottom: "50%",
     roomWidthCm: 250,
+    rotateY: -5,
+    rotateX: 1.5,
+    zoom: 2.2,
   },
   {
     id: "couloir",
     src: "/scenes/scene-couloir.png",
     label: "Entrée",
-    left: "61%",
-    bottom: "46%",
-    roomWidthCm: 300,
+    left: "63%",
+    bottom: "44%",
+    roomWidthCm: 280,
+    rotateY: 19,
+    rotateX: 1.5,
+    zoom: 2.05,
   },
   {
     id: "salle",
     src: "/scenes/scene-salle.png",
     label: "Salle à manger",
-    left: "72%",
-    bottom: "38%",
-    roomWidthCm: 340,
+    left: "70%",
+    bottom: "36%",
+    roomWidthCm: 320,
+    rotateY: -11,
+    rotateX: 1.2,
+    zoom: 2.15,
   },
 ];
+
+export function sceneStyle(scene: LifestyleScene): CSSProperties {
+  return {
+    backgroundImage: `url(${scene.src})`,
+    "--zoom-x": scene.left,
+    "--zoom-y": `calc(100% - ${scene.bottom} - 7%)`,
+    "--scene-zoom": String(scene.zoom),
+  } as CSSProperties;
+}
 
 export function hangStyle(scene: LifestyleScene, size: PrintSize): CSSProperties {
   const widthPct = (size.widthIn * 2.54) / scene.roomWidthCm * 100;
@@ -56,5 +81,7 @@ export function hangStyle(scene: LifestyleScene, size: PrintSize): CSSProperties
     bottom: scene.bottom,
     width: `${widthPct}%`,
     aspectRatio: `${size.widthIn} / ${size.heightIn}`,
-  };
+    "--wall-y": `${scene.rotateY}deg`,
+    "--wall-x": `${scene.rotateX}deg`,
+  } as CSSProperties;
 }
