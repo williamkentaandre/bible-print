@@ -306,12 +306,9 @@ input[type="number"]::-webkit-inner-spin-button {
 .lifestyle-hang {
   position: absolute;
   transform: translateX(-50%);
-  aspect-ratio: 8.3 / 11.7;
-  filter: drop-shadow(0 16px 28px rgba(20, 10, 0, 0.38));
-}
-
-.lifestyle-hang:has([data-orientation="horizontal"]) {
-  aspect-ratio: 11.7 / 8.3;
+  height: auto;
+  container-type: size;
+  filter: drop-shadow(5px 8px 10px rgba(30, 16, 4, 0.28));
 }
 
 .lifestyle-art[data-script="vibes"] {
@@ -330,8 +327,14 @@ input[type="number"]::-webkit-inner-spin-button {
   --script: var(--font-script-pinyon), cursive;
 }
 
+.lifestyle-art {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
 .lifestyle-art[data-finish="oak"] {
-  padding: 7px;
+  padding: 2.4%;
   background-color: #cbb089;
   background-image:
     repeating-linear-gradient(
@@ -346,7 +349,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .lifestyle-art[data-finish="gold"] {
-  padding: 4px;
+  padding: 1.2%;
   background: linear-gradient(
     155deg,
     #f4e6b8 0%,
@@ -373,32 +376,34 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .lifestyle-rule {
   flex: 1;
-  margin: 9%;
-  border: 0.9px solid #c6a14d;
-  outline: 0.5px solid #c6a14d;
-  outline-offset: 3px;
+  margin: 8%;
+  border: 0.6px solid #c6a14d;
+  outline: 0.4px solid #c6a14d;
+  outline-offset: 2px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  padding: 7% 6% 8%;
+  padding: 6% 5% 7%;
   text-align: center;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .lifestyle-line {
   margin: 0;
   width: 100%;
   font-family: var(--script);
-  font-size: clamp(10px, 2vw, 20px);
-  line-height: 1.28;
+  font-size: 8.4cqmin;
+  line-height: 1.22;
   color: #161616;
 }
 
 .lifestyle-ref {
-  margin: 0.4em 0 0;
+  margin: 0.35em 0 0;
   font-family: var(--roman);
-  font-size: clamp(7px, 1.15vw, 12px);
-  letter-spacing: 0.04em;
+  font-size: 4.2cqmin;
+  letter-spacing: 0.03em;
   color: #333;
 }
 

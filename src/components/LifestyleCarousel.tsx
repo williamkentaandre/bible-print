@@ -1,7 +1,7 @@
 "use client";
 
 import { breakVerseLines, pickComposition, quoteLines } from "@/lib/composition";
-import { LIFESTYLE_SCENES, type FrameFinish } from "@/lib/scenes";
+import { hangStyle, LIFESTYLE_SCENES, type FrameFinish } from "@/lib/scenes";
 import type { PrintSize } from "@/lib/sizes";
 import type { VerseRef } from "@/lib/types";
 
@@ -56,10 +56,7 @@ export function LifestyleCarousel(props: LifestyleCarouselProps) {
             className="lifestyle-slide"
             style={{ backgroundImage: `url(${scene.src})` }}
           >
-            <div
-              className="lifestyle-hang"
-              style={{ top: scene.top, left: scene.left, height: scene.height }}
-            >
+            <div className="lifestyle-hang" style={hangStyle(scene, props.size)}>
               <LifestyleArt {...props} />
             </div>
             <figcaption className="lifestyle-label">{scene.label}</figcaption>
