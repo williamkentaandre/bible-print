@@ -18,11 +18,11 @@ import {
   PRINT_SIZES,
 } from "@/lib/sizes";
 import { DEFAULT_BACKGROUND, type BackgroundId } from "@/lib/backgrounds";
+import { getCopy, type Locale } from "@/i18n";
 import {
   PAYWALL_ENABLED,
   printTicket,
   ticketUnlocks,
-  PRINT_FULFILLMENT_LABEL,
 } from "@/lib/print-ticket";
 import type { Bible, VerseChoice } from "@/lib/types";
 import { CloseupTableau } from "./CloseupTableau";
@@ -47,7 +47,8 @@ const DEFAULT_PICK: DraftPick = {
   sentence: DEFAULT_CHOICE.sentence,
 };
 
-export function VerseApp() {
+export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
+  const copy = getCopy(locale);
   const [bible, setBible] = useState<Bible | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [draft, setDraft] = useState<DraftPick>(DEFAULT_PICK);
@@ -62,7 +63,7 @@ export function VerseApp() {
 
   useEffect(() => {
     let cancelled = false;
-    loadBible()
+    loadBible(locale)
       .then((data) => {
         if (cancelled) return;
         setBible(data);
@@ -76,13 +77,13 @@ export function VerseApp() {
       })
       .catch((cause: unknown) => {
         if (!cancelled) {
-          setError(cause instanceof Error ? cause.message : "Chargement impossible.");
+          setError(cause instanceof Error ? cause.message : copy.loadError);
         }
       });
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [copy.loadError, locale]);
 
   const book = draft.book != null ? bible?.books[draft.book] : undefined;
   const chapterCount = book?.chapters.length ?? 0;
@@ -127,7 +128,7 @@ export function VerseApp() {
     const params = new URLSearchParams(window.location.search);
     if (params.get("cancel") === "1") {
       window.history.replaceState({}, "", window.location.pathname);
-      queueMicrotask(() => setPayError("Paiement annulé."));
+      queueMicrotask(() => setPayError(copy.payCanceled));
     }
 
     let cancelled = false;
@@ -156,7 +157,7 @@ export function VerseApp() {
         window.history.replaceState({}, "", window.location.pathname);
       })
       .catch(() => {
-        if (!cancelled) setPayError("Le paiement n’a pas pu être vérifié.");
+        if (!cancelled) setPayError(copy.payUnverified);
       })
       .finally(() => {
         if (!cancelled) void loadOwned();
@@ -165,7 +166,7 @@ export function VerseApp() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [copy.payCanceled, copy.payUnverified]);
 
   const updateDraft = (next: DraftPick) => {
     setDraft(next);
@@ -182,7 +183,7 @@ export function VerseApp() {
   if (!bible) {
     return (
       <main className="app-shell">
-        <p className="status-message">Chargement de la Bible…</p>
+        <p className="status-message">{copy.loadingBible}</p>
       </main>
     );
   }
@@ -190,28 +191,31 @@ export function VerseApp() {
   return (
     <div className="app-shell">
       <header className="app-chrome site-header">
-        <p className="brand-mark">Bible Deco</p>
-        <a className="header-meta" href="/mes-impressions">
-          Mes impressions
-        </a>
+        <p className="brand-mark">{copy.brand}</p>
+        <div className="header-links">
+          <a className="header-meta" href={copy.switchHref}>
+            {copy.switchLabel}
+          </a>
+          <a className="header-meta" href={copy.paths.prints}>
+            {copy.printsNav}
+          </a>
+        </div>
       </header>
 
       <section className="app-chrome intro">
-        <h1>Le verset que vous aimez, accroché chez vous.</h1>
-        <p>
-          Calligraphie soignée, filet doré. Vous voyez déjà le rendu dans la pièce.
-        </p>
+        <h1>{copy.introTitle}</h1>
+        <p>{copy.introLead}</p>
       </section>
 
       <section className="app-chrome configure">
-        <h2>Personnaliser</h2>
+        <h2>{copy.customize}</h2>
         <div
           className={`toolbar picker ${
             draft.verse != null ? "has-ref" : draft.chapter != null ? "has-chapter" : "book-only"
           }`}
         >
         <label className="field field-grow">
-          <span>Livre</span>
+          <span>{copy.book}</span>
           <select
             value={draft.book ?? ""}
             onChange={(event) =>
@@ -224,9 +228,9 @@ export function VerseApp() {
             }
           >
             <option value="" disabled>
-              Choisir un livre
+              {copy.chooseBook}
             </option>
-            <optgroup label="Ancien Testament">
+            <optgroup label={copy.oldTestament}>
               {bible.books.map((item, index) =>
                 item.testament === "AT" ? (
                   <option key={item.name} value={index}>
@@ -235,7 +239,7 @@ export function VerseApp() {
                 ) : null,
               )}
             </optgroup>
-            <optgroup label="Nouveau Testament">
+            <optgroup label={copy.newTestament}>
               {bible.books.map((item, index) =>
                 item.testament === "NT" ? (
                   <option key={item.name} value={index}>
@@ -249,7 +253,7 @@ export function VerseApp() {
 
         {draft.book != null ? (
           <label className="field field-narrow">
-            <span>Chapitre</span>
+            <span>{copy.chapter}</span>
             <select
               value={draft.chapter ?? ""}
               onChange={(event) =>
@@ -262,7 +266,7 @@ export function VerseApp() {
               }
             >
               <option value="" disabled>
-                Choisir
+                {copy.choose}
               </option>
               {Array.from({ length: chapterCount }, (_, index) => (
                 <option key={index + 1} value={index + 1}>
@@ -275,7 +279,7 @@ export function VerseApp() {
 
         {draft.chapter != null ? (
           <label className="field field-narrow">
-            <span>Verset</span>
+            <span>{copy.verse}</span>
             <select
               value={draft.verse ?? ""}
               onChange={(event) =>
@@ -287,7 +291,7 @@ export function VerseApp() {
               }
             >
               <option value="" disabled>
-                Choisir
+                {copy.choose}
               </option>
               {Array.from({ length: verseCount }, (_, index) => (
                 <option key={index + 1} value={index + 1}>
@@ -300,7 +304,7 @@ export function VerseApp() {
 
         {verseReady && draftSentences.length > 1 ? (
           <label className="field field-wide">
-            <span>Phrase</span>
+            <span>{copy.sentence}</span>
             <select
               value={draft.sentence}
               onChange={(event) =>
@@ -310,7 +314,7 @@ export function VerseApp() {
                 })
               }
             >
-              <option value={0}>Tout le verset</option>
+              <option value={0}>{copy.wholeVerse}</option>
               {draftSentences.map((sentence, index) => (
                 <option key={`${index}-${sentence}`} value={index + 1}>
                   {index + 1} - {sentencePreview(sentence)}
@@ -322,19 +326,19 @@ export function VerseApp() {
 
         {verseReady ? (
           <label className="field field-wide">
-            <span>Taille</span>
+            <span>{copy.size}</span>
             <select value={sizeId} onChange={(event) => setSizeId(event.target.value)}>
-              <optgroup label="Vertical">
+              <optgroup label={copy.vertical}>
                 {PRINT_SIZES.filter((size) => size.orientation === "vertical").map((size) => (
                   <option key={size.id} value={size.id}>
-                    {formatSizeLabel(size)}
+                    {formatSizeLabel(size, { vertical: copy.vertical, horizontal: copy.horizontal })}
                   </option>
                 ))}
               </optgroup>
-              <optgroup label="Horizontal">
+              <optgroup label={copy.horizontal}>
                 {PRINT_SIZES.filter((size) => size.orientation === "horizontal").map((size) => (
                   <option key={size.id} value={size.id}>
-                    {formatSizeLabel(size)}
+                    {formatSizeLabel(size, { vertical: copy.vertical, horizontal: copy.horizontal })}
                   </option>
                 ))}
               </optgroup>
@@ -343,15 +347,15 @@ export function VerseApp() {
         ) : null}
         </div>
 
-        <FondPicker value={palette} onChange={setPalette} />
+        <FondPicker value={palette} onChange={setPalette} locale={locale} />
 
         {!liveChoice ? (
           <p className="hint">
             {draft.book == null
-              ? "Commencez par choisir un livre."
+              ? copy.hintBook
               : draft.chapter == null
-                ? "Choisissez ensuite le chapitre."
-                : "Choisissez ensuite le verset."}
+                ? copy.hintChapter
+                : copy.hintVerse}
           </p>
         ) : null}
       </section>
@@ -372,16 +376,26 @@ export function VerseApp() {
           ) : null}
           <div className="app-chrome buy-bar">
             <div className="buy-copy">
-              <p className="buy-kicker">Votre composition</p>
+              <p className="buy-kicker">{copy.composition}</p>
               <p className="buy-ref">{reference}</p>
               <p className="buy-price">
-                <span>{PRINT_FULFILLMENT_LABEL}</span>
+                <span>{copy.fulfillment}</span>
               </p>
             </div>
             {isPaid ? (
-              <PdfPack text={text} reference={reference} verseRef={liveChoice} palette={palette} />
+              <PdfPack
+                text={text}
+                reference={reference}
+                verseRef={liveChoice}
+                palette={palette}
+                locale={locale}
+              />
             ) : (
-              <EmailGate ticket={printTicket(liveChoice, palette)} reference={reference} />
+              <EmailGate
+                ticket={printTicket(liveChoice, palette)}
+                reference={reference}
+                locale={locale}
+              />
             )}
           </div>
           {payError ? <p className="app-chrome field-error">{payError}</p> : null}
@@ -398,8 +412,9 @@ export function VerseApp() {
                 verseRef={liveChoice}
                 size={verticalSize}
                 finish="gold"
-                label="Vertical"
+                label={copy.vertical}
                 palette={palette}
+                locale={locale}
               />
               <CloseupTableau
                 text={text}
@@ -407,8 +422,9 @@ export function VerseApp() {
                 verseRef={liveChoice}
                 size={horizontalSize}
                 finish="gold"
-                label="Horizontal"
+                label={copy.horizontal}
                 palette={palette}
+                locale={locale}
               />
             </div>
             <LifestyleCarousel
@@ -419,11 +435,10 @@ export function VerseApp() {
               horizontalSize={horizontalSize}
               finish="gold"
               palette={palette}
+              locale={locale}
             />
           </div>
-          <p className="app-chrome size-caption">
-            Vertical et horizontal, tels qu’ils peuvent habiter le salon et la chambre.
-          </p>
+          <p className="app-chrome size-caption">{copy.sizeCaption}</p>
           <div className="print-sheet" aria-hidden="true">
             <VerseSheet
               key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}-${palette}`}
@@ -432,76 +447,27 @@ export function VerseApp() {
               verseRef={liveChoice}
               size={printSize}
               palette={palette}
+              locale={locale}
             />
           </div>
         </>
       ) : null}
 
-      <section className="app-chrome faq" aria-label="Questions fréquentes">
-        <h2>Questions</h2>
+      <section className="app-chrome faq" aria-label={copy.faqLabel}>
+        <h2>{copy.faqTitle}</h2>
         <div className="faq-list">
-          <details className="faq-item">
-            <summary>Vous envoyez une affiche ?</summary>
-            <p>
-              Non. Rien n’est imprimé ni expédié. Vous téléchargez les PDF, puis vous
-              faites tirer le format choisi chez un imprimeur.
-            </p>
-          </details>
-          <details className="faq-item">
-            <summary>Comment je l’imprime ?</summary>
-            <p>
-              Chez n’importe quel imprimeur : boutique photo, copyshop, grand magasin.
-              Donnez le PDF du format que vous voulez accrocher.
-            </p>
-          </details>
-          <details className="faq-item">
-            <summary>Et le cadre ?</summary>
-            <p>
-              Les tailles sont courantes. Une fois la feuille tirée, un cadre aux bonnes
-              dimensions se trouve facilement.
-            </p>
-          </details>
-          <details className="faq-item">
-            <summary>Comment je retrouve mes fichiers ?</summary>
-            <p>
-              Après le paiement, un email vous emmène vers Mes impressions. Vous pouvez
-              aussi y revenir depuis le haut de page, avec le même email.
-            </p>
-          </details>
-          <details className="faq-item">
-            <summary>Que contiennent les fichiers ?</summary>
-            <p>
-              Les 12 PDF de votre verset : toutes les tailles, vertical et horizontal,
-              avec le fond choisi.
-            </p>
-          </details>
-          <details className="faq-item">
-            <summary>Puis-je changer le fond ?</summary>
-            <p>
-              Oui. Quatre papiers classiques, et quatre fonds plus singuliers : lin,
-              champagne, sauge, encre.
-            </p>
-          </details>
-          <details className="faq-item">
-            <summary>Le texte est-il fidèle ?</summary>
-            <p>
-              Oui. Louis Segond 1910, domaine public. Vous pouvez aussi choisir
-              n’importe quel autre verset avant de télécharger.
-            </p>
-          </details>
-          <details className="faq-item">
-            <summary>Le cadre des photos est-il fourni ?</summary>
-            <p>
-              Non. Le double filet doré est dans le PDF. Le cadre mural des photos
-              d’intérieur n’est qu’un aperçu, pour voir le verset chez vous.
-            </p>
-          </details>
+          {copy.faq.map((item) => (
+            <details key={item.q} className="faq-item">
+              <summary>{item.q}</summary>
+              <p>{item.a}</p>
+            </details>
+          ))}
         </div>
       </section>
 
-      <SiteFooter extra={`${bible.translation} · ${bible.copyright}`} />
+      <SiteFooter extra={`${bible.translation} · ${bible.copyright}`} locale={locale} />
       <p className="print-denied" aria-hidden="true">
-        Téléchargez les PDF depuis le bouton, plutôt que d’imprimer cette page.
+        {copy.printDenied}
       </p>
     </div>
   );

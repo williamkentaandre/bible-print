@@ -60,8 +60,14 @@ export function getOrientedSize(size: PrintSize, orientation: Orientation): Prin
   );
 }
 
-export function formatSizeLabel(size: PrintSize): string {
-  const direction = size.orientation === "vertical" ? "Vertical" : "Horizontal";
+export function formatSizeLabel(
+  size: PrintSize,
+  labels: { vertical: string; horizontal: string } = {
+    vertical: "Vertical",
+    horizontal: "Horizontal",
+  },
+): string {
+  const direction = size.orientation === "vertical" ? labels.vertical : labels.horizontal;
   return `${size.inchesLabel} — ${size.metricLabel} (${direction})`;
 }
 

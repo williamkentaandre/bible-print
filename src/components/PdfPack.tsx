@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getCopy, type Locale } from "@/i18n";
 import { DEFAULT_BACKGROUND, getBackground, type BackgroundId } from "@/lib/backgrounds";
 import { fileSafe } from "@/lib/file-name";
 import { PRINT_FORMAT_COUNT, PRINT_SIZES, formatSizeLabel, type PrintSize } from "@/lib/sizes";
@@ -12,13 +13,21 @@ type PdfPackProps = {
   reference: string;
   verseRef: VerseRef;
   palette?: BackgroundId;
+  locale?: Locale;
 };
 
 function wait(ms: number) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
 }
 
-export function PdfPack({ text, reference, verseRef, palette = DEFAULT_BACKGROUND }: PdfPackProps) {
+export function PdfPack({
+  text,
+  reference,
+  verseRef,
+  palette = DEFAULT_BACKGROUND,
+  locale = "fr",
+}: PdfPackProps) {
+  const copy = getCopy(locale);
   const [busy, setBusy] = useState(false);
   const [step, setStep] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -84,7 +93,7 @@ export function PdfPack({ text, reference, verseRef, palette = DEFAULT_BACKGROUN
       link.click();
       URL.revokeObjectURL(link.href);
     } catch {
-      setError("Le téléchargement n’a pas pu être préparé.");
+      setError(copy.downloadError);
     } finally {
       document.documentElement.classList.remove("is-capturing-pdf");
       setBusy(false);
@@ -101,8 +110,8 @@ export function PdfPack({ text, reference, verseRef, palette = DEFAULT_BACKGROUN
         onClick={() => void downloadAll()}
       >
         {busy
-          ? `Préparation ${step}/${PRINT_FORMAT_COUNT}…`
-          : `Télécharger`}
+          ? `${copy.preparing} ${step}/${PRINT_FORMAT_COUNT}…`
+          : copy.download}
       </button>
       {error ? <p className="field-error">{error}</p> : null}
       <div className="pdf-capture" aria-hidden="true">
@@ -113,6 +122,7 @@ export function PdfPack({ text, reference, verseRef, palette = DEFAULT_BACKGROUN
           verseRef={verseRef}
           size={captureSize}
           palette={palette}
+          locale={locale}
         />
       </div>
     </div>

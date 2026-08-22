@@ -1,6 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState } from "react";
+import type { Locale } from "@/i18n";
 import type { BackgroundId } from "@/lib/backgrounds";
 import type { PrintSize } from "@/lib/sizes";
 import type { VerseRef } from "@/lib/types";
@@ -12,9 +13,10 @@ type ScaledSheetProps = {
   verseRef: VerseRef;
   size: PrintSize;
   palette: BackgroundId;
+  locale?: Locale;
 };
 
-export function ScaledSheet({ text, reference, verseRef, size, palette }: ScaledSheetProps) {
+export function ScaledSheet({ text, reference, verseRef, size, palette, locale }: ScaledSheetProps) {
   const frameRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0);
 
@@ -51,6 +53,7 @@ export function ScaledSheet({ text, reference, verseRef, size, palette }: Scaled
             verseRef={verseRef}
             size={size}
             palette={palette}
+            locale={locale}
           />
         </div>
       ) : null}

@@ -1,5 +1,6 @@
 "use client";
 
+import type { Locale } from "@/i18n";
 import type { BackgroundId } from "@/lib/backgrounds";
 import { breakVerseLines, pickComposition, quoteLines } from "@/lib/composition";
 import {
@@ -17,11 +18,12 @@ type VerseSheetProps = {
   verseRef: VerseRef;
   size: PrintSize;
   palette?: BackgroundId;
+  locale?: Locale;
 };
 
-export function VerseSheet({ text, reference, verseRef, size, palette }: VerseSheetProps) {
+export function VerseSheet({ text, reference, verseRef, size, palette, locale = "fr" }: VerseSheetProps) {
   const composition = pickComposition(verseRef, text, 1, size.orientation);
-  const lines = quoteLines(breakVerseLines(text, size.orientation));
+  const lines = quoteLines(breakVerseLines(text, size.orientation), locale);
   const fontSize = verseFontSize(lines, size);
   const verseEl = useFitText(lines.join("\n"), Math.max(36, fontSize * 0.85), Math.max(fontSize * 2.6, 280));
 

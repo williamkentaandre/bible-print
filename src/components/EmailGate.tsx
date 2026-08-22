@@ -1,14 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { PRINT_OFFER_LABEL, PRINT_PRICE_LABEL } from "@/lib/print-ticket";
+import { getCopy, type Locale } from "@/i18n";
+import { PRINT_PRICE_LABEL } from "@/lib/print-ticket";
 
 type EmailGateProps = {
   ticket: string;
   reference: string;
+  locale?: Locale;
 };
 
-export function EmailGate({ ticket, reference }: EmailGateProps) {
+export function EmailGate({ ticket, reference, locale = "fr" }: EmailGateProps) {
+  const copy = getCopy(locale);
   const [email, setEmail] = useState("");
   const [step, setStep] = useState<"email" | "pay">("email");
   const [busy, setBusy] = useState(false);
@@ -23,7 +26,7 @@ export function EmailGate({ ticket, reference }: EmailGateProps) {
       const response = await fetch("/api/order/start", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, ticket, reference, intent }),
+        body: JSON.stringify({ email, ticket, reference, intent, locale }),
       });
       const data = (await response.json()) as {
         url?: string;
@@ -34,7 +37,7 @@ export function EmailGate({ ticket, reference }: EmailGateProps) {
         error?: string;
       };
       if (!response.ok) {
-        throw new Error(data.error || "Impossible de continuer.");
+        throw new Error(data.error || copy.continueError);
       }
       if (data.url) {
         window.location.href = data.url;
@@ -44,9 +47,9 @@ export function EmailGate({ ticket, reference }: EmailGateProps) {
         window.location.href = data.redirect;
         return;
       }
-      setMessage(data.message || "Regardez votre boîte mail.");
+      setMessage(data.message || copy.checkInbox);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Impossible de continuer.");
+      setError(cause instanceof Error ? cause.message : copy.continueError);
     } finally {
       setBusy(false);
     }
@@ -69,32 +72,32 @@ export function EmailGate({ ticket, reference }: EmailGateProps) {
       {step === "email" ? (
         <>
           <label className="field">
-            <span>Votre email</span>
+            <span>{copy.emailLabel}</span>
             <input
               type="email"
               name="email"
               autoComplete="email"
               required
-              placeholder="vous@email.fr"
+              placeholder={copy.emailPlaceholder}
               value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
           </label>
           <button className="print-button validate-button" type="submit" disabled={busy}>
-            Continuer
+            {copy.continue}
           </button>
-          <p className="email-hint">Pour recevoir vos fichiers si vous téléchargez.</p>
+          <p className="email-hint">{copy.emailHint}</p>
         </>
       ) : (
         <>
           <p className="pay-step-email">{email}</p>
           <p className="pay-step-price">
-            {PRINT_PRICE_LABEL} <span>{PRINT_OFFER_LABEL}</span>
+            {PRINT_PRICE_LABEL} <span>{copy.offer}</span>
           </p>
           <button className="print-button validate-button" type="submit" disabled={busy}>
-            {busy ? "Un instant…" : "Payer et télécharger"}
+            {busy ? copy.wait : copy.payDownload}
           </button>
-          <p className="email-hint">Paiement unique, puis les PDF dans Mes impressions.</p>
+          <p className="email-hint">{copy.payHint}</p>
           <button
             className="text-link"
             type="button"
@@ -105,7 +108,7 @@ export function EmailGate({ ticket, reference }: EmailGateProps) {
               setMessage(null);
             }}
           >
-            Modifier l’email
+            {copy.changeEmail}
           </button>
         </>
       )}
@@ -115,7 +118,7 @@ export function EmailGate({ ticket, reference }: EmailGateProps) {
         disabled={busy}
         onClick={() => void submit("login")}
       >
-        J’ai déjà commandé
+        {copy.alreadyOrdered}
       </button>
       {message ? <p className="confirm-copy">{message}</p> : null}
       {error ? <p className="field-error">{error}</p> : null}

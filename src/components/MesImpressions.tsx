@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { getCopy, type Locale } from "@/i18n";
 import {
   clampChoice,
   formatReference,
@@ -19,7 +20,8 @@ type OrderRecord = {
   created: number;
 };
 
-export function MesImpressions() {
+export function MesImpressions({ locale = "fr" }: { locale?: Locale }) {
+  const copy = getCopy(locale);
   const [bible, setBible] = useState<Bible | null>(null);
   const [email, setEmail] = useState<string | null>(null);
   const [orders, setOrders] = useState<OrderRecord[]>([]);
@@ -29,13 +31,13 @@ export function MesImpressions() {
   const [notice, setNotice] = useState<string | null>(null);
 
   useEffect(() => {
-    void loadBible().then(setBible).catch(() => setError("Chargement impossible."));
-  }, []);
+    void loadBible(locale).then(setBible).catch(() => setError(copy.loadError));
+  }, [copy.loadError, locale]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("error") === "lien") {
-      setError("Ce lien n’est plus valable. Indiquez votre email.");
+      setError(copy.magicExpired);
     }
 
     const sessionId = params.get("checkout");
@@ -54,11 +56,8 @@ export function MesImpressions() {
           };
           setEmail(data.email ?? null);
           setOrders(data.orders ?? []);
-          if (data.preview) {
-            setNotice("Essai sans Stripe : le paiement arrivera après la vérification d’identité.");
-          }
         })
-        .catch(() => setError("Impossible de charger vos impressions."));
+        .catch(() => setError(copy.loadOrdersError));
 
     if (!sessionId) {
       void loadOrders();
@@ -68,14 +67,14 @@ export function MesImpressions() {
     fetch(`/api/checkout/verify?session_id=${encodeURIComponent(sessionId)}`)
       .then((response) => response.json())
       .then((data: { paid?: boolean }) => {
-        window.history.replaceState({}, "", "/mes-impressions");
+        window.history.replaceState({}, "", copy.paths.prints);
         if (data.paid) {
-          setNotice("Paiement reçu. Vos PDF sont ici, et un email vient de partir.");
+          setNotice(copy.paidNotice);
         }
       })
-      .catch(() => setError("Le paiement n’a pas pu être vérifié."))
+      .catch(() => setError(copy.payUnverified))
       .finally(() => void loadOrders());
-  }, []);
+  }, [copy.loadOrdersError, copy.magicExpired, copy.paidNotice, copy.paths.prints, copy.payUnverified]);
 
   const rows = useMemo(() => {
     if (!bible) return [];
@@ -101,13 +100,13 @@ export function MesImpressions() {
       const response = await fetch("/api/order/start", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: loginEmail, intent: "login" }),
+        body: JSON.stringify({ email: loginEmail, intent: "login", locale }),
       });
       const data = (await response.json()) as { message?: string; error?: string };
-      if (!response.ok) throw new Error(data.error || "Envoi impossible.");
-      setNotice(data.message || "Regardez votre boîte mail.");
+      if (!response.ok) throw new Error(data.error || copy.sendError);
+      setNotice(data.message || copy.checkInbox);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Envoi impossible.");
+      setError(cause instanceof Error ? cause.message : copy.sendError);
     } finally {
       setBusy(false);
     }
@@ -116,17 +115,22 @@ export function MesImpressions() {
   return (
     <div className="app-shell">
       <header className="app-chrome site-header">
-        <a className="brand-mark" href="/">
-          Bible Deco
+        <a className="brand-mark" href={copy.paths.home}>
+          {copy.brand}
         </a>
-        <a className="header-meta" href="/">
-          Retour à l’atelier
-        </a>
+        <div className="header-links">
+          <a className="header-meta" href={copy.switchHref}>
+            {copy.switchLabel}
+          </a>
+          <a className="header-meta" href={copy.paths.home}>
+            {copy.backHome}
+          </a>
+        </div>
       </header>
 
       <section className="app-chrome intro">
-        <h1>Mes impressions</h1>
-        <p>Retrouvez ici tous les versets que vous avez commandés.</p>
+        <h1>{copy.printsTitle}</h1>
+        <p>{copy.printsLead}</p>
       </section>
 
       {notice ? <p className="app-chrome confirm-copy">{notice}</p> : null}
@@ -140,9 +144,9 @@ export function MesImpressions() {
             void sendLogin();
           }}
         >
-          <p>Indiquez l’email utilisé pour payer. On vous envoie un lien, sans mot de passe.</p>
+          <p>{copy.loginLead}</p>
           <label className="field">
-            <span>Votre email</span>
+            <span>{copy.emailLabel}</span>
             <input
               type="email"
               required
@@ -151,22 +155,24 @@ export function MesImpressions() {
             />
           </label>
           <button className="print-button validate-button" type="submit" disabled={busy}>
-            {busy ? "Envoi…" : "M’envoyer le lien"}
+            {busy ? copy.sending : copy.sendLink}
           </button>
         </form>
       ) : (
-        <p className="app-chrome account-email">Connecté : {email}</p>
+        <p className="app-chrome account-email">
+          {copy.connected} : {email}
+        </p>
       )}
 
       {email && rows.length === 0 ? (
-        <p className="app-chrome hint">Aucune commande pour le moment.</p>
+        <p className="app-chrome hint">{copy.noOrders}</p>
       ) : null}
 
       {rows.map((row) => (
         <article key={row.id} className="app-chrome order-card">
           <div className="buy-copy">
             <p className="buy-kicker">
-              {new Date(row.created * 1000).toLocaleDateString("fr-FR")}
+              {new Date(row.created * 1000).toLocaleDateString(copy.dateLocale)}
             </p>
             <p className="buy-ref">{row.reference}</p>
           </div>
@@ -175,11 +181,12 @@ export function MesImpressions() {
             reference={row.reference}
             verseRef={row.verseRef}
             palette={parseTicketPalette(row.ticket)}
+            locale={locale}
           />
         </article>
       ))}
 
-      <SiteFooter extra={`Une question ? ${CONTACT_EMAIL}`} />
+      <SiteFooter extra={`${copy.questionLead} ${CONTACT_EMAIL}`} locale={locale} />
     </div>
   );
 }

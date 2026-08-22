@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import {
   Alex_Brush,
   Allura,
@@ -70,6 +71,13 @@ export const metadata: Metadata = {
       },
     ],
   },
+  alternates: {
+    canonical: "/",
+    languages: {
+      fr: "/",
+      en: "/en",
+    },
+  },
 };
 
 export const viewport: Viewport = {
@@ -77,10 +85,11 @@ export const viewport: Viewport = {
   themeColor: "#f4efe7",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const locale = (await headers()).get("x-locale") === "en" ? "en" : "fr";
   return (
     <html
-      lang="fr"
+      lang={locale}
       className={`${sourceSans.variable} ${greatVibes.variable} ${allura.variable} ${alexBrush.variable} ${pinyon.variable} ${ebGaramond.variable} h-full`}
     >
       <body className="min-h-full">{children}</body>

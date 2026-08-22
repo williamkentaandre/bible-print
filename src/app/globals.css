@@ -100,6 +100,12 @@ input[type="number"]::-webkit-inner-spin-button {
   letter-spacing: 0.02em;
 }
 
+.header-links {
+  display: flex;
+  align-items: baseline;
+  gap: 0.95rem;
+}
+
 .header-meta,
 a.header-meta,
 a.brand-mark {

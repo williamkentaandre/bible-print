@@ -1,3 +1,4 @@
+import { getCopy, parseLocale, type Locale } from "@/i18n";
 import type Stripe from "stripe";
 import type { OrderRecord } from "./order-types";
 import { isPrintTicket, parseTicket, PRINT_PRICE_CENTS, ticketUnlocks } from "./print-ticket";
@@ -67,6 +68,7 @@ export async function createCheckout(options: {
   ticket: string;
   reference: string;
   origin: string;
+  locale?: Locale;
 }) {
   const stripe = getStripe();
   if (!stripe) {
@@ -77,9 +79,11 @@ export async function createCheckout(options: {
     throw new Error("Paiement non configuré.");
   }
 
+  const locale = parseLocale(options.locale);
+  const copy = getCopy(locale);
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
-    locale: "fr",
+    locale: locale === "en" ? "en" : "fr",
     currency: "eur",
     customer: customer.id,
     payment_method_types: ["card"],
@@ -91,7 +95,7 @@ export async function createCheckout(options: {
           unit_amount: PRINT_PRICE_CENTS,
           product_data: {
             name: "Bible Deco - 12 PDF",
-            description: `${options.reference}. 12 PDF, toutes tailles.`,
+            description: `${options.reference}. ${copy.offer}.`,
           },
         },
       },
@@ -100,9 +104,10 @@ export async function createCheckout(options: {
       ticket: options.ticket,
       reference: options.reference,
       email: normalizeEmail(options.email),
+      locale,
     },
-    success_url: `${options.origin}/mes-impressions?checkout={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${options.origin}/?cancel=1`,
+    success_url: `${options.origin}${copy.paths.prints}?checkout={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${options.origin}${copy.paths.home}?cancel=1`,
   });
 
   if (!session.url) {

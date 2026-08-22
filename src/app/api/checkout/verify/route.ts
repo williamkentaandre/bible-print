@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { parseLocale } from "@/i18n";
 import { sendReadyEmail } from "@/lib/mail";
 import { getStripe } from "@/lib/stripe-client";
 import { setSessionEmail } from "@/lib/session";
@@ -25,7 +26,7 @@ export async function GET(request: NextRequest) {
     const origin = request.nextUrl.origin;
     const reference = session.metadata?.reference || "Votre verset";
     try {
-      await sendReadyEmail(email, origin, reference);
+      await sendReadyEmail(email, origin, reference, parseLocale(session.metadata?.locale));
     } catch {
       // Le lien reste disponible dans Mes impressions.
     }

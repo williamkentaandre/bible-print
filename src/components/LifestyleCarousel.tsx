@@ -1,5 +1,7 @@
 "use client";
 
+import type { Locale } from "@/i18n";
+import { getCopy } from "@/i18n";
 import type { BackgroundId } from "@/lib/backgrounds";
 import { hangStyle, LIFESTYLE_PAIR, sceneStyle, type FrameFinish } from "@/lib/scenes";
 import type { PrintSize } from "@/lib/sizes";
@@ -14,6 +16,7 @@ type LifestyleCarouselProps = {
   horizontalSize: PrintSize;
   finish: FrameFinish;
   palette: BackgroundId;
+  locale?: Locale;
 };
 
 export function LifestyleCarousel({
@@ -24,9 +27,14 @@ export function LifestyleCarousel({
   horizontalSize,
   finish,
   palette,
+  locale = "fr",
 }: LifestyleCarouselProps) {
+  const copy = getCopy(locale);
+  const sceneLabel = (id: string, fallback: string) =>
+    id === "salon" ? copy.sceneSalon : id === "chambre" ? copy.sceneChambre : fallback;
+
   return (
-    <div className="app-chrome lifestyle-pair" aria-label="Aperçus du verset dans un intérieur">
+    <div className="app-chrome lifestyle-pair" aria-label={copy.lifestyleLabel}>
       {LIFESTYLE_PAIR.map((scene) => {
         const size = scene.orientation === "horizontal" ? horizontalSize : verticalSize;
         return (
@@ -40,11 +48,12 @@ export function LifestyleCarousel({
                     verseRef={verseRef}
                     size={size}
                     palette={palette}
+                    locale={locale}
                   />
                 </div>
               </div>
             </div>
-            <figcaption className="lifestyle-label">{scene.label}</figcaption>
+            <figcaption className="lifestyle-label">{sceneLabel(scene.id, scene.label)}</figcaption>
           </figure>
         );
       })}

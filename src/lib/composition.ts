@@ -1,3 +1,4 @@
+import type { Locale } from "@/i18n";
 import type { BackgroundId } from "./backgrounds";
 import type { Orientation } from "./sizes";
 import type { VerseRef } from "./types";
@@ -188,11 +189,13 @@ export function breakVerseLines(
   );
 }
 
-export function quoteLines(lines: string[]): string[] {
+export function quoteLines(lines: string[], locale: Locale = "fr"): string[] {
   if (lines.length === 0) return lines;
-  if (lines.length === 1) return [`« ${lines[0]} »`];
+  const open = locale === "en" ? "“" : "« ";
+  const close = locale === "en" ? "”" : " »";
+  if (lines.length === 1) return [`${open}${lines[0]}${close}`];
   const quoted = [...lines];
-  quoted[0] = `« ${quoted[0]}`;
-  quoted[quoted.length - 1] = `${quoted[quoted.length - 1]} »`;
+  quoted[0] = `${open}${quoted[0]}`;
+  quoted[quoted.length - 1] = `${quoted[quoted.length - 1]}${close}`;
   return quoted;
 }
