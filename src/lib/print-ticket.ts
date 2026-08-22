@@ -3,9 +3,9 @@ import { PRINT_FORMAT_COUNT } from "./sizes";
 
 export const PRINT_PRICE_CENTS = 500;
 export const PRINT_PRICE_LABEL = "5 €";
-export const PRINT_OFFER_LABEL = `${PRINT_FORMAT_COUNT} PDF, toutes les tailles et formats`;
+export const PRINT_OFFER_LABEL = `${PRINT_FORMAT_COUNT} PDF, toutes tailles`;
 export const PRINT_FULFILLMENT_LABEL =
-  "Rien n’est imprimé ni envoyé : vous recevez les PDF, puis vous faites tirer le format choisi chez un imprimeur et vous trouvez un cadre aux bonnes dimensions.";
+  `${PRINT_FORMAT_COUNT} PDF, toutes tailles. Vous faites tirer le format choisi chez un imprimeur, le cadre se trouve ensuite.`;
 export const PAYWALL_ENABLED = false;
 
 export function printTicket(choice: VerseChoice): string {

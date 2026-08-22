@@ -21,7 +21,6 @@ import {
   PAYWALL_ENABLED,
   ticketUnlocks,
   PRINT_FULFILLMENT_LABEL,
-  PRINT_OFFER_LABEL,
   PRINT_PRICE_LABEL,
 } from "@/lib/print-ticket";
 import type { Bible, VerseChoice } from "@/lib/types";
@@ -167,15 +166,13 @@ export function VerseApp() {
     <div className="app-shell">
       <header className="app-chrome site-header">
         <p className="brand-mark">Bible Print</p>
-        <p className="header-meta">PDF prêts à encadrer</p>
+        <p className="header-meta">Votre verset, au mur</p>
       </header>
 
       <section className="app-chrome intro">
-        <h1>Un verset. Des PDF. Chez vous.</h1>
+        <h1>Le verset que vous aimez, accroché chez vous.</h1>
         <p>
-          Calligraphie soignée, filet doré. Vous voyez le rendu dans la pièce.
-          Rien n’est imprimé ici : {PRINT_PRICE_LABEL} pour {PRINT_OFFER_LABEL},
-          puis vous faites tirer le format choisi chez un imprimeur et vous trouvez un cadre aux bonnes dimensions.
+          Calligraphie soignée, filet doré. Vous voyez déjà le rendu dans la pièce.
         </p>
       </section>
 
@@ -239,9 +236,7 @@ export function VerseApp() {
             />
           </div>
           <p className="app-chrome size-caption">
-            {isPaid
-              ? `${formatSizeLabel(printSize)} · 12 PDF débloqués · le filet doré est dans le fichier, le cadre d’intérieur n’est pas fourni`
-              : "Vertical et horizontal · salon en portrait, chambre en paysage · les cadres des photos ne sont pas fournis, seuls les PDF le sont"}
+            Vertical et horizontal, tels qu’ils peuvent habiter le salon et la chambre.
           </p>
           <div className="print-sheet" aria-hidden="true">
             <VerseSheet
@@ -409,12 +404,11 @@ export function VerseApp() {
       <footer className="app-chrome site-footer">
         <ul className="trust-row">
           <li>Paiement sécurisé</li>
-          <li>12 PDF, rien n’est imprimé</li>
+          <li>Calligraphie soignée</li>
           <li>Louis Segond 1910</li>
         </ul>
         <p className="footnote">
-          {bible.translation} · {bible.copyright} · {PRINT_PRICE_LABEL}, {PRINT_OFFER_LABEL}.{" "}
-          {PRINT_FULFILLMENT_LABEL}
+          {bible.translation} · {bible.copyright}
         </p>
       </footer>
       <p className="print-denied" aria-hidden="true">
