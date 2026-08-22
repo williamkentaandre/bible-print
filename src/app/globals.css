@@ -88,13 +88,26 @@ input[type="number"]::-webkit-inner-spin-button {
 .toolbar {
   width: min(100%, 920px);
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) 7.2rem 7.2rem auto;
+  grid-template-columns: minmax(0, 1.6fr) 7.2rem 7.2rem;
   gap: 0.7rem;
   align-items: end;
   background: color-mix(in srgb, var(--panel) 88%, black);
   border: 1px solid var(--line);
   border-radius: 18px;
   padding: 0.9rem;
+}
+
+.toolbar.book-only {
+  grid-template-columns: 1fr;
+}
+
+.toolbar.has-chapter {
+  grid-template-columns: minmax(0, 1.6fr) 7.2rem;
+}
+
+.field-wide,
+.validate-button {
+  grid-column: 1 / -1;
 }
 
 .field {
@@ -145,6 +158,13 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .print-button:hover {
   background: #d4b98a;
+}
+
+.validate-button {
+  height: 52px;
+  font-size: 1.08rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .ghost-button {
@@ -233,7 +253,7 @@ input[type="number"]::-webkit-inner-spin-button {
   grid-template-columns: 1fr;
 }
 
-.phrase-bar select {
+.field-wide select {
   text-overflow: ellipsis;
 }
 
@@ -399,12 +419,12 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 @media (max-width: 840px) {
-  .toolbar {
+  .toolbar.has-chapter,
+  .toolbar.has-ref {
     grid-template-columns: 1fr 1fr;
   }
 
-  .ghost-button[type="submit"],
-  .print-button {
+  .toolbar.has-ref .field-grow {
     grid-column: 1 / -1;
   }
 }

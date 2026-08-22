@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   clampChoice,
-  DEFAULT_CHOICE,
   formatReference,
   getChoiceText,
   getVerseText,
@@ -11,21 +10,30 @@ import {
   loadBible,
 } from "@/lib/bible";
 import { sentencePreview, splitSentences } from "@/lib/sentences";
-import type { Bible, VerseChoice } from "@/lib/types";
 import {
   DEFAULT_SIZE_ID,
   formatSizeLabel,
   getPrintSize,
   PRINT_SIZES,
 } from "@/lib/sizes";
+import type { Bible, VerseChoice } from "@/lib/types";
 import { VerseSheet } from "./VerseSheet";
+
+type DraftPick = {
+  book: number | null;
+  chapter: number | null;
+  verse: number | null;
+  sentence: number;
+};
+
+const EMPTY_PICK: DraftPick = { book: null, chapter: null, verse: null, sentence: 0 };
 
 type Stage = "edit" | "confirm" | "preview";
 
 export function VerseApp() {
   const [bible, setBible] = useState<Bible | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [draft, setDraft] = useState<VerseChoice>(DEFAULT_CHOICE);
+  const [draft, setDraft] = useState<DraftPick>(EMPTY_PICK);
   const [typedError, setTypedError] = useState<string | null>(null);
   const [pending, setPending] = useState<VerseChoice | null>(null);
   const [preview, setPreview] = useState<VerseChoice | null>(null);
@@ -43,7 +51,7 @@ export function VerseApp() {
       .then((data) => {
         if (cancelled) return;
         setBible(data);
-        setDraft(clampChoice(data.books, DEFAULT_CHOICE));
+        setDraft(EMPTY_PICK);
       })
       .catch((cause: unknown) => {
         if (!cancelled) {
@@ -76,33 +84,48 @@ export function VerseApp() {
     }
   }, [stage]);
 
-  const book = bible?.books[draft.book];
-  const chapterCount = book?.chapters.length ?? 1;
-  const verseCount = book?.chapters[draft.chapter - 1]?.length ?? 1;
+  const book = draft.book != null ? bible?.books[draft.book] : undefined;
+  const chapterCount = book?.chapters.length ?? 0;
+  const verseCount =
+    book && draft.chapter != null ? (book.chapters[draft.chapter - 1]?.length ?? 0) : 0;
+  const verseReady = draft.book != null && draft.chapter != null && draft.verse != null;
 
-  const shownRef = preview ?? pending ?? draft;
-  const draftSentences = useMemo(
-    () => splitSentences(bible ? getVerseText(bible.books, draft) : ""),
-    [bible, draft],
-  );
+  const shownRef = preview ?? pending;
+  const draftSentences = useMemo(() => {
+    if (!bible || draft.book == null || draft.chapter == null || draft.verse == null) {
+      return [];
+    }
+    return splitSentences(
+      getVerseText(bible.books, {
+        book: draft.book,
+        chapter: draft.chapter,
+        verse: draft.verse,
+      }),
+    );
+  }, [bible, draft.book, draft.chapter, draft.verse]);
   const text = useMemo(
-    () => (bible ? getChoiceText(bible.books, shownRef) : ""),
+    () => (bible && shownRef ? getChoiceText(bible.books, shownRef) : ""),
     [bible, shownRef],
   );
-  const reference = bible ? formatReference(bible.books, shownRef) : "";
-  const phraseOnly = shownRef.sentence > 0;
+  const reference = bible && shownRef ? formatReference(bible.books, shownRef) : "";
+  const phraseOnly = (shownRef?.sentence ?? 0) > 0;
 
-  const updateDraft = (next: VerseChoice) => {
-    if (!bible) return;
-    setDraft(clampChoice(bible.books, next));
+  const updateDraft = (next: DraftPick) => {
+    setDraft(next);
     setTypedError(null);
     setPending(null);
     setPreview(null);
   };
 
   const submitSelection = () => {
-    if (!bible) return;
-    if (!isValidRef(bible.books, draft)) {
+    if (!bible || draft.book == null || draft.chapter == null || draft.verse == null) return;
+    const choice = clampChoice(bible.books, {
+      book: draft.book,
+      chapter: draft.chapter,
+      verse: draft.verse,
+      sentence: draft.sentence,
+    });
+    if (!isValidRef(bible.books, choice)) {
       setTypedError("Ce chapitre ou ce verset n’existe pas dans ce livre.");
       setPending(null);
       setPreview(null);
@@ -110,7 +133,7 @@ export function VerseApp() {
     }
 
     setTypedError(null);
-    setPending(draft);
+    setPending(choice);
     setPreview(null);
   };
 
@@ -122,7 +145,7 @@ export function VerseApp() {
     );
   }
 
-  if (!bible || !book) {
+  if (!bible) {
     return (
       <main className="app-shell">
         <p className="status-message">Chargement de la Bible…</p>
@@ -143,7 +166,9 @@ export function VerseApp() {
       </header>
 
       <form
-        className="app-chrome toolbar"
+        className={`app-chrome toolbar picker ${
+          draft.verse != null ? "has-ref" : draft.chapter != null ? "has-chapter" : "book-only"
+        }`}
         onSubmit={(event) => {
           event.preventDefault();
           submitSelection();
@@ -152,16 +177,19 @@ export function VerseApp() {
         <label className="field field-grow">
           <span>Livre</span>
           <select
-            value={draft.book}
+            value={draft.book ?? ""}
             onChange={(event) =>
               updateDraft({
                 book: Number(event.target.value),
-                chapter: 1,
-                verse: 1,
+                chapter: null,
+                verse: null,
                 sentence: 0,
               })
             }
           >
+            <option value="" disabled>
+              Choisir un livre
+            </option>
             <optgroup label="Ancien Testament">
               {bible.books.map((item, index) =>
                 item.testament === "AT" ? (
@@ -183,55 +211,59 @@ export function VerseApp() {
           </select>
         </label>
 
-        <label className="field field-narrow">
-          <span>Chapitre</span>
-          <select
-            value={draft.chapter}
-            onChange={(event) =>
-              updateDraft({
-                ...draft,
-                chapter: Number(event.target.value),
-                verse: 1,
-                sentence: 0,
-              })
-            }
-          >
-            {Array.from({ length: chapterCount }, (_, index) => (
-              <option key={index + 1} value={index + 1}>
-                {index + 1}
+        {draft.book != null ? (
+          <label className="field field-narrow">
+            <span>Chapitre</span>
+            <select
+              value={draft.chapter ?? ""}
+              onChange={(event) =>
+                updateDraft({
+                  ...draft,
+                  chapter: Number(event.target.value),
+                  verse: null,
+                  sentence: 0,
+                })
+              }
+            >
+              <option value="" disabled>
+                Choisir
               </option>
-            ))}
-          </select>
-        </label>
+              {Array.from({ length: chapterCount }, (_, index) => (
+                <option key={index + 1} value={index + 1}>
+                  {index + 1}
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : null}
 
-        <label className="field field-narrow">
-          <span>Verset</span>
-          <select
-            value={draft.verse}
-            onChange={(event) =>
-              updateDraft({
-                ...draft,
-                verse: Number(event.target.value),
-                sentence: 0,
-              })
-            }
-          >
-            {Array.from({ length: verseCount }, (_, index) => (
-              <option key={index + 1} value={index + 1}>
-                {index + 1}
+        {draft.chapter != null ? (
+          <label className="field field-narrow">
+            <span>Verset</span>
+            <select
+              value={draft.verse ?? ""}
+              onChange={(event) =>
+                updateDraft({
+                  ...draft,
+                  verse: Number(event.target.value),
+                  sentence: 0,
+                })
+              }
+            >
+              <option value="" disabled>
+                Choisir
               </option>
-            ))}
-          </select>
-        </label>
+              {Array.from({ length: verseCount }, (_, index) => (
+                <option key={index + 1} value={index + 1}>
+                  {index + 1}
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : null}
 
-        <button className="ghost-button" type="submit">
-          Valider
-        </button>
-      </form>
-
-      {draftSentences.length > 1 ? (
-        <div className="app-chrome toolbar phrase-bar">
-          <label className="field field-grow">
+        {verseReady && draftSentences.length > 1 ? (
+          <label className="field field-wide">
             <span>Phrase</span>
             <select
               value={draft.sentence}
@@ -250,37 +282,50 @@ export function VerseApp() {
               ))}
             </select>
           </label>
-        </div>
-      ) : null}
+        ) : null}
 
-      <div className="app-chrome toolbar size-bar">
-        <label className="field field-grow">
-          <span>Taille</span>
-          <select value={sizeId} onChange={(event) => setSizeId(event.target.value)}>
-            <optgroup label="Vertical">
-              {PRINT_SIZES.filter((size) => size.orientation === "vertical").map((size) => (
-                <option key={size.id} value={size.id}>
-                  {formatSizeLabel(size)}
-                </option>
-              ))}
-            </optgroup>
-            <optgroup label="Horizontal">
-              {PRINT_SIZES.filter((size) => size.orientation === "horizontal").map((size) => (
-                <option key={size.id} value={size.id}>
-                  {formatSizeLabel(size)}
-                </option>
-              ))}
-            </optgroup>
-          </select>
-        </label>
-      </div>
+        {verseReady ? (
+          <label className="field field-wide">
+            <span>Taille</span>
+            <select value={sizeId} onChange={(event) => setSizeId(event.target.value)}>
+              <optgroup label="Vertical">
+                {PRINT_SIZES.filter((size) => size.orientation === "vertical").map((size) => (
+                  <option key={size.id} value={size.id}>
+                    {formatSizeLabel(size)}
+                  </option>
+                ))}
+              </optgroup>
+              <optgroup label="Horizontal">
+                {PRINT_SIZES.filter((size) => size.orientation === "horizontal").map((size) => (
+                  <option key={size.id} value={size.id}>
+                    {formatSizeLabel(size)}
+                  </option>
+                ))}
+              </optgroup>
+            </select>
+          </label>
+        ) : null}
+
+        {verseReady ? (
+          <button className="print-button validate-button" type="submit">
+            Valider
+          </button>
+        ) : null}
+      </form>
 
       {typedError ? <p className="app-chrome field-error">{typedError}</p> : null}
 
       {stage === "edit" ? (
         <p className="app-chrome hint">
-          Choisissez le livre, le chapitre et le verset. S’il y a plusieurs phrases, vous
-          pouvez n’en garder qu’une, puis validez.
+          {draft.book == null
+            ? "Commencez par choisir un livre."
+            : draft.chapter == null
+              ? "Choisissez ensuite le chapitre."
+              : draft.verse == null
+                ? "Choisissez ensuite le verset."
+                : draftSentences.length > 1
+                  ? "Vous pouvez ne garder qu’une phrase, choisir la taille, puis valider."
+                  : "Choisissez la taille, puis validez."}
         </p>
       ) : null}
 
