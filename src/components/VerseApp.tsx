@@ -18,13 +18,16 @@ import {
   PRINT_SIZES,
 } from "@/lib/sizes";
 import {
+  CONTACT_EMAIL,
   PAYWALL_ENABLED,
+  printTicket,
   ticketUnlocks,
   PRINT_FULFILLMENT_LABEL,
   PRINT_PRICE_LABEL,
 } from "@/lib/print-ticket";
 import type { Bible, VerseChoice } from "@/lib/types";
 import { CloseupTableau } from "./CloseupTableau";
+import { EmailGate } from "./EmailGate";
 import { LifestyleCarousel } from "./LifestyleCarousel";
 import { PdfPack } from "./PdfPack";
 import { VerseSheet } from "./VerseSheet";
@@ -49,6 +52,7 @@ export function VerseApp() {
   const [draft, setDraft] = useState<DraftPick>(DEFAULT_PICK);
   const [sizeId, setSizeId] = useState(DEFAULT_SIZE_ID);
   const [paidTicket, setPaidTicket] = useState<string | null>(null);
+  const [ownedTickets, setOwnedTickets] = useState<string[]>([]);
   const [payError, setPayError] = useState<string | null>(null);
   const printSize = getPrintSize(sizeId);
   const verticalSize = getOrientedSize(printSize, "vertical");
@@ -107,7 +111,9 @@ export function VerseApp() {
   const reference = bible && liveChoice ? formatReference(bible.books, liveChoice) : "";
   const isPaid = Boolean(
     liveChoice &&
-      (!PAYWALL_ENABLED || (paidTicket && ticketUnlocks(paidTicket, liveChoice))),
+      (!PAYWALL_ENABLED ||
+        (paidTicket && ticketUnlocks(paidTicket, liveChoice)) ||
+        ownedTickets.some((ticket) => ticketUnlocks(ticket, liveChoice))),
   );
 
   useEffect(() => {
@@ -122,10 +128,24 @@ export function VerseApp() {
       queueMicrotask(() => setPayError("Paiement annulé."));
     }
 
-    const sessionId = params.get("checkout");
-    if (!sessionId) return;
-
     let cancelled = false;
+    const loadOwned = () =>
+      fetch("/api/orders")
+        .then(async (response) => {
+          if (cancelled || response.status === 401) return;
+          const data = (await response.json()) as { orders?: { ticket: string }[] };
+          setOwnedTickets((data.orders ?? []).map((order) => order.ticket));
+        })
+        .catch(() => undefined);
+
+    const sessionId = params.get("checkout");
+    if (!sessionId) {
+      void loadOwned();
+      return () => {
+        cancelled = true;
+      };
+    }
+
     fetch(`/api/checkout/verify?session_id=${encodeURIComponent(sessionId)}`)
       .then((response) => response.json())
       .then((data: { paid?: boolean; ticket?: string | null }) => {
@@ -135,6 +155,9 @@ export function VerseApp() {
       })
       .catch(() => {
         if (!cancelled) setPayError("Le paiement n’a pas pu être vérifié.");
+      })
+      .finally(() => {
+        if (!cancelled) void loadOwned();
       });
 
     return () => {
@@ -166,7 +189,9 @@ export function VerseApp() {
     <div className="app-shell">
       <header className="app-chrome site-header">
         <p className="brand-mark">Bible Deco</p>
-        <p className="header-meta">Votre verset, au mur</p>
+        <a className="header-meta" href="/mes-impressions">
+          Mes impressions
+        </a>
       </header>
 
       <section className="app-chrome intro">
@@ -199,7 +224,11 @@ export function VerseApp() {
                 <span>{PRINT_FULFILLMENT_LABEL}</span>
               </p>
             </div>
-            <PdfPack text={text} reference={reference} verseRef={liveChoice} />
+            {isPaid ? (
+              <PdfPack text={text} reference={reference} verseRef={liveChoice} />
+            ) : (
+              <EmailGate ticket={printTicket(liveChoice)} reference={reference} />
+            )}
           </div>
           {payError ? <p className="app-chrome field-error">{payError}</p> : null}
         </>
@@ -426,6 +455,13 @@ export function VerseApp() {
             </p>
           </details>
           <details className="faq-item">
+            <summary>Comment je retrouve mes fichiers ?</summary>
+            <p>
+              Après paiement, un email vous emmène vers Mes impressions. Vous pouvez aussi
+              y revenir depuis le haut de page, avec le même email.
+            </p>
+          </details>
+          <details className="faq-item">
             <summary>Que contient le fichier à 5 € ?</summary>
             <p>
               Les 12 PDF de votre verset : toutes les tailles, vertical et horizontal.
@@ -456,7 +492,8 @@ export function VerseApp() {
           <li>Louis Segond 1910</li>
         </ul>
         <p className="footnote">
-          {bible.translation} · {bible.copyright}
+          {bible.translation} · {bible.copyright} ·{" "}
+          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
         </p>
       </footer>
       <p className="print-denied" aria-hidden="true">

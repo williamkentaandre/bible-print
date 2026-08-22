@@ -71,6 +71,9 @@ input[type="number"]::-webkit-inner-spin-button {
 .buy-bar,
 .configure,
 .faq,
+.account-box,
+.account-email,
+.order-card,
 .site-footer,
 .size-caption,
 .field-error,
@@ -96,11 +99,22 @@ input[type="number"]::-webkit-inner-spin-button {
   letter-spacing: 0.02em;
 }
 
-.header-meta {
+.header-meta,
+a.header-meta,
+a.brand-mark {
   margin: 0;
   font-size: 0.78rem;
   letter-spacing: 0.08em;
   color: var(--muted);
+  text-decoration: none;
+}
+
+a.brand-mark {
+  font-family: var(--roman);
+  font-size: 1.28rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ink);
 }
 
 .intro {
@@ -187,6 +201,54 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .pdf-actions .validate-button {
   min-width: min(100%, 16rem);
+}
+
+.email-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.55rem;
+  min-width: min(100%, 16.5rem);
+}
+
+.email-hint {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.text-link {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--gold);
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.account-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.05rem 1.25rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+
+.account-email {
+  margin: 0;
+  color: var(--muted);
+}
+
+.order-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.05rem 1.25rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
 }
 
 .pdf-capture,
@@ -1034,9 +1096,17 @@ html.is-capturing-pdf body {
   }
 
   .buy-bar .validate-button,
-  .pdf-actions {
+  .pdf-actions,
+  .email-gate,
+  .order-card {
     width: 100%;
     min-width: 0;
+  }
+
+  .order-card {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
   }
 
   .pdf-actions .validate-button,

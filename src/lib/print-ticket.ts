@@ -6,10 +6,20 @@ export const PRINT_PRICE_LABEL = "5 €";
 export const PRINT_OFFER_LABEL = `${PRINT_FORMAT_COUNT} PDF, toutes tailles`;
 export const PRINT_FULFILLMENT_LABEL =
   `${PRINT_FORMAT_COUNT} PDF, toutes tailles. Vous faites tirer le format choisi chez un imprimeur, le cadre se trouve ensuite.`;
-export const PAYWALL_ENABLED = false;
+export const CONTACT_EMAIL = "bonjour@bibledeco.com";
+export const PAYWALL_ENABLED = true;
 
 export function printTicket(choice: VerseChoice): string {
   return `${choice.book}:${choice.chapter}:${choice.verse}:${choice.sentence}`;
+}
+
+export function parseTicket(value: string): VerseChoice | null {
+  if (!isPrintTicket(value)) return null;
+  const [book, chapter, verse, sentence] = value.split(":").map(Number);
+  if ([book, chapter, verse, sentence].some((part) => !Number.isFinite(part))) {
+    return null;
+  }
+  return { book, chapter, verse, sentence };
 }
 
 export function isPrintTicket(value: string): boolean {
