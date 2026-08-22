@@ -20,6 +20,7 @@ import {
 import {
   PAYWALL_ENABLED,
   ticketUnlocks,
+  PRINT_FULFILLMENT_LABEL,
   PRINT_OFFER_LABEL,
   PRINT_PRICE_LABEL,
 } from "@/lib/print-ticket";
@@ -166,14 +167,15 @@ export function VerseApp() {
     <div className="app-shell">
       <header className="app-chrome site-header">
         <p className="brand-mark">Bible Print</p>
-        <p className="header-meta">Atelier d’impression</p>
+        <p className="header-meta">PDF prêts à encadrer</p>
       </header>
 
       <section className="app-chrome intro">
-        <h1>Un verset. Une feuille. Chez vous.</h1>
+        <h1>Un verset. Des PDF. Chez vous.</h1>
         <p>
-          Calligraphie soignée, filet doré, prête à encadrer. Vous voyez le rendu dans la pièce.
-          Le fichier d’impression : {PRINT_PRICE_LABEL}, {PRINT_OFFER_LABEL}.
+          Calligraphie soignée, filet doré. Vous voyez le rendu dans la pièce.
+          Rien n’est imprimé ici : {PRINT_PRICE_LABEL} pour {PRINT_OFFER_LABEL},
+          puis vous faites tirer le format choisi chez un imprimeur et vous trouvez un cadre aux bonnes dimensions.
         </p>
       </section>
 
@@ -197,7 +199,7 @@ export function VerseApp() {
               <p className="buy-ref">{reference}</p>
               <p className="buy-price">
                 {PRINT_PRICE_LABEL}{" "}
-                <span>un paiement, {PRINT_OFFER_LABEL}, prêts à imprimer</span>
+                <span>{PRINT_FULFILLMENT_LABEL}</span>
               </p>
             </div>
             <PdfPack text={text} reference={reference} verseRef={liveChoice} />
@@ -238,8 +240,8 @@ export function VerseApp() {
           </div>
           <p className="app-chrome size-caption">
             {isPaid
-              ? `${formatSizeLabel(printSize)} · toutes les tailles sont débloquées · le double filet doré est imprimé, le cadre mural non`
-              : "Vertical et horizontal · salon en portrait, chambre en paysage · le cadre d’intérieur n’est pas imprimé"}
+              ? `${formatSizeLabel(printSize)} · 12 PDF débloqués · le filet doré est dans le fichier, le cadre d’intérieur n’est pas fourni`
+              : "Vertical et horizontal · salon en portrait, chambre en paysage · les cadres des photos ne sont pas fournis, seuls les PDF le sont"}
           </p>
           <div className="print-sheet" aria-hidden="true">
             <VerseSheet
@@ -407,11 +409,12 @@ export function VerseApp() {
       <footer className="app-chrome site-footer">
         <ul className="trust-row">
           <li>Paiement sécurisé</li>
-          <li>12 PDF à télécharger</li>
+          <li>12 PDF, rien n’est imprimé</li>
           <li>Louis Segond 1910</li>
         </ul>
         <p className="footnote">
-          {bible.translation} · {bible.copyright} · {PRINT_PRICE_LABEL}, {PRINT_OFFER_LABEL}
+          {bible.translation} · {bible.copyright} · {PRINT_PRICE_LABEL}, {PRINT_OFFER_LABEL}.{" "}
+          {PRINT_FULFILLMENT_LABEL}
         </p>
       </footer>
       <p className="print-denied" aria-hidden="true">
