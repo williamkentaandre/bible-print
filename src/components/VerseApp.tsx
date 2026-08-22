@@ -455,8 +455,8 @@ export function VerseApp() {
           <details className="faq-item">
             <summary>Comment je retrouve mes fichiers ?</summary>
             <p>
-              Un email vous emmène vers Mes impressions. Vous pouvez aussi y revenir
-              depuis le haut de page, avec le même email.
+              Après le paiement, un email vous emmène vers Mes impressions. Vous pouvez
+              aussi y revenir depuis le haut de page, avec le même email.
             </p>
           </details>
           <details className="faq-item">

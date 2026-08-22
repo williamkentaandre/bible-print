@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { PRINT_OFFER_LABEL, PRINT_PRICE_LABEL } from "@/lib/print-ticket";
 
 type EmailGateProps = {
   ticket: string;
@@ -9,6 +10,7 @@ type EmailGateProps = {
 
 export function EmailGate({ ticket, reference }: EmailGateProps) {
   const [email, setEmail] = useState("");
+  const [step, setStep] = useState<"email" | "pay">("email");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -55,27 +57,58 @@ export function EmailGate({ ticket, reference }: EmailGateProps) {
       className="email-gate"
       onSubmit={(event) => {
         event.preventDefault();
+        if (step === "email") {
+          setError(null);
+          setMessage(null);
+          setStep("pay");
+          return;
+        }
         void submit("buy");
       }}
     >
-      <label className="field">
-        <span>Votre email</span>
-        <input
-          type="email"
-          name="email"
-          autoComplete="email"
-          required
-          placeholder="vous@email.fr"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-      </label>
-      <button className="print-button validate-button" type="submit" disabled={busy}>
-        {busy ? "Un instant…" : "Recevoir mes PDF"}
-      </button>
-      <p className="email-hint">
-        On vous envoie le lien vers vos fichiers.
-      </p>
+      {step === "email" ? (
+        <>
+          <label className="field">
+            <span>Votre email</span>
+            <input
+              type="email"
+              name="email"
+              autoComplete="email"
+              required
+              placeholder="vous@email.fr"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+          </label>
+          <button className="print-button validate-button" type="submit" disabled={busy}>
+            Continuer
+          </button>
+          <p className="email-hint">Pour recevoir vos fichiers si vous téléchargez.</p>
+        </>
+      ) : (
+        <>
+          <p className="pay-step-email">{email}</p>
+          <p className="pay-step-price">
+            {PRINT_PRICE_LABEL} <span>{PRINT_OFFER_LABEL}</span>
+          </p>
+          <button className="print-button validate-button" type="submit" disabled={busy}>
+            {busy ? "Un instant…" : "Payer et télécharger"}
+          </button>
+          <p className="email-hint">Paiement unique, puis les PDF dans Mes impressions.</p>
+          <button
+            className="text-link"
+            type="button"
+            disabled={busy}
+            onClick={() => {
+              setStep("email");
+              setError(null);
+              setMessage(null);
+            }}
+          >
+            Modifier l’email
+          </button>
+        </>
+      )}
       <button
         className="text-link"
         type="button"

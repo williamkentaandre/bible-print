@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sendLoginEmail, sendReadyEmail } from "@/lib/mail";
+import { sendLoginEmail } from "@/lib/mail";
 import { createCheckout, hasPaidTicket, listPaidOrders } from "@/lib/orders";
 import { isPrintTicket } from "@/lib/print-ticket";
-import { addPreviewOrder, isEmail, normalizeEmail, setSessionEmail } from "@/lib/session";
+import { isEmail, normalizeEmail } from "@/lib/session";
 import { isStripeConfigured } from "@/lib/stripe-client";
 
 export async function POST(request: NextRequest) {
@@ -56,27 +56,10 @@ export async function POST(request: NextRequest) {
   }
 
   if (!isStripeConfigured()) {
-    await addPreviewOrder(email, {
-      id: `preview-${ticket}`,
-      ticket,
-      reference,
-      created: Math.floor(Date.now() / 1000),
-    });
-    await setSessionEmail(email);
-    let sent = false;
-    try {
-      sent = await sendReadyEmail(email, origin, reference);
-    } catch {
-      sent = false;
-    }
-    return NextResponse.json({
-      preview: true,
-      sent,
-      redirect: "/mes-impressions",
-      message: sent
-        ? "Essai sans paiement : un email vient de partir. Vos PDF sont aussi dans Mes impressions."
-        : "Essai sans paiement : vos PDF sont dans Mes impressions. (L’email n’est pas encore parti : vérifiez RESEND_API_KEY.)",
-    });
+    return NextResponse.json(
+      { error: "Le paiement n’est pas encore ouvert. Réessayez dans un instant." },
+      { status: 503 },
+    );
   }
 
   try {

@@ -218,6 +218,23 @@ a.brand-mark {
   color: var(--muted);
 }
 
+.pay-step-email {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.pay-step-price {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 500;
+}
+
+.pay-step-price span {
+  font-weight: 400;
+  color: var(--muted);
+}
+
 .text-link {
   border: 0;
   background: none;
