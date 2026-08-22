@@ -25,6 +25,7 @@ export function PdfPack({ text, reference, verseRef }: PdfPackProps) {
   const downloadAll = async () => {
     setBusy(true);
     setError(null);
+    document.documentElement.classList.add("is-capturing-pdf");
     try {
       const [{ default: JSZip }, { jsPDF }, html2canvas] = await Promise.all([
         import("jszip"),
@@ -55,6 +56,15 @@ export function PdfPack({ text, reference, verseRef }: PdfPackProps) {
           scale: 2,
           backgroundColor: "#ffffff",
           useCORS: true,
+          onclone: (doc) => {
+            const capture = doc.querySelector(".pdf-capture");
+            if (!(capture instanceof HTMLElement)) return;
+            capture.style.width = "auto";
+            capture.style.height = "auto";
+            capture.style.overflow = "visible";
+            capture.style.opacity = "1";
+            capture.style.contain = "none";
+          },
         });
         const pdf = new jsPDF({
           orientation: size.orientation === "horizontal" ? "landscape" : "portrait",
@@ -74,6 +84,7 @@ export function PdfPack({ text, reference, verseRef }: PdfPackProps) {
     } catch {
       setError("Le téléchargement n’a pas pu être préparé.");
     } finally {
+      document.documentElement.classList.remove("is-capturing-pdf");
       setBusy(false);
       setStep(0);
     }

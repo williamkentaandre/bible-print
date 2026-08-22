@@ -188,11 +188,28 @@ input[type="number"]::-webkit-inner-spin-button {
   min-width: min(100%, 16rem);
 }
 
-.pdf-capture {
+.pdf-capture,
+.print-sheet {
   position: fixed;
-  left: -200vw;
+  left: 0;
   top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
   pointer-events: none;
+  z-index: -1;
+  contain: paint;
+}
+
+.print-sheet {
+  clip-path: inset(100%);
+}
+
+html.is-capturing-pdf,
+html.is-capturing-pdf body {
+  overflow: hidden !important;
+  overscroll-behavior: none;
 }
 
 .configure {
@@ -472,16 +489,8 @@ input[type="number"]::-webkit-inner-spin-button {
   text-align: center;
 }
 
-.caption-narrow {
+  .caption-narrow {
   display: none;
-}
-
-.print-sheet {
-  position: fixed;
-  left: -200vw;
-  top: 0;
-  pointer-events: none;
-  opacity: 0;
 }
 
 .showroom {
@@ -1089,8 +1098,14 @@ input[type="number"]::-webkit-inner-spin-button {
     position: static;
     left: auto;
     top: auto;
+    width: auto;
+    height: auto;
+    overflow: visible;
     opacity: 1;
     pointer-events: none;
+    z-index: auto;
+    contain: none;
+    clip-path: none;
   }
 
   body.is-paid .app-shell,
