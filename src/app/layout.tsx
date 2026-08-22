@@ -49,7 +49,7 @@ const ebGaramond = EB_Garamond({
 export const metadata: Metadata = {
   title: "Bible Print",
   description:
-    "Choisissez un verset biblique, voyez-le chez vous, et obtenez tous les formats d’impression. 5 €, toutes les tailles, vertical et horizontal.",
+    "Choisissez un verset biblique, voyez-le chez vous, et téléchargez 12 PDF : toutes les tailles, vertical et horizontal. 5 €.",
 };
 
 export const viewport: Viewport = {

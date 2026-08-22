@@ -176,6 +176,21 @@ input[type="number"]::-webkit-inner-spin-button {
   min-width: 13.5rem;
 }
 
+.pdf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+}
+
+.pdf-capture {
+  position: fixed;
+  left: -200vw;
+  top: 0;
+  pointer-events: none;
+}
+
 .configure {
   margin-top: 0.4rem;
 }
@@ -974,9 +989,15 @@ input[type="number"]::-webkit-inner-spin-button {
     gap: 0.75rem;
   }
 
-  .buy-bar .validate-button {
+  .buy-bar .validate-button,
+  .pdf-actions {
     width: 100%;
     min-width: 0;
+  }
+
+  .pdf-actions .validate-button,
+  .pdf-actions .ghost-button {
+    width: 100%;
   }
 
   .showroom {
@@ -1057,7 +1078,8 @@ input[type="number"]::-webkit-inner-spin-button {
     color: black;
   }
 
-  .app-chrome {
+  .app-chrome,
+  .pdf-capture {
     display: none !important;
   }
 

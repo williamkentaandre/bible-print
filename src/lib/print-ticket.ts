@@ -1,8 +1,9 @@
 import type { VerseChoice } from "./types";
+import { PRINT_FORMAT_COUNT } from "./sizes";
 
 export const PRINT_PRICE_CENTS = 500;
 export const PRINT_PRICE_LABEL = "5 €";
-export const PRINT_OFFER_LABEL = "toutes les tailles et formats";
+export const PRINT_OFFER_LABEL = `${PRINT_FORMAT_COUNT} PDF, toutes les tailles et formats`;
 
 export function printTicket(choice: VerseChoice): string {
   return `${choice.book}:${choice.chapter}:${choice.verse}:${choice.sentence}`;

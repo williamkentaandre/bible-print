@@ -43,6 +43,8 @@ export const PRINT_SIZES: PrintSize[] = BASE_SIZES.flatMap((size) => [
   makeSize(size.heightIn, size.widthIn, size.metricLabel, "horizontal"),
 ]);
 
+export const PRINT_FORMAT_COUNT = PRINT_SIZES.length;
+
 export const DEFAULT_SIZE_ID = "8.3x11.7-vertical";
 
 export function getPrintSize(id: string): PrintSize {

@@ -21,6 +21,7 @@ import { printTicket, ticketUnlocks, PRINT_OFFER_LABEL, PRINT_PRICE_LABEL } from
 import type { Bible, VerseChoice } from "@/lib/types";
 import { CloseupTableau } from "./CloseupTableau";
 import { LifestyleCarousel } from "./LifestyleCarousel";
+import { PdfPack } from "./PdfPack";
 import { VerseSheet } from "./VerseSheet";
 
 type DraftPick = {
@@ -215,9 +216,7 @@ export function VerseApp() {
               </p>
             </div>
             {isPaid ? (
-              <button className="print-button validate-button" type="button" onClick={() => window.print()}>
-                Imprimer
-              </button>
+              <PdfPack text={text} reference={reference} verseRef={liveChoice} />
             ) : (
               <button
                 className="print-button validate-button"
@@ -434,7 +433,7 @@ export function VerseApp() {
       <footer className="app-chrome site-footer">
         <ul className="trust-row">
           <li>Paiement sécurisé</li>
-          <li>Un verset, toutes tailles</li>
+          <li>12 PDF à télécharger</li>
           <li>Louis Segond 1910</li>
         </ul>
         <p className="footnote">
