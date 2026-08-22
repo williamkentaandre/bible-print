@@ -12,10 +12,6 @@ export type LifestyleScene = {
   bottom: string;
   /** Visible width of the photo, in cm, used to scale the print. */
   roomWidthCm: number;
-  /** Wall plane vs camera, in degrees. */
-  rotateY: number;
-  rotateX: number;
-  skewY: number;
 };
 
 export const LIFESTYLE_SCENES: LifestyleScene[] = [
@@ -26,9 +22,6 @@ export const LIFESTYLE_SCENES: LifestyleScene[] = [
     left: "50%",
     bottom: "53%",
     roomWidthCm: 330,
-    rotateY: 0,
-    rotateX: 3,
-    skewY: 0,
   },
   {
     id: "chambre",
@@ -37,9 +30,6 @@ export const LIFESTYLE_SCENES: LifestyleScene[] = [
     left: "51%",
     bottom: "51%",
     roomWidthCm: 250,
-    rotateY: 2,
-    rotateX: 2,
-    skewY: -0.4,
   },
   {
     id: "couloir",
@@ -48,9 +38,6 @@ export const LIFESTYLE_SCENES: LifestyleScene[] = [
     left: "61%",
     bottom: "46%",
     roomWidthCm: 300,
-    rotateY: 14,
-    rotateX: 2,
-    skewY: 0.6,
   },
   {
     id: "salle",
@@ -59,23 +46,15 @@ export const LIFESTYLE_SCENES: LifestyleScene[] = [
     left: "72%",
     bottom: "38%",
     roomWidthCm: 340,
-    rotateY: -8,
-    rotateX: 1.5,
-    skewY: 0.3,
   },
 ];
 
 export function hangStyle(scene: LifestyleScene, size: PrintSize): CSSProperties {
   const widthPct = (size.widthIn * 2.54) / scene.roomWidthCm * 100;
-  const heightPct = widthPct * (size.heightIn / size.widthIn);
   return {
     left: scene.left,
     bottom: scene.bottom,
     width: `${widthPct}%`,
-    height: 0,
-    paddingBottom: `${heightPct}%`,
-    "--wall-y": `${scene.rotateY}deg`,
-    "--wall-x": `${scene.rotateX}deg`,
-    "--wall-skew": `${scene.skewY}deg`,
-  } as CSSProperties;
+    aspectRatio: `${size.widthIn} / ${size.heightIn}`,
+  };
 }

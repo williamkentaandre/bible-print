@@ -476,29 +476,25 @@ input[type="number"]::-webkit-inner-spin-button {
   flex: 0 0 min(88vw, 900px);
   height: min(56vw, 520px);
   margin-right: 14px;
+  overflow: visible;
   background-size: cover;
   background-position: center;
-  perspective: 1400px;
-  perspective-origin: 50% 38%;
-  transform-style: preserve-3d;
 }
 
 .lifestyle-hang {
   position: absolute;
-  transform: translateX(-50%) rotateY(var(--wall-y, 0deg)) rotateX(var(--wall-x, 0deg))
-    skewY(var(--wall-skew, 0deg));
+  transform: translateX(-50%);
   transform-origin: 50% 100%;
-  transform-style: preserve-3d;
   container-type: inline-size;
+  overflow: visible;
 }
 
 .lifestyle-hang::before {
   content: "";
   position: absolute;
-  inset: 3% 0 -4% 6%;
-  background: rgba(42, 28, 14, 0.28);
-  filter: blur(7px);
-  transform: translate3d(7px, 5px, -2px);
+  inset: 4% 2% -5% 4%;
+  background: rgba(42, 28, 14, 0.22);
+  filter: blur(8px);
   z-index: -1;
   pointer-events: none;
 }
@@ -523,10 +519,10 @@ input[type="number"]::-webkit-inner-spin-button {
   position: absolute;
   inset: 0;
   box-sizing: border-box;
-  isolation: isolate;
   display: flex;
   flex-direction: column;
   box-shadow:
+    0 10px 18px rgba(42, 28, 14, 0.18),
     inset 1px 1px 0 rgba(255, 248, 230, 0.38),
     inset -2px -2px 0 rgba(42, 24, 8, 0.28);
 }
