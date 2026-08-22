@@ -250,7 +250,17 @@ export function VerseApp() {
           <p className="app-chrome size-caption">
             {isPaid
               ? `${formatSizeLabel(printSize)} · le double filet doré est imprimé, le cadre mural non`
-              : "À gauche, le tableau de près · à droite, dans la pièce · le cadre d’intérieur n’est pas imprimé"}
+              : (
+                <>
+                  <span className="caption-wide">
+                    À gauche, le tableau de près · à droite, dans la pièce
+                  </span>
+                  <span className="caption-narrow">
+                    Le tableau de près, puis dans la pièce
+                  </span>
+                  {" · le cadre d’intérieur n’est pas imprimé"}
+                </>
+              )}
           </p>
           <div className="print-sheet" aria-hidden="true">
             <VerseSheet

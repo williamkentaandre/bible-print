@@ -446,6 +446,10 @@ input[type="number"]::-webkit-inner-spin-button {
   text-align: center;
 }
 
+.caption-narrow {
+  display: none;
+}
+
 .print-sheet {
   position: fixed;
   left: -200vw;
@@ -898,30 +902,74 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 @media (max-width: 840px) {
-  .showroom {
-    grid-template-columns: 1fr;
-    min-height: 0;
+  .app-shell {
+    padding: 0.85rem 0.9rem 2.4rem;
+    gap: 0.85rem;
   }
 
-  .closeup .room,
-  .lifestyle-carousel,
-  .lifestyle-slide {
-    min-height: min(64vw, 420px);
+  .site-header {
+    padding-bottom: 0.65rem;
   }
 
-  .picture-frame {
-    width: min(100%, 280px);
+  .intro {
+    padding-top: 0;
+  }
+
+  .intro h1 {
+    font-size: 1.55rem;
+  }
+
+  .intro p {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
   }
 
   .buy-bar {
+    position: static;
     flex-direction: column;
     align-items: stretch;
     text-align: center;
+    padding: 0.85rem 0.95rem;
+    gap: 0.75rem;
   }
 
   .buy-bar .validate-button {
     width: 100%;
     min-width: 0;
+  }
+
+  .showroom {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    gap: 0.7rem;
+  }
+
+  .closeup,
+  .closeup .room {
+    height: auto;
+    min-height: 0;
+  }
+
+  .closeup .room {
+    padding: 1rem 0.85rem 1.1rem;
+  }
+
+  .picture-frame {
+    width: min(100%, 300px);
+  }
+
+  .lifestyle-carousel,
+  .lifestyle-slide {
+    height: min(78vw, 340px);
+    min-height: min(78vw, 340px);
+  }
+
+  .caption-wide {
+    display: none;
+  }
+
+  .caption-narrow {
+    display: inline;
   }
 
   .toolbar.has-chapter,
