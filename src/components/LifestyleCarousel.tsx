@@ -26,7 +26,7 @@ function LifestyleArt({
   const lines = quoteLines(breakVerseLines(text, size.orientation));
   const [refSize, setRefSize] = useState(3);
   const onFit = useCallback((sizePx: number) => {
-    setRefSize(Math.max(2.2, sizePx * 0.2));
+    setRefSize(Math.max(1.5, sizePx * 0.09));
   }, []);
   const verseEl = useFitText(lines.join("\n"), 4, 64, onFit);
 
