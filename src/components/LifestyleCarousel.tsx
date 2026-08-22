@@ -1,6 +1,6 @@
 "use client";
 
-import { hangStyle, LIFESTYLE_SCENES, sceneStyle, type FrameFinish } from "@/lib/scenes";
+import { hangStyle, LIFESTYLE_PAIR, sceneStyle, type FrameFinish } from "@/lib/scenes";
 import type { PrintSize } from "@/lib/sizes";
 import type { VerseRef } from "@/lib/types";
 import { ScaledSheet } from "./ScaledSheet";
@@ -22,32 +22,28 @@ export function LifestyleCarousel({
   horizontalSize,
   finish,
 }: LifestyleCarouselProps) {
-  const slides = [...LIFESTYLE_SCENES, ...LIFESTYLE_SCENES];
-
   return (
-    <div className="app-chrome lifestyle-carousel" aria-label="Aperçus du verset dans un intérieur">
-      <div className="lifestyle-track">
-        {slides.map((scene, index) => {
-          const size = scene.orientation === "horizontal" ? horizontalSize : verticalSize;
-          return (
-            <figure key={`${scene.id}-${index}`} className="lifestyle-slide">
-              <div className="lifestyle-scene" style={sceneStyle(scene)}>
-                <div className="lifestyle-hang" data-scene={scene.id} style={hangStyle(scene, size)}>
-                  <div className="lifestyle-art" data-finish={finish} data-orientation={size.orientation}>
-                    <ScaledSheet
-                      text={text}
-                      reference={reference}
-                      verseRef={verseRef}
-                      size={size}
-                    />
-                  </div>
+    <div className="app-chrome lifestyle-pair" aria-label="Aperçus du verset dans un intérieur">
+      {LIFESTYLE_PAIR.map((scene) => {
+        const size = scene.orientation === "horizontal" ? horizontalSize : verticalSize;
+        return (
+          <figure key={scene.id} className="lifestyle-slide">
+            <div className="lifestyle-scene" style={sceneStyle(scene)}>
+              <div className="lifestyle-hang" data-scene={scene.id} style={hangStyle(scene, size)}>
+                <div className="lifestyle-art" data-finish={finish} data-orientation={size.orientation}>
+                  <ScaledSheet
+                    text={text}
+                    reference={reference}
+                    verseRef={verseRef}
+                    size={size}
+                  />
                 </div>
               </div>
-              <figcaption className="lifestyle-label">{scene.label}</figcaption>
-            </figure>
-          );
-        })}
-      </div>
+            </div>
+            <figcaption className="lifestyle-label">{scene.label}</figcaption>
+          </figure>
+        );
+      })}
     </div>
   );
 }

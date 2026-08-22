@@ -238,7 +238,7 @@ export function VerseApp() {
           <p className="app-chrome size-caption">
             {isPaid
               ? `${formatSizeLabel(printSize)} · toutes les tailles sont débloquées · le double filet doré est imprimé, le cadre mural non`
-              : "Vertical et horizontal · salon et entrée en portrait, chambre et salle à manger en paysage · le cadre d’intérieur n’est pas imprimé"}
+              : "Vertical et horizontal · salon en portrait, chambre en paysage · le cadre d’intérieur n’est pas imprimé"}
           </p>
           <div className="print-sheet" aria-hidden="true">
             <VerseSheet

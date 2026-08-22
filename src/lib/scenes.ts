@@ -70,6 +70,12 @@ export const LIFESTYLE_SCENES: LifestyleScene[] = [
   },
 ];
 
+/** Salon portrait + chambre paysage, toujours visibles ensemble. */
+export const LIFESTYLE_PAIR: LifestyleScene[] = [
+  LIFESTYLE_SCENES.find((scene) => scene.id === "salon")!,
+  LIFESTYLE_SCENES.find((scene) => scene.id === "chambre")!,
+];
+
 export function sceneStyle(scene: LifestyleScene): CSSProperties {
   return {
     backgroundImage: `url(${scene.src})`,
