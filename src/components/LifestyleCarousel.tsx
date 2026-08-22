@@ -1,11 +1,9 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import { breakVerseLines, pickComposition, quoteLines } from "@/lib/composition";
 import { hangStyle, LIFESTYLE_SCENES, sceneStyle, type FrameFinish } from "@/lib/scenes";
 import type { PrintSize } from "@/lib/sizes";
 import type { VerseRef } from "@/lib/types";
-import { useFitText } from "@/lib/use-fit-text";
+import { ScaledSheet } from "./ScaledSheet";
 
 type LifestyleCarouselProps = {
   text: string;
@@ -22,37 +20,14 @@ function LifestyleArt({
   size,
   finish,
 }: LifestyleCarouselProps) {
-  const composition = pickComposition(verseRef, text, 1, size.orientation);
-  const lines = quoteLines(breakVerseLines(text, size.orientation));
-  const [refSize, setRefSize] = useState(3);
-  const onFit = useCallback((sizePx: number) => {
-    setRefSize(Math.max(1.5, sizePx * 0.09));
-  }, []);
-  const verseEl = useFitText(lines.join("\n"), 4, 64, onFit);
-
   return (
-    <div
-      className="lifestyle-art"
-      data-finish={finish}
-      data-script={composition.script}
-      data-orientation={size.orientation}
-    >
-      <div className="lifestyle-paper" data-palette={composition.palette}>
-        <div className="lifestyle-rule">
-          <div className="verse-stage">
-            <div ref={verseEl} className="verse-text">
-              {lines.map((line, index) => (
-                <div key={`${index}-${line}`} className="verse-line">
-                  {line}
-                </div>
-              ))}
-            </div>
-          </div>
-          <p className="lifestyle-ref" style={{ fontSize: `${refSize}px` }}>
-            {reference}
-          </p>
-        </div>
-      </div>
+    <div className="lifestyle-art" data-finish={finish} data-orientation={size.orientation}>
+      <ScaledSheet
+        text={text}
+        reference={reference}
+        verseRef={verseRef}
+        size={size}
+      />
     </div>
   );
 }

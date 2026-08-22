@@ -1,11 +1,10 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import type { FrameFinish } from "@/lib/scenes";
 import type { PrintSize } from "@/lib/sizes";
 import type { VerseRef } from "@/lib/types";
-import { VerseSheet } from "./VerseSheet";
+import { ScaledSheet } from "./ScaledSheet";
 
 type CloseupTableauProps = {
   text: string;
@@ -22,25 +21,6 @@ export function CloseupTableau({
   size,
   finish,
 }: CloseupTableauProps) {
-  const frameRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0);
-
-  useLayoutEffect(() => {
-    const frame = frameRef.current;
-    if (!frame) return;
-
-    const apply = () => {
-      const width = frame.clientWidth;
-      const sheetPx = size.widthIn * 96;
-      setScale(sheetPx > 0 ? width / sheetPx : 0);
-    };
-
-    apply();
-    const observer = new ResizeObserver(apply);
-    observer.observe(frame);
-    return () => observer.disconnect();
-  }, [size.widthIn]);
-
   return (
     <div
       className="closeup"
@@ -48,24 +28,12 @@ export function CloseupTableau({
     >
       <div className="room">
         <div className="picture-frame" data-finish={finish}>
-          <div className="preview-frame" ref={frameRef}>
-            <div
-              className="sheet-scale"
-              style={{
-                width: `${size.widthIn}in`,
-                height: `${size.heightIn}in`,
-                transform: `scale(${scale})`,
-                visibility: scale > 0 ? "visible" : "hidden",
-              }}
-            >
-              <VerseSheet
-                text={text}
-                reference={reference}
-                verseRef={verseRef}
-                size={size}
-              />
-            </div>
-          </div>
+          <ScaledSheet
+            text={text}
+            reference={reference}
+            verseRef={verseRef}
+            size={size}
+          />
         </div>
       </div>
     </div>

@@ -2,10 +2,18 @@
 
 import { useLayoutEffect, useRef } from "react";
 
-function inkBounds(element: HTMLElement): DOMRect | null {
+function stageScale(stage: HTMLElement): number {
+  const layout = stage.offsetWidth;
+  const visual = stage.getBoundingClientRect().width;
+  return layout > 0 && visual > 0 ? visual / layout : 1;
+}
+
+function inkInLayout(element: HTMLElement, stage: HTMLElement) {
   const lines = element.querySelectorAll(".verse-line");
   if (lines.length === 0) return null;
 
+  const scale = stageScale(stage);
+  const stageBox = stage.getBoundingClientRect();
   let top = Infinity;
   let right = -Infinity;
   let bottom = -Infinity;
@@ -15,14 +23,14 @@ function inkBounds(element: HTMLElement): DOMRect | null {
     const range = document.createRange();
     range.selectNodeContents(line);
     const rect = range.getBoundingClientRect();
-    left = Math.min(left, rect.left);
-    right = Math.max(right, rect.right);
-    top = Math.min(top, rect.top);
-    bottom = Math.max(bottom, rect.bottom);
+    left = Math.min(left, (rect.left - stageBox.left) / scale);
+    right = Math.max(right, (rect.right - stageBox.left) / scale);
+    top = Math.min(top, (rect.top - stageBox.top) / scale);
+    bottom = Math.max(bottom, (rect.bottom - stageBox.top) / scale);
   }
 
   if (!Number.isFinite(top)) return null;
-  return new DOMRect(left, top, right - left, bottom - top);
+  return { left, right, top, bottom };
 }
 
 export function useFitText(
@@ -41,16 +49,18 @@ export function useFitText(
 
     const fitsAt = (size: number) => {
       element.style.fontSize = `${size}px`;
-      const stageBox = stage.getBoundingClientRect();
-      const ink = inkBounds(element);
-      if (!ink || stageBox.width < 8 || stageBox.height < 8) return false;
+      const width = stage.offsetWidth;
+      const height = stage.offsetHeight;
+      if (width < 8 || height < 8) return false;
+      const ink = inkInLayout(element, stage);
+      if (!ink) return false;
 
       const flourish = Math.max(4, size * 0.08);
       return (
-        ink.left - flourish >= stageBox.left &&
-        ink.right + flourish <= stageBox.right &&
-        ink.top - flourish >= stageBox.top &&
-        ink.bottom + flourish <= stageBox.bottom
+        ink.left >= flourish &&
+        ink.right <= width - flourish &&
+        ink.top >= flourish &&
+        ink.bottom <= height - flourish
       );
     };
 
