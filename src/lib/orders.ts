@@ -1,6 +1,6 @@
 import type Stripe from "stripe";
 import type { OrderRecord } from "./order-types";
-import { isPrintTicket, PRINT_PRICE_CENTS } from "./print-ticket";
+import { isPrintTicket, parseTicket, PRINT_PRICE_CENTS, ticketUnlocks } from "./print-ticket";
 import { getStripe, isStripeConfigured } from "./stripe-client";
 import { getPreviewOrders, normalizeEmail } from "./session";
 
@@ -56,8 +56,10 @@ export async function listPaidOrders(email: string): Promise<OrderRecord[]> {
 }
 
 export async function hasPaidTicket(email: string, ticket: string) {
+  const choice = parseTicket(ticket);
+  if (!choice) return false;
   const orders = await listPaidOrders(email);
-  return orders.some((order) => order.ticket === ticket);
+  return orders.some((order) => ticketUnlocks(order.ticket, choice));
 }
 
 export async function createCheckout(options: {

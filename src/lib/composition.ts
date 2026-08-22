@@ -1,8 +1,9 @@
+import type { BackgroundId } from "./backgrounds";
 import type { Orientation } from "./sizes";
 import type { VerseRef } from "./types";
 
 export type ScriptId = "vibes" | "allura" | "alex" | "pinyon";
-export type PaletteId = "blanc" | "ivoire" | "creme";
+export type PaletteId = BackgroundId;
 
 export type Composition = {
   script: ScriptId;

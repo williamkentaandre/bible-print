@@ -1,5 +1,6 @@
 "use client";
 
+import type { BackgroundId } from "@/lib/backgrounds";
 import { hangStyle, LIFESTYLE_PAIR, sceneStyle, type FrameFinish } from "@/lib/scenes";
 import type { PrintSize } from "@/lib/sizes";
 import type { VerseRef } from "@/lib/types";
@@ -12,6 +13,7 @@ type LifestyleCarouselProps = {
   verticalSize: PrintSize;
   horizontalSize: PrintSize;
   finish: FrameFinish;
+  palette: BackgroundId;
 };
 
 export function LifestyleCarousel({
@@ -21,6 +23,7 @@ export function LifestyleCarousel({
   verticalSize,
   horizontalSize,
   finish,
+  palette,
 }: LifestyleCarouselProps) {
   return (
     <div className="app-chrome lifestyle-pair" aria-label="Aperçus du verset dans un intérieur">
@@ -36,6 +39,7 @@ export function LifestyleCarousel({
                     reference={reference}
                     verseRef={verseRef}
                     size={size}
+                    palette={palette}
                   />
                 </div>
               </div>

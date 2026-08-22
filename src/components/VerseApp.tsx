@@ -17,6 +17,7 @@ import {
   getPrintSize,
   PRINT_SIZES,
 } from "@/lib/sizes";
+import { DEFAULT_BACKGROUND, type BackgroundId } from "@/lib/backgrounds";
 import {
   PAYWALL_ENABLED,
   printTicket,
@@ -26,6 +27,7 @@ import {
 import type { Bible, VerseChoice } from "@/lib/types";
 import { CloseupTableau } from "./CloseupTableau";
 import { EmailGate } from "./EmailGate";
+import { FondPicker } from "./FondPicker";
 import { LifestyleCarousel } from "./LifestyleCarousel";
 import { PdfPack } from "./PdfPack";
 import { SiteFooter } from "./SiteFooter";
@@ -50,6 +52,7 @@ export function VerseApp() {
   const [error, setError] = useState<string | null>(null);
   const [draft, setDraft] = useState<DraftPick>(DEFAULT_PICK);
   const [sizeId, setSizeId] = useState(DEFAULT_SIZE_ID);
+  const [palette, setPalette] = useState<BackgroundId>(DEFAULT_BACKGROUND);
   const [paidTicket, setPaidTicket] = useState<string | null>(null);
   const [ownedTickets, setOwnedTickets] = useState<string[]>([]);
   const [payError, setPayError] = useState<string | null>(null);
@@ -340,6 +343,8 @@ export function VerseApp() {
         ) : null}
         </div>
 
+        <FondPicker value={palette} onChange={setPalette} />
+
         {!liveChoice ? (
           <p className="hint">
             {draft.book == null
@@ -374,9 +379,9 @@ export function VerseApp() {
               </p>
             </div>
             {isPaid ? (
-              <PdfPack text={text} reference={reference} verseRef={liveChoice} />
+              <PdfPack text={text} reference={reference} verseRef={liveChoice} palette={palette} />
             ) : (
-              <EmailGate ticket={printTicket(liveChoice)} reference={reference} />
+              <EmailGate ticket={printTicket(liveChoice, palette)} reference={reference} />
             )}
           </div>
           {payError ? <p className="app-chrome field-error">{payError}</p> : null}
@@ -394,6 +399,7 @@ export function VerseApp() {
                 size={verticalSize}
                 finish="gold"
                 label="Vertical"
+                palette={palette}
               />
               <CloseupTableau
                 text={text}
@@ -402,6 +408,7 @@ export function VerseApp() {
                 size={horizontalSize}
                 finish="gold"
                 label="Horizontal"
+                palette={palette}
               />
             </div>
             <LifestyleCarousel
@@ -411,6 +418,7 @@ export function VerseApp() {
               verticalSize={verticalSize}
               horizontalSize={horizontalSize}
               finish="gold"
+              palette={palette}
             />
           </div>
           <p className="app-chrome size-caption">
@@ -418,11 +426,12 @@ export function VerseApp() {
           </p>
           <div className="print-sheet" aria-hidden="true">
             <VerseSheet
-              key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}`}
+              key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}-${palette}`}
               text={text}
               reference={reference}
               verseRef={liveChoice}
               size={printSize}
+              palette={palette}
             />
           </div>
         </>
@@ -462,7 +471,15 @@ export function VerseApp() {
           <details className="faq-item">
             <summary>Que contiennent les fichiers ?</summary>
             <p>
-              Les 12 PDF de votre verset : toutes les tailles, vertical et horizontal.
+              Les 12 PDF de votre verset : toutes les tailles, vertical et horizontal,
+              avec le fond choisi.
+            </p>
+          </details>
+          <details className="faq-item">
+            <summary>Puis-je changer le fond ?</summary>
+            <p>
+              Oui. Quatre papiers classiques, et quatre fonds plus singuliers : lin,
+              champagne, sauge, encre.
             </p>
           </details>
           <details className="faq-item">

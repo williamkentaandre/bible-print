@@ -7,7 +7,7 @@ import {
   getChoiceText,
   loadBible,
 } from "@/lib/bible";
-import { CONTACT_EMAIL, parseTicket } from "@/lib/print-ticket";
+import { CONTACT_EMAIL, parseTicket, parseTicketPalette } from "@/lib/print-ticket";
 import type { Bible } from "@/lib/types";
 import { PdfPack } from "./PdfPack";
 import { SiteFooter } from "./SiteFooter";
@@ -170,7 +170,12 @@ export function MesImpressions() {
             </p>
             <p className="buy-ref">{row.reference}</p>
           </div>
-          <PdfPack text={row.text} reference={row.reference} verseRef={row.verseRef} />
+          <PdfPack
+            text={row.text}
+            reference={row.reference}
+            verseRef={row.verseRef}
+            palette={parseTicketPalette(row.ticket)}
+          />
         </article>
       ))}
 

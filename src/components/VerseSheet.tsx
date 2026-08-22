@@ -1,5 +1,6 @@
 "use client";
 
+import type { BackgroundId } from "@/lib/backgrounds";
 import { breakVerseLines, pickComposition, quoteLines } from "@/lib/composition";
 import {
   referenceFontSize,
@@ -15,9 +16,10 @@ type VerseSheetProps = {
   reference: string;
   verseRef: VerseRef;
   size: PrintSize;
+  palette?: BackgroundId;
 };
 
-export function VerseSheet({ text, reference, verseRef, size }: VerseSheetProps) {
+export function VerseSheet({ text, reference, verseRef, size, palette }: VerseSheetProps) {
   const composition = pickComposition(verseRef, text, 1, size.orientation);
   const lines = quoteLines(breakVerseLines(text, size.orientation));
   const fontSize = verseFontSize(lines, size);
@@ -27,7 +29,7 @@ export function VerseSheet({ text, reference, verseRef, size }: VerseSheetProps)
     <article
       className="sheet"
       data-script={composition.script}
-      data-palette={composition.palette}
+      data-palette={palette ?? composition.palette}
       data-orientation={size.orientation}
       aria-label={`Verset ${reference}`}
       style={

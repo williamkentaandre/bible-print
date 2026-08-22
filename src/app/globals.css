@@ -310,6 +310,69 @@ html.is-capturing-pdf body {
   width: 100%;
 }
 
+.fond-picker {
+  margin-top: 0.95rem;
+}
+
+.fond-picker-label {
+  margin: 0 0 0.55rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.fond-groups {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.fond-group-title {
+  margin: 0 0 0.45rem;
+  font-family: var(--roman);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.fond-swatches {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.fond-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+}
+
+.fond-chip {
+  display: block;
+  aspect-ratio: 1.35 / 1;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+.fond-swatch[data-selected="true"] .fond-chip {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(138, 106, 62, 0.28);
+}
+
+.fond-swatch[data-selected="true"] {
+  color: var(--ink);
+  font-weight: 500;
+}
+
 .faq {
   margin-top: 0.4rem;
 }
@@ -860,6 +923,10 @@ html.is-capturing-pdf body {
   background: #fffaf0;
 }
 
+.lifestyle-paper[data-palette="encre"] {
+  background: #1a1814;
+}
+
 .lifestyle-rule {
   flex: 1;
   min-height: 0;
@@ -981,26 +1048,112 @@ html.is-capturing-pdf body {
 
 .sheet {
   --paper: #ffffff;
+  --paper-image: none;
   --ink: #111111;
   --muted: #4a4a4a;
   --foil: #c6a14d;
   width: var(--sheet-width, 8.3in);
   height: var(--sheet-height, 11.7in);
-  background: var(--paper);
+  background-color: var(--paper);
+  background-image: var(--paper-image);
   color: var(--ink);
   padding: 16mm 18mm 18mm;
 }
 
-.sheet[data-palette="blanc"] {
+.sheet[data-palette="blanc"],
+.fond-chip[data-palette="blanc"] {
   --paper: #ffffff;
+  --ink: #111111;
+  --muted: #4a4a4a;
+  --foil: #c6a14d;
+  --paper-image: none;
 }
 
-.sheet[data-palette="ivoire"] {
+.sheet[data-palette="ivoire"],
+.fond-chip[data-palette="ivoire"] {
   --paper: #fffcf6;
+  --ink: #16120e;
+  --muted: #5a5146;
+  --foil: #c6a14d;
+  --paper-image: linear-gradient(180deg, #fffdf8 0%, #fffcf6 55%, #f7f0e4 100%);
 }
 
-.sheet[data-palette="creme"] {
+.sheet[data-palette="creme"],
+.fond-chip[data-palette="creme"] {
   --paper: #fffaf0;
+  --ink: #1a1612;
+  --muted: #5c5348;
+  --foil: #c6a14d;
+  --paper-image: linear-gradient(180deg, #fffdf6 0%, #fff4dc 100%);
+}
+
+.sheet[data-palette="parchemin"],
+.fond-chip[data-palette="parchemin"] {
+  --paper: #f0dfb8;
+  --ink: #2a2116;
+  --muted: #6a5840;
+  --foil: #b58a3c;
+  --paper-image:
+    radial-gradient(ellipse at 18% 12%, rgba(255, 248, 230, 0.7), transparent 46%),
+    radial-gradient(ellipse at 86% 88%, rgba(150, 108, 58, 0.16), transparent 42%),
+    linear-gradient(168deg, #f7ebc8 0%, #ead4a4 48%, #e2c48a 100%);
+}
+
+.sheet[data-palette="lin"],
+.fond-chip[data-palette="lin"] {
+  --paper: #efe4cf;
+  --ink: #231c14;
+  --muted: #6a5c48;
+  --foil: #b8924a;
+  --paper-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(120, 96, 64, 0.055) 0 1px,
+      transparent 1px 5px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(120, 96, 64, 0.04) 0 1px,
+      transparent 1px 5px
+    ),
+    linear-gradient(180deg, #f6ecda 0%, #e7d7b8 100%);
+}
+
+.sheet[data-palette="champagne"],
+.fond-chip[data-palette="champagne"] {
+  --paper: #f3e2b4;
+  --ink: #2a2112;
+  --muted: #6e5a32;
+  --foil: #b48a2e;
+  --paper-image:
+    radial-gradient(ellipse at 30% 18%, rgba(255, 246, 214, 0.85), transparent 52%),
+    linear-gradient(158deg, #f8ebc4 0%, #e8c878 54%, #f0d59a 100%);
+}
+
+.sheet[data-palette="sauge"],
+.fond-chip[data-palette="sauge"] {
+  --paper: #dfe4d6;
+  --ink: #1c2218;
+  --muted: #556055;
+  --foil: #a48b4a;
+  --paper-image:
+    radial-gradient(ellipse at 72% 12%, rgba(255, 255, 248, 0.42), transparent 48%),
+    linear-gradient(180deg, #e8ecdf 0%, #c9d2be 100%);
+}
+
+.sheet[data-palette="encre"],
+.fond-chip[data-palette="encre"] {
+  --paper: #1a1814;
+  --ink: #f3ead8;
+  --muted: #c4b8a4;
+  --foil: #d4b36a;
+  --paper-image:
+    radial-gradient(ellipse at 50% 28%, #2c281f 0%, #141210 72%);
+}
+
+.fond-chip {
+  background-color: var(--paper, #fff);
+  background-image: var(--paper-image, none);
 }
 
 .sheet[data-script="vibes"] {
@@ -1211,6 +1364,15 @@ html.is-capturing-pdf body {
 
   .picture-frame {
     width: min(100%, 420px);
+  }
+
+  .fond-swatches {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.4rem;
+  }
+
+  .fond-swatch {
+    font-size: 0.7rem;
   }
 
   .lifestyle-scene {

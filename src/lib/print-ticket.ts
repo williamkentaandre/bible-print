@@ -1,3 +1,4 @@
+import { isBackgroundId, type BackgroundId } from "./backgrounds";
 import type { VerseChoice } from "./types";
 import { PRINT_FORMAT_COUNT } from "./sizes";
 
@@ -9,8 +10,13 @@ export const PRINT_FULFILLMENT_LABEL =
 export const CONTACT_EMAIL = "contact@bibledeco.com";
 export const PAYWALL_ENABLED = true;
 
-export function printTicket(choice: VerseChoice): string {
+export function verseTicket(choice: VerseChoice): string {
   return `${choice.book}:${choice.chapter}:${choice.verse}:${choice.sentence}`;
+}
+
+export function printTicket(choice: VerseChoice, palette?: BackgroundId): string {
+  const key = verseTicket(choice);
+  return palette ? `${key}:${palette}` : key;
 }
 
 export function parseTicket(value: string): VerseChoice | null {
@@ -22,11 +28,16 @@ export function parseTicket(value: string): VerseChoice | null {
   return { book, chapter, verse, sentence };
 }
 
+export function parseTicketPalette(value: string): BackgroundId | undefined {
+  const id = value.split(":")[4];
+  return isBackgroundId(id) ? id : undefined;
+}
+
 export function isPrintTicket(value: string): boolean {
   return /^\d+:\d+:\d+:\d+(?::[\w.-]+)?$/.test(value);
 }
 
 export function ticketUnlocks(paidTicket: string, choice: VerseChoice): boolean {
-  const key = printTicket(choice);
+  const key = verseTicket(choice);
   return paidTicket === key || paidTicket.startsWith(`${key}:`);
 }

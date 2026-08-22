@@ -1,6 +1,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
+import type { BackgroundId } from "@/lib/backgrounds";
 import type { FrameFinish } from "@/lib/scenes";
 import type { PrintSize } from "@/lib/sizes";
 import type { VerseRef } from "@/lib/types";
@@ -13,6 +14,7 @@ type CloseupTableauProps = {
   size: PrintSize;
   finish: FrameFinish;
   label: string;
+  palette: BackgroundId;
 };
 
 export function CloseupTableau({
@@ -22,6 +24,7 @@ export function CloseupTableau({
   size,
   finish,
   label,
+  palette,
 }: CloseupTableauProps) {
   return (
     <div
@@ -37,6 +40,7 @@ export function CloseupTableau({
             reference={reference}
             verseRef={verseRef}
             size={size}
+            palette={palette}
           />
         </div>
       </div>

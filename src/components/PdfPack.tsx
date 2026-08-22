@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { DEFAULT_BACKGROUND, getBackground, type BackgroundId } from "@/lib/backgrounds";
 import { fileSafe } from "@/lib/file-name";
 import { PRINT_FORMAT_COUNT, PRINT_SIZES, formatSizeLabel, type PrintSize } from "@/lib/sizes";
 import type { VerseRef } from "@/lib/types";
@@ -10,13 +11,14 @@ type PdfPackProps = {
   text: string;
   reference: string;
   verseRef: VerseRef;
+  palette?: BackgroundId;
 };
 
 function wait(ms: number) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
 }
 
-export function PdfPack({ text, reference, verseRef }: PdfPackProps) {
+export function PdfPack({ text, reference, verseRef, palette = DEFAULT_BACKGROUND }: PdfPackProps) {
   const [busy, setBusy] = useState(false);
   const [step, setStep] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -54,7 +56,7 @@ export function PdfPack({ text, reference, verseRef }: PdfPackProps) {
 
         const canvas = await html2canvas(sheet, {
           scale: 2,
-          backgroundColor: "#ffffff",
+          backgroundColor: getBackground(palette).capture,
           useCORS: true,
           onclone: (doc) => {
             const capture = doc.querySelector(".pdf-capture");
@@ -105,11 +107,12 @@ export function PdfPack({ text, reference, verseRef }: PdfPackProps) {
       {error ? <p className="field-error">{error}</p> : null}
       <div className="pdf-capture" aria-hidden="true">
         <VerseSheet
-          key={captureSize.id}
+          key={`${captureSize.id}-${palette}`}
           text={text}
           reference={reference}
           verseRef={verseRef}
           size={captureSize}
+          palette={palette}
         />
       </div>
     </div>
