@@ -156,8 +156,9 @@ input[type="number"]::-webkit-inner-spin-button {
   color: var(--night);
 }
 
-.print-button:hover {
-  background: #d4b98a;
+.print-button:disabled {
+  opacity: 0.65;
+  cursor: wait;
 }
 
 .validate-button {
@@ -375,12 +376,17 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .sheet-frame {
   height: 100%;
+  min-height: 0;
+  border: 0.9px solid var(--foil);
+  padding: 3.2mm;
+}
+
+.sheet-frame-inner {
+  height: 100%;
   display: flex;
   flex-direction: column;
   min-height: 0;
-  border: 1.15px solid var(--foil);
-  outline: 0.55px solid var(--foil);
-  outline-offset: 3.4mm;
+  border: 0.9px solid var(--foil);
   padding: 8mm 9mm 9mm;
 }
 
@@ -433,8 +439,11 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .sheet[data-orientation="horizontal"] .sheet-frame {
+  padding: 2.4mm;
+}
+
+.sheet[data-orientation="horizontal"] .sheet-frame-inner {
   padding: 6mm 8mm 7mm;
-  outline-offset: 2.6mm;
 }
 
 .sheet[data-orientation="horizontal"] .verse-stage {
@@ -484,6 +493,10 @@ input[type="number"]::-webkit-inner-spin-button {
   }
 }
 
+.print-denied {
+  display: none;
+}
+
 @media print {
   html,
   body {
@@ -495,12 +508,29 @@ input[type="number"]::-webkit-inner-spin-button {
     display: none !important;
   }
 
-  .app-shell,
-  .preview-wrap,
-  .room,
-  .picture-frame,
-  .preview-frame,
-  .sheet-scale {
+  body:not(.is-paid) .preview-wrap,
+  body:not(.is-paid) .sheet,
+  body:not(.is-paid) .sheet-scale,
+  body:not(.is-paid) .room,
+  body:not(.is-paid) .picture-frame {
+    display: none !important;
+  }
+
+  body:not(.is-paid) .print-denied {
+    display: block !important;
+    margin: 2.5cm;
+    font-family: Georgia, serif;
+    font-size: 16pt;
+    text-align: center;
+    color: #333;
+  }
+
+  body.is-paid .app-shell,
+  body.is-paid .preview-wrap,
+  body.is-paid .room,
+  body.is-paid .picture-frame,
+  body.is-paid .preview-frame,
+  body.is-paid .sheet-scale {
     display: block;
     min-height: 0;
     padding: 0;
@@ -513,8 +543,15 @@ input[type="number"]::-webkit-inner-spin-button {
     border: 0;
   }
 
-  .sheet {
+  body.is-paid .sheet,
+  body.is-paid .sheet-frame,
+  body.is-paid .sheet-frame-inner {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+  }
+
+  body.is-paid .sheet-frame,
+  body.is-paid .sheet-frame-inner {
+    border: 0.9px solid #c4a574 !important;
   }
 }

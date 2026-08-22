@@ -39,18 +39,20 @@ export function VerseSheet({ text, reference, verseRef, size }: VerseSheetProps)
       }
     >
       <div className="sheet-frame">
-        <div className="verse-stage">
-          <div ref={verseEl} className="verse-text" style={{ fontSize: `${fontSize}px` }}>
-            {lines.map((line, index) => (
-              <div key={`${index}-${line}`} className="verse-line">
-                {line}
-              </div>
-            ))}
+        <div className="sheet-frame-inner">
+          <div className="verse-stage">
+            <div ref={verseEl} className="verse-text" style={{ fontSize: `${fontSize}px` }}>
+              {lines.map((line, index) => (
+                <div key={`${index}-${line}`} className="verse-line">
+                  {line}
+                </div>
+              ))}
+            </div>
           </div>
+          <footer className="sheet-footer">
+            <p className="verse-ref">{reference}</p>
+          </footer>
         </div>
-        <footer className="sheet-footer">
-          <p className="verse-ref">{reference}</p>
-        </footer>
       </div>
     </article>
   );

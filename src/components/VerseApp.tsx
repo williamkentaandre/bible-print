@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   clampChoice,
+  DEFAULT_CHOICE,
   formatReference,
   getChoiceText,
   getVerseText,
@@ -15,6 +16,7 @@ import {
   getPrintSize,
   PRINT_SIZES,
 } from "@/lib/sizes";
+import { printTicket, PRINT_PRICE_LABEL } from "@/lib/print-ticket";
 import type { Bible, VerseChoice } from "@/lib/types";
 import { VerseSheet } from "./VerseSheet";
 
@@ -25,14 +27,22 @@ type DraftPick = {
   sentence: number;
 };
 
-const EMPTY_PICK: DraftPick = { book: null, chapter: null, verse: null, sentence: 0 };
+const DEFAULT_PICK: DraftPick = {
+  book: DEFAULT_CHOICE.book,
+  chapter: DEFAULT_CHOICE.chapter,
+  verse: DEFAULT_CHOICE.verse,
+  sentence: DEFAULT_CHOICE.sentence,
+};
 
 export function VerseApp() {
   const [bible, setBible] = useState<Bible | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [draft, setDraft] = useState<DraftPick>(EMPTY_PICK);
+  const [draft, setDraft] = useState<DraftPick>(DEFAULT_PICK);
   const [sizeId, setSizeId] = useState(DEFAULT_SIZE_ID);
   const [frameFinish, setFrameFinish] = useState<"oak" | "gold">("oak");
+  const [paidTicket, setPaidTicket] = useState<string | null>(null);
+  const [payBusy, setPayBusy] = useState(false);
+  const [payError, setPayError] = useState<string | null>(null);
   const [scale, setScale] = useState(0.55);
   const frameRef = useRef<HTMLDivElement>(null);
   const printSize = getPrintSize(sizeId);
@@ -43,7 +53,13 @@ export function VerseApp() {
       .then((data) => {
         if (cancelled) return;
         setBible(data);
-        setDraft(EMPTY_PICK);
+        const next = clampChoice(data.books, DEFAULT_CHOICE);
+        setDraft({
+          book: next.book,
+          chapter: next.chapter,
+          verse: next.verse,
+          sentence: next.sentence,
+        });
       })
       .catch((cause: unknown) => {
         if (!cancelled) {
@@ -68,7 +84,7 @@ export function VerseApp() {
     const observer = new ResizeObserver(updateScale);
     observer.observe(frame);
     return () => observer.disconnect();
-  }, [draft.verse, printSize.widthIn, frameFinish]);
+  }, [draft.verse, printSize.widthIn, frameFinish, bible]);
 
   const book = draft.book != null ? bible?.books[draft.book] : undefined;
   const chapterCount = book?.chapters.length ?? 0;
@@ -97,6 +113,61 @@ export function VerseApp() {
     [bible, liveChoice],
   );
   const reference = bible && liveChoice ? formatReference(bible.books, liveChoice) : "";
+  const ticket = liveChoice ? printTicket(liveChoice, sizeId) : null;
+  const isPaid = Boolean(ticket && paidTicket === ticket);
+
+  useEffect(() => {
+    document.body.classList.toggle("is-paid", isPaid);
+    return () => document.body.classList.remove("is-paid");
+  }, [isPaid]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("cancel") === "1") {
+      window.history.replaceState({}, "", window.location.pathname);
+      queueMicrotask(() => setPayError("Paiement annulé."));
+    }
+
+    const sessionId = params.get("checkout");
+    if (!sessionId) return;
+
+    let cancelled = false;
+    fetch(`/api/checkout/verify?session_id=${encodeURIComponent(sessionId)}`)
+      .then((response) => response.json())
+      .then((data: { paid?: boolean; ticket?: string | null }) => {
+        if (cancelled || !data.paid || !data.ticket) return;
+        setPaidTicket(data.ticket);
+        window.history.replaceState({}, "", window.location.pathname);
+      })
+      .catch(() => {
+        if (!cancelled) setPayError("Le paiement n’a pas pu être vérifié.");
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const startCheckout = async () => {
+    if (!ticket || !reference) return;
+    setPayBusy(true);
+    setPayError(null);
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ticket, reference }),
+      });
+      const data = (await response.json()) as { url?: string; error?: string };
+      if (!response.ok || !data.url) {
+        throw new Error(data.error || "Paiement indisponible.");
+      }
+      window.location.href = data.url;
+    } catch (cause) {
+      setPayError(cause instanceof Error ? cause.message : "Paiement indisponible.");
+      setPayBusy(false);
+    }
+  };
 
   const updateDraft = (next: DraftPick) => {
     setDraft(next);
@@ -126,7 +197,7 @@ export function VerseApp() {
           <h1>Bible Print</h1>
         </div>
         <p className="brand-tagline">
-          Choisissez un verset, puis imprimez une page unique.
+          Choisissez un verset. L’impression coûte {PRINT_PRICE_LABEL}.
         </p>
       </header>
 
@@ -293,22 +364,26 @@ export function VerseApp() {
 
       {liveChoice ? (
         <>
-          <style>{`
-            @media print {
-              @page { size: ${printSize.widthIn}in ${printSize.heightIn}in; margin: 0; }
-              .app-shell,
-              .preview-wrap,
-              .room,
-              .picture-frame,
-              .preview-frame,
-              .sheet-scale {
-                width: ${printSize.widthIn}in !important;
-                height: ${printSize.heightIn}in !important;
+          {isPaid ? (
+            <style>{`
+              @media print {
+                @page { size: ${printSize.widthIn}in ${printSize.heightIn}in; margin: 0; }
+                .app-shell,
+                .preview-wrap,
+                .room,
+                .picture-frame,
+                .preview-frame,
+                .sheet-scale {
+                  width: ${printSize.widthIn}in !important;
+                  height: ${printSize.heightIn}in !important;
+                }
               }
-            }
-          `}</style>
+            `}</style>
+          ) : null}
           <p className="app-chrome size-caption">
-            {formatSizeLabel(printSize)} · aperçu encadré, le cadre n’est pas imprimé
+            {isPaid
+              ? `${formatSizeLabel(printSize)} · le double filet doré est imprimé, le cadre mural non`
+              : `${formatSizeLabel(printSize)} · aperçu uniquement · impression ${PRINT_PRICE_LABEL}`}
           </p>
           <div className="preview-wrap">
             <div className="room">
@@ -334,15 +409,30 @@ export function VerseApp() {
             </div>
           </div>
           <div className="app-chrome preview-actions">
-            <button className="print-button validate-button" type="button" onClick={() => window.print()}>
-              Imprimer
-            </button>
+            {isPaid ? (
+              <button className="print-button validate-button" type="button" onClick={() => window.print()}>
+                Imprimer
+              </button>
+            ) : (
+              <button
+                className="print-button validate-button"
+                type="button"
+                disabled={payBusy}
+                onClick={() => void startCheckout()}
+              >
+                {payBusy ? "Redirection…" : `Obtenir l’impression — ${PRINT_PRICE_LABEL}`}
+              </button>
+            )}
           </div>
+          {payError ? <p className="app-chrome field-error">{payError}</p> : null}
         </>
       ) : null}
 
       <p className="app-chrome footnote">
-        {bible.translation} · {bible.copyright} · un verset par feuille
+        {bible.translation} · {bible.copyright} · impression {PRINT_PRICE_LABEL} par feuille
+      </p>
+      <p className="print-denied" aria-hidden="true">
+        Impression disponible après paiement ({PRINT_PRICE_LABEL}).
       </p>
     </div>
   );
