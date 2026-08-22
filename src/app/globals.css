@@ -247,6 +247,7 @@ input[type="number"]::-webkit-inner-spin-button {
   flex-wrap: wrap;
   gap: 0.7rem;
   justify-content: center;
+  width: min(100%, 920px);
 }
 
 .preview-actions .validate-button {
@@ -268,8 +269,165 @@ input[type="number"]::-webkit-inner-spin-button {
   color: #d5c6b0;
 }
 
-.preview-wrap {
+.print-sheet {
+  position: fixed;
+  left: -200vw;
+  top: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.lifestyle-carousel {
   width: min(100%, 920px);
+  overflow: hidden;
+  border: 1px solid rgba(196, 165, 116, 0.22);
+  background: #1a1511;
+}
+
+.lifestyle-track {
+  display: flex;
+  width: max-content;
+  animation: lifestyle-scroll 36s linear infinite;
+}
+
+.lifestyle-carousel:hover .lifestyle-track {
+  animation-play-state: paused;
+}
+
+.lifestyle-slide {
+  position: relative;
+  flex: 0 0 min(88vw, 900px);
+  height: min(56vw, 520px);
+  margin-right: 14px;
+  background-size: cover;
+  background-position: center;
+}
+
+.lifestyle-hang {
+  position: absolute;
+  transform: translateX(-50%);
+  aspect-ratio: 8.3 / 11.7;
+  filter: drop-shadow(0 16px 28px rgba(20, 10, 0, 0.38));
+}
+
+.lifestyle-hang:has([data-orientation="horizontal"]) {
+  aspect-ratio: 11.7 / 8.3;
+}
+
+.lifestyle-art[data-script="vibes"] {
+  --script: var(--font-script-vibes), cursive;
+}
+
+.lifestyle-art[data-script="allura"] {
+  --script: var(--font-script-allura), cursive;
+}
+
+.lifestyle-art[data-script="alex"] {
+  --script: var(--font-script-alex), cursive;
+}
+
+.lifestyle-art[data-script="pinyon"] {
+  --script: var(--font-script-pinyon), cursive;
+}
+
+.lifestyle-art[data-finish="oak"] {
+  padding: 7px;
+  background-color: #cbb089;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(92, 62, 32, 0.16) 0 1px,
+      rgba(255, 236, 204, 0.22) 2px,
+      transparent 3px,
+      rgba(120, 82, 42, 0.12) 5px,
+      transparent 8px
+    ),
+    linear-gradient(180deg, #ddc6a0 0%, #c4a478 48%, #b08958 100%);
+}
+
+.lifestyle-art[data-finish="gold"] {
+  padding: 4px;
+  background: linear-gradient(
+    155deg,
+    #f4e6b8 0%,
+    #d4b36a 28%,
+    #a07a32 52%,
+    #ead08a 78%,
+    #b89040 100%
+  );
+}
+
+.lifestyle-paper {
+  height: 100%;
+  background: #fffcf6;
+  display: flex;
+}
+
+.lifestyle-paper[data-palette="blanc"] {
+  background: #ffffff;
+}
+
+.lifestyle-paper[data-palette="creme"] {
+  background: #fffaf0;
+}
+
+.lifestyle-rule {
+  flex: 1;
+  margin: 9%;
+  border: 0.9px solid #c6a14d;
+  outline: 0.5px solid #c6a14d;
+  outline-offset: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 7% 6% 8%;
+  text-align: center;
+}
+
+.lifestyle-line {
+  margin: 0;
+  width: 100%;
+  font-family: var(--script);
+  font-size: clamp(10px, 2vw, 20px);
+  line-height: 1.28;
+  color: #161616;
+}
+
+.lifestyle-ref {
+  margin: 0.4em 0 0;
+  font-family: var(--roman);
+  font-size: clamp(7px, 1.15vw, 12px);
+  letter-spacing: 0.04em;
+  color: #333;
+}
+
+.lifestyle-label {
+  position: absolute;
+  left: 14px;
+  bottom: 12px;
+  margin: 0;
+  padding: 0.28rem 0.7rem;
+  background: rgba(20, 14, 10, 0.55);
+  color: #f3eadc;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+@keyframes lifestyle-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lifestyle-track {
+    animation: none;
+  }
 }
 
 .room {
@@ -509,6 +667,8 @@ input[type="number"]::-webkit-inner-spin-button {
   }
 
   body:not(.is-paid) .preview-wrap,
+  body:not(.is-paid) .lifestyle-carousel,
+  body:not(.is-paid) .print-sheet,
   body:not(.is-paid) .sheet,
   body:not(.is-paid) .sheet-scale,
   body:not(.is-paid) .room,
@@ -525,11 +685,20 @@ input[type="number"]::-webkit-inner-spin-button {
     color: #333;
   }
 
+  body.is-paid .lifestyle-carousel {
+    display: none !important;
+  }
+
+  body.is-paid .print-sheet {
+    position: static;
+    left: auto;
+    top: auto;
+    opacity: 1;
+    pointer-events: none;
+  }
+
   body.is-paid .app-shell,
-  body.is-paid .preview-wrap,
-  body.is-paid .room,
-  body.is-paid .picture-frame,
-  body.is-paid .preview-frame,
+  body.is-paid .print-sheet,
   body.is-paid .sheet-scale {
     display: block;
     min-height: 0;

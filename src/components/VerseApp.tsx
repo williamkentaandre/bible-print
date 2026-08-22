@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   clampChoice,
   DEFAULT_CHOICE,
@@ -18,6 +18,7 @@ import {
 } from "@/lib/sizes";
 import { printTicket, PRINT_PRICE_LABEL } from "@/lib/print-ticket";
 import type { Bible, VerseChoice } from "@/lib/types";
+import { LifestyleCarousel } from "./LifestyleCarousel";
 import { VerseSheet } from "./VerseSheet";
 
 type DraftPick = {
@@ -43,8 +44,6 @@ export function VerseApp() {
   const [paidTicket, setPaidTicket] = useState<string | null>(null);
   const [payBusy, setPayBusy] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
-  const [scale, setScale] = useState(0.55);
-  const frameRef = useRef<HTMLDivElement>(null);
   const printSize = getPrintSize(sizeId);
 
   useEffect(() => {
@@ -70,21 +69,6 @@ export function VerseApp() {
       cancelled = true;
     };
   }, []);
-
-  useEffect(() => {
-    const frame = frameRef.current;
-    if (!frame) return;
-
-    const updateScale = () => {
-      const sheetWidth = printSize.widthIn * 96;
-      setScale(Math.min(1, frame.clientWidth / sheetWidth));
-    };
-
-    updateScale();
-    const observer = new ResizeObserver(updateScale);
-    observer.observe(frame);
-    return () => observer.disconnect();
-  }, [draft.verse, printSize.widthIn, frameFinish, bible]);
 
   const book = draft.book != null ? bible?.books[draft.book] : undefined;
   const chapterCount = book?.chapters.length ?? 0;
@@ -368,46 +352,14 @@ export function VerseApp() {
             <style>{`
               @media print {
                 @page { size: ${printSize.widthIn}in ${printSize.heightIn}in; margin: 0; }
-                .app-shell,
-                .preview-wrap,
-                .room,
-                .picture-frame,
-                .preview-frame,
-                .sheet-scale {
+                .print-sheet,
+                .print-sheet .sheet-scale {
                   width: ${printSize.widthIn}in !important;
                   height: ${printSize.heightIn}in !important;
                 }
               }
             `}</style>
           ) : null}
-          <p className="app-chrome size-caption">
-            {isPaid
-              ? `${formatSizeLabel(printSize)} · le double filet doré est imprimé, le cadre mural non`
-              : `${formatSizeLabel(printSize)} · aperçu uniquement · impression ${PRINT_PRICE_LABEL}`}
-          </p>
-          <div className="preview-wrap">
-            <div className="room">
-              <div className="picture-frame" data-finish={frameFinish}>
-                <div className="preview-frame" ref={frameRef}>
-                  <div
-                    className="sheet-scale"
-                    style={{
-                      transform: `scale(${scale})`,
-                      height: `${printSize.heightIn * scale}in`,
-                    }}
-                  >
-                    <VerseSheet
-                      key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}`}
-                      text={text}
-                      reference={reference}
-                      verseRef={liveChoice}
-                      size={printSize}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
           <div className="app-chrome preview-actions">
             {isPaid ? (
               <button className="print-button validate-button" type="button" onClick={() => window.print()}>
@@ -420,11 +372,32 @@ export function VerseApp() {
                 disabled={payBusy}
                 onClick={() => void startCheckout()}
               >
-                {payBusy ? "Redirection…" : `Obtenir l’impression — ${PRINT_PRICE_LABEL}`}
+                {payBusy ? "Redirection…" : `Obtenir l'impression - ${PRINT_PRICE_LABEL}`}
               </button>
             )}
           </div>
           {payError ? <p className="app-chrome field-error">{payError}</p> : null}
+          <p className="app-chrome size-caption">
+            {isPaid
+              ? `${formatSizeLabel(printSize)} · le double filet doré est imprimé, le cadre mural non`
+              : `${formatSizeLabel(printSize)} · aperçu dans la maison · impression ${PRINT_PRICE_LABEL}`}
+          </p>
+          <LifestyleCarousel
+            text={text}
+            reference={reference}
+            verseRef={liveChoice}
+            size={printSize}
+            finish={frameFinish}
+          />
+          <div className="print-sheet" aria-hidden="true">
+            <VerseSheet
+              key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}`}
+              text={text}
+              reference={reference}
+              verseRef={liveChoice}
+              size={printSize}
+            />
+          </div>
         </>
       ) : null}
 
