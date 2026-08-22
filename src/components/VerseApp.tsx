@@ -105,9 +105,10 @@ export function VerseApp() {
     [bible, liveChoice],
   );
   const reference = bible && liveChoice ? formatReference(bible.books, liveChoice) : "";
-  const isPaid =
-    Boolean(liveChoice) &&
-    (!PAYWALL_ENABLED || Boolean(paidTicket && ticketUnlocks(paidTicket, liveChoice)));
+  const isPaid = Boolean(
+    liveChoice &&
+      (!PAYWALL_ENABLED || (paidTicket && ticketUnlocks(paidTicket, liveChoice))),
+  );
 
   useEffect(() => {
     document.body.classList.toggle("is-paid", isPaid);
