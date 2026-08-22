@@ -515,20 +515,21 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .lifestyle-scene {
+  --zoom: var(--scene-zoom, 2.2);
   position: absolute;
-  inset: 0;
+  width: calc(100% * var(--zoom));
+  height: calc(100% * var(--zoom));
+  left: calc(var(--zoom-x, 50%) * (1 - var(--zoom)));
+  top: calc(var(--zoom-y, 42%) * (1 - var(--zoom)));
   background-size: cover;
   background-position: center;
-  transform: scale(var(--scene-zoom, 2.2));
-  transform-origin: var(--zoom-x, 50%) var(--zoom-y, 42%);
 }
 
 .lifestyle-hang {
   position: absolute;
-  transform: translateX(-50%) perspective(920px) rotateY(var(--wall-y, 0deg))
+  transform: translateX(-50%) perspective(640px) rotateY(var(--wall-y, 0deg))
     rotateX(var(--wall-x, 0deg));
-  transform-origin: 50% 70%;
-  container-type: inline-size;
+  transform-origin: 50% 55%;
   overflow: visible;
 }
 
@@ -977,7 +978,7 @@ input[type="number"]::-webkit-inner-spin-button {
   }
 
   .lifestyle-scene {
-    transform: scale(var(--scene-zoom-mobile, 1.75));
+    --zoom: var(--scene-zoom-mobile, 1.75);
   }
 
   .lifestyle-carousel,
