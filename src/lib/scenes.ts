@@ -67,11 +67,13 @@ export const LIFESTYLE_SCENES: LifestyleScene[] = [
 
 export function hangStyle(scene: LifestyleScene, size: PrintSize): CSSProperties {
   const widthPct = (size.widthIn * 2.54) / scene.roomWidthCm * 100;
+  const heightPct = widthPct * (size.heightIn / size.widthIn);
   return {
     left: scene.left,
     bottom: scene.bottom,
     width: `${widthPct}%`,
-    aspectRatio: `${size.widthIn} / ${size.heightIn}`,
+    height: 0,
+    paddingBottom: `${heightPct}%`,
     "--wall-y": `${scene.rotateY}deg`,
     "--wall-x": `${scene.rotateX}deg`,
     "--wall-skew": `${scene.skewY}deg`,

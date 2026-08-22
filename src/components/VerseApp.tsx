@@ -175,21 +175,93 @@ export function VerseApp() {
 
   return (
     <div className="app-shell">
-      <header className="app-chrome topbar">
-        <div className="brand">
-          <p className="brand-kicker">Impression</p>
-          <h1>Bible Print</h1>
-        </div>
-        <p className="brand-tagline">
-          Choisissez un verset. L’impression coûte {PRINT_PRICE_LABEL}.
-        </p>
+      <header className="app-chrome site-header">
+        <p className="brand-mark">Bible Print</p>
+        <p className="header-meta">Atelier d’impression</p>
       </header>
 
-      <div
-        className={`app-chrome toolbar picker ${
-          draft.verse != null ? "has-ref" : draft.chapter != null ? "has-chapter" : "book-only"
-        }`}
-      >
+      <section className="app-chrome intro">
+        <h1>Un verset. Une feuille. Chez vous.</h1>
+        <p>
+          Calligraphie soignée, filet doré, prête à encadrer. Vous voyez le rendu dans la pièce.
+          Le fichier d’impression : {PRINT_PRICE_LABEL}.
+        </p>
+      </section>
+
+      {liveChoice ? (
+        <>
+          {isPaid ? (
+            <style>{`
+              @media print {
+                @page { size: ${printSize.widthIn}in ${printSize.heightIn}in; margin: 0; }
+                .print-sheet,
+                .print-sheet .sheet-scale {
+                  width: ${printSize.widthIn}in !important;
+                  height: ${printSize.heightIn}in !important;
+                }
+              }
+            `}</style>
+          ) : null}
+          <div className="app-chrome buy-bar">
+            <div className="buy-copy">
+              <p className="buy-kicker">Votre composition</p>
+              <p className="buy-ref">{reference}</p>
+              <p className="buy-price">
+                {PRINT_PRICE_LABEL} <span>fichier unique, prêt à imprimer</span>
+              </p>
+            </div>
+            {isPaid ? (
+              <button className="print-button validate-button" type="button" onClick={() => window.print()}>
+                Imprimer
+              </button>
+            ) : (
+              <button
+                className="print-button validate-button"
+                type="button"
+                disabled={payBusy}
+                onClick={() => void startCheckout()}
+              >
+                {payBusy ? "Redirection…" : "Obtenir l'impression"}
+              </button>
+            )}
+          </div>
+          {payError ? <p className="app-chrome field-error">{payError}</p> : null}
+        </>
+      ) : null}
+
+      {liveChoice ? (
+        <>
+          <LifestyleCarousel
+            text={text}
+            reference={reference}
+            verseRef={liveChoice}
+            size={printSize}
+            finish={frameFinish}
+          />
+          <p className="app-chrome size-caption">
+            {isPaid
+              ? `${formatSizeLabel(printSize)} · le double filet doré est imprimé, le cadre mural non`
+              : "Aperçu à l’échelle réelle dans la pièce · le cadre d’intérieur n’est pas imprimé"}
+          </p>
+          <div className="print-sheet" aria-hidden="true">
+            <VerseSheet
+              key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}`}
+              text={text}
+              reference={reference}
+              verseRef={liveChoice}
+              size={printSize}
+            />
+          </div>
+        </>
+      ) : null}
+
+      <section className="app-chrome configure">
+        <h2>Personnaliser</h2>
+        <div
+          className={`toolbar picker ${
+            draft.verse != null ? "has-ref" : draft.chapter != null ? "has-chapter" : "book-only"
+          }`}
+        >
         <label className="field field-grow">
           <span>Livre</span>
           <select
@@ -293,7 +365,7 @@ export function VerseApp() {
               <option value={0}>Tout le verset</option>
               {draftSentences.map((sentence, index) => (
                 <option key={`${index}-${sentence}`} value={index + 1}>
-                  {index + 1} — {sentencePreview(sentence)}
+                  {index + 1} - {sentencePreview(sentence)}
                 </option>
               ))}
             </select>
@@ -334,76 +406,29 @@ export function VerseApp() {
             </select>
           </label>
         ) : null}
-      </div>
+        </div>
 
-      {!liveChoice ? (
-        <p className="app-chrome hint">
-          {draft.book == null
-            ? "Commencez par choisir un livre."
-            : draft.chapter == null
-              ? "Choisissez ensuite le chapitre."
-              : "Choisissez ensuite le verset."}
-        </p>
-      ) : null}
-
-      {liveChoice ? (
-        <>
-          {isPaid ? (
-            <style>{`
-              @media print {
-                @page { size: ${printSize.widthIn}in ${printSize.heightIn}in; margin: 0; }
-                .print-sheet,
-                .print-sheet .sheet-scale {
-                  width: ${printSize.widthIn}in !important;
-                  height: ${printSize.heightIn}in !important;
-                }
-              }
-            `}</style>
-          ) : null}
-          <div className="app-chrome preview-actions">
-            {isPaid ? (
-              <button className="print-button validate-button" type="button" onClick={() => window.print()}>
-                Imprimer
-              </button>
-            ) : (
-              <button
-                className="print-button validate-button"
-                type="button"
-                disabled={payBusy}
-                onClick={() => void startCheckout()}
-              >
-                {payBusy ? "Redirection…" : `Obtenir l'impression - ${PRINT_PRICE_LABEL}`}
-              </button>
-            )}
-          </div>
-          {payError ? <p className="app-chrome field-error">{payError}</p> : null}
-          <p className="app-chrome size-caption">
-            {isPaid
-              ? `${formatSizeLabel(printSize)} · le double filet doré est imprimé, le cadre mural non`
-              : `${formatSizeLabel(printSize)} · aperçu dans la maison · impression ${PRINT_PRICE_LABEL}`}
+        {!liveChoice ? (
+          <p className="hint">
+            {draft.book == null
+              ? "Commencez par choisir un livre."
+              : draft.chapter == null
+                ? "Choisissez ensuite le chapitre."
+                : "Choisissez ensuite le verset."}
           </p>
-          <LifestyleCarousel
-            text={text}
-            reference={reference}
-            verseRef={liveChoice}
-            size={printSize}
-            finish={frameFinish}
-          />
-          <div className="print-sheet" aria-hidden="true">
-            <VerseSheet
-              key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}`}
-              text={text}
-              reference={reference}
-              verseRef={liveChoice}
-              size={printSize}
-            />
-          </div>
-        </>
-      ) : null}
+        ) : null}
+      </section>
 
-      <p className="app-chrome footnote">
-        {bible.translation} · {bible.copyright} · impression {PRINT_PRICE_LABEL} par feuille
-      </p>
+      <footer className="app-chrome site-footer">
+        <ul className="trust-row">
+          <li>Paiement sécurisé</li>
+          <li>Un verset, une feuille</li>
+          <li>Louis Segond 1910</li>
+        </ul>
+        <p className="footnote">
+          {bible.translation} · {bible.copyright} · {PRINT_PRICE_LABEL} par feuille
+        </p>
+      </footer>
       <p className="print-denied" aria-hidden="true">
         Impression disponible après paiement ({PRINT_PRICE_LABEL}).
       </p>

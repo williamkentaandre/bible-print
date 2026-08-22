@@ -48,7 +48,7 @@ export function LifestyleCarousel(props: LifestyleCarouselProps) {
   const slides = [...LIFESTYLE_SCENES, ...LIFESTYLE_SCENES];
 
   return (
-    <div className="lifestyle-carousel" aria-label="Aperçus du verset dans un intérieur">
+    <div className="app-chrome lifestyle-carousel" aria-label="Aperçus du verset dans un intérieur">
       <div className="lifestyle-track">
         {slides.map((scene, index) => (
           <figure

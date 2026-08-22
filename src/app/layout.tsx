@@ -42,14 +42,14 @@ const pinyon = Pinyon_Script({
 const ebGaramond = EB_Garamond({
   variable: "--font-roman",
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "500", "600"],
   style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
   title: "Bible Print",
   description:
-    "Choisissez n’importe quel verset de la Bible Louis Segond 1910 et imprimez-le, seul, sur une page A4 stylée.",
+    "Choisissez un verset biblique, voyez-le chez vous, et obtenez un fichier d’impression soigné. 5 € la feuille.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
