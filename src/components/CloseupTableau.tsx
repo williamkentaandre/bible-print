@@ -12,6 +12,7 @@ type CloseupTableauProps = {
   verseRef: VerseRef;
   size: PrintSize;
   finish: FrameFinish;
+  label: string;
 };
 
 export function CloseupTableau({
@@ -20,12 +21,15 @@ export function CloseupTableau({
   verseRef,
   size,
   finish,
+  label,
 }: CloseupTableauProps) {
   return (
     <div
       className="closeup"
+      data-orientation={size.orientation}
       style={{ "--preview-ratio": `${size.widthIn} / ${size.heightIn}` } as CSSProperties}
     >
+      <p className="closeup-label">{label}</p>
       <div className="room">
         <div className="picture-frame" data-finish={finish}>
           <ScaledSheet

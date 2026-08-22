@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import type { PrintSize } from "./sizes";
+import type { Orientation, PrintSize } from "./sizes";
 
 export type FrameFinish = "oak" | "gold";
 
@@ -16,6 +16,7 @@ export type LifestyleScene = {
   rotateY: number;
   rotateX: number;
   zoom: number;
+  orientation: Orientation;
 };
 
 export const LIFESTYLE_SCENES: LifestyleScene[] = [
@@ -29,6 +30,7 @@ export const LIFESTYLE_SCENES: LifestyleScene[] = [
     rotateY: 0,
     rotateX: 2.5,
     zoom: 3.2,
+    orientation: "vertical",
   },
   {
     id: "chambre",
@@ -40,6 +42,7 @@ export const LIFESTYLE_SCENES: LifestyleScene[] = [
     rotateY: -6,
     rotateX: 1.5,
     zoom: 3.15,
+    orientation: "horizontal",
   },
   {
     id: "couloir",
@@ -51,6 +54,7 @@ export const LIFESTYLE_SCENES: LifestyleScene[] = [
     rotateY: 31,
     rotateX: 1.5,
     zoom: 2.95,
+    orientation: "vertical",
   },
   {
     id: "salle",
@@ -62,6 +66,7 @@ export const LIFESTYLE_SCENES: LifestyleScene[] = [
     rotateY: -15,
     rotateX: 1.2,
     zoom: 3.15,
+    orientation: "horizontal",
   },
 ];
 

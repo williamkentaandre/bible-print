@@ -13,6 +13,7 @@ import { sentencePreview, splitSentences } from "@/lib/sentences";
 import {
   DEFAULT_SIZE_ID,
   formatSizeLabel,
+  getOrientedSize,
   getPrintSize,
   PRINT_SIZES,
 } from "@/lib/sizes";
@@ -45,6 +46,8 @@ export function VerseApp() {
   const [payBusy, setPayBusy] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
   const printSize = getPrintSize(sizeId);
+  const verticalSize = getOrientedSize(printSize, "vertical");
+  const horizontalSize = getOrientedSize(printSize, "horizontal");
 
   useEffect(() => {
     let cancelled = false;
@@ -232,35 +235,37 @@ export function VerseApp() {
       {liveChoice ? (
         <>
           <div className="app-chrome showroom">
-            <CloseupTableau
-              text={text}
-              reference={reference}
-              verseRef={liveChoice}
-              size={printSize}
-              finish="gold"
-            />
+            <div className="closeups">
+              <CloseupTableau
+                text={text}
+                reference={reference}
+                verseRef={liveChoice}
+                size={verticalSize}
+                finish="gold"
+                label="Vertical"
+              />
+              <CloseupTableau
+                text={text}
+                reference={reference}
+                verseRef={liveChoice}
+                size={horizontalSize}
+                finish="gold"
+                label="Horizontal"
+              />
+            </div>
             <LifestyleCarousel
               text={text}
               reference={reference}
               verseRef={liveChoice}
-              size={printSize}
+              verticalSize={verticalSize}
+              horizontalSize={horizontalSize}
               finish="gold"
             />
           </div>
           <p className="app-chrome size-caption">
             {isPaid
               ? `${formatSizeLabel(printSize)} · le double filet doré est imprimé, le cadre mural non`
-              : (
-                <>
-                  <span className="caption-wide">
-                    À gauche, le tableau de près · à droite, dans la pièce
-                  </span>
-                  <span className="caption-narrow">
-                    Le tableau de près, puis dans la pièce
-                  </span>
-                  {" · le cadre d’intérieur n’est pas imprimé"}
-                </>
-              )}
+              : "Vertical et horizontal · salon et entrée en portrait, chambre et salle à manger en paysage · le cadre d’intérieur n’est pas imprimé"}
           </p>
           <div className="print-sheet" aria-hidden="true">
             <VerseSheet

@@ -49,6 +49,15 @@ export function getPrintSize(id: string): PrintSize {
   return PRINT_SIZES.find((size) => size.id === id) ?? PRINT_SIZES[0];
 }
 
+export function getOrientedSize(size: PrintSize, orientation: Orientation): PrintSize {
+  if (size.orientation === orientation) return size;
+  return (
+    PRINT_SIZES.find(
+      (item) => item.orientation === orientation && item.metricLabel === size.metricLabel,
+    ) ?? size
+  );
+}
+
 export function formatSizeLabel(size: PrintSize): string {
   const direction = size.orientation === "vertical" ? "Vertical" : "Horizontal";
   return `${size.inchesLabel} — ${size.metricLabel} (${direction})`;

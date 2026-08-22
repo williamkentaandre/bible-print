@@ -9,45 +9,44 @@ type LifestyleCarouselProps = {
   text: string;
   reference: string;
   verseRef: VerseRef;
-  size: PrintSize;
+  verticalSize: PrintSize;
+  horizontalSize: PrintSize;
   finish: FrameFinish;
 };
 
-function LifestyleArt({
+export function LifestyleCarousel({
   text,
   reference,
   verseRef,
-  size,
+  verticalSize,
+  horizontalSize,
   finish,
 }: LifestyleCarouselProps) {
-  return (
-    <div className="lifestyle-art" data-finish={finish} data-orientation={size.orientation}>
-      <ScaledSheet
-        text={text}
-        reference={reference}
-        verseRef={verseRef}
-        size={size}
-      />
-    </div>
-  );
-}
-
-export function LifestyleCarousel(props: LifestyleCarouselProps) {
   const slides = [...LIFESTYLE_SCENES, ...LIFESTYLE_SCENES];
 
   return (
     <div className="app-chrome lifestyle-carousel" aria-label="Aperçus du verset dans un intérieur">
       <div className="lifestyle-track">
-        {slides.map((scene, index) => (
-          <figure key={`${scene.id}-${index}`} className="lifestyle-slide">
-            <div className="lifestyle-scene" style={sceneStyle(scene)}>
-              <div className="lifestyle-hang" data-scene={scene.id} style={hangStyle(scene, props.size)}>
-                <LifestyleArt {...props} />
+        {slides.map((scene, index) => {
+          const size = scene.orientation === "horizontal" ? horizontalSize : verticalSize;
+          return (
+            <figure key={`${scene.id}-${index}`} className="lifestyle-slide">
+              <div className="lifestyle-scene" style={sceneStyle(scene)}>
+                <div className="lifestyle-hang" data-scene={scene.id} style={hangStyle(scene, size)}>
+                  <div className="lifestyle-art" data-finish={finish} data-orientation={size.orientation}>
+                    <ScaledSheet
+                      text={text}
+                      reference={reference}
+                      verseRef={verseRef}
+                      size={size}
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-            <figcaption className="lifestyle-label">{scene.label}</figcaption>
-          </figure>
-        ))}
+              <figcaption className="lifestyle-label">{scene.label}</figcaption>
+            </figure>
+          );
+        })}
       </div>
     </div>
   );

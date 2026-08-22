@@ -467,20 +467,45 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .showroom {
   display: grid;
-  grid-template-columns: minmax(220px, 34%) minmax(0, 1fr);
+  grid-template-columns: minmax(240px, 38%) minmax(0, 1fr);
   gap: 0.85rem;
   align-items: stretch;
   min-height: min(58vw, 520px);
 }
 
+.closeups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  min-width: 0;
+}
+
 .closeup {
   min-width: 0;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.closeup-label {
+  margin: 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 .closeup .room {
-  height: 100%;
-  min-height: min(58vw, 520px);
+  flex: 1;
+  min-height: 0;
+}
+
+.closeup[data-orientation="vertical"] .picture-frame {
+  width: min(100%, 220px);
+}
+
+.closeup[data-orientation="horizontal"] .picture-frame {
+  width: min(100%, 320px);
 }
 
 .lifestyle-carousel {
@@ -960,10 +985,21 @@ input[type="number"]::-webkit-inner-spin-button {
     gap: 0.7rem;
   }
 
+  .closeups {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
   .closeup,
   .closeup .room {
     height: auto;
     min-height: 0;
+  }
+
+  .closeup[data-orientation="vertical"] .picture-frame,
+  .closeup[data-orientation="horizontal"] .picture-frame {
+    width: 100%;
   }
 
   .closeup .room {
