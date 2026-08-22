@@ -4,6 +4,7 @@ import { breakVerseLines, pickComposition, quoteLines } from "@/lib/composition"
 import { hangStyle, LIFESTYLE_SCENES, type FrameFinish } from "@/lib/scenes";
 import type { PrintSize } from "@/lib/sizes";
 import type { VerseRef } from "@/lib/types";
+import { useFitText } from "@/lib/use-fit-text";
 
 type LifestyleCarouselProps = {
   text: string;
@@ -22,6 +23,7 @@ function LifestyleArt({
 }: LifestyleCarouselProps) {
   const composition = pickComposition(verseRef, text, 1, size.orientation);
   const lines = quoteLines(breakVerseLines(text, size.orientation));
+  const verseEl = useFitText(lines.join("\n"), 4, 64);
 
   return (
     <div
@@ -32,11 +34,15 @@ function LifestyleArt({
     >
       <div className="lifestyle-paper" data-palette={composition.palette}>
         <div className="lifestyle-rule">
-            {lines.map((line, index) => (
-              <p key={`${index}-${line}`} className="lifestyle-line">
-                {line}
-              </p>
-            ))}
+          <div className="verse-stage">
+            <div ref={verseEl} className="verse-text">
+              {lines.map((line, index) => (
+                <div key={`${index}-${line}`} className="verse-line">
+                  {line}
+                </div>
+              ))}
+            </div>
+          </div>
           <p className="lifestyle-ref">{reference}</p>
         </div>
       </div>

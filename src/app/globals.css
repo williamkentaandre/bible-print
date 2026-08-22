@@ -585,33 +585,40 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .lifestyle-rule {
   flex: 1;
-  margin: 8%;
+  min-height: 0;
+  min-width: 0;
+  margin: 7%;
   border: 0.6px solid #c6a14d;
   outline: 0.4px solid #c6a14d;
   outline-offset: 2px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  padding: 6% 5% 7%;
+  align-items: stretch;
+  padding: 5% 4% 4%;
   text-align: center;
-  min-width: 0;
   overflow: hidden;
 }
 
-.lifestyle-line {
-  margin: 0;
+.lifestyle-rule .verse-stage {
+  flex: 1;
+  min-height: 0;
   width: 100%;
-  font-family: var(--script);
-  font-size: 8.4cqi;
-  line-height: 1.22;
+  padding: 0;
+}
+
+.lifestyle-rule .verse-text {
   color: #161616;
 }
 
+.lifestyle-rule .verse-line {
+  white-space: nowrap;
+}
+
 .lifestyle-ref {
-  margin: 0.35em 0 0;
+  flex: 0 0 auto;
+  margin: 0.4em 0 0;
   font-family: var(--roman);
-  font-size: 4.2cqi;
+  font-size: max(5px, 3.4cqi);
   letter-spacing: 0.03em;
   color: #333;
 }
