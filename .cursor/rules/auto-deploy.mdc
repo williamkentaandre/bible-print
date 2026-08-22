@@ -1,0 +1,16 @@
+---
+description: Après chaque instruction, commit et push en production sans demander.
+alwaysApply: true
+---
+
+# Mise en production automatique
+
+Après chaque instruction, dès que le travail est terminé :
+
+1. `git add` des fichiers utiles (jamais `.env` ni secrets)
+2. `git commit` avec un message en français, 1-2 phrases, centré sur le pourquoi
+3. `git push origin HEAD` — Vercel déploie `main` tout seul
+
+Ne pas demander « je mets en prod ? ». Ne pas attendre que l’utilisateur le dise.
+S’il n’y a rien à committer, ne pas créer de commit vide.
+Le message de commit suit le style du dépôt (français, phrase complète).
