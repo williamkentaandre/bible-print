@@ -89,10 +89,7 @@ export function PdfPack({ text, reference, verseRef }: PdfPackProps) {
       >
         {busy
           ? `Préparation ${step}/${PRINT_FORMAT_COUNT}…`
-          : `Télécharger les ${PRINT_FORMAT_COUNT} PDF`}
-      </button>
-      <button className="ghost-button" type="button" disabled={busy} onClick={() => window.print()}>
-        Imprimer ce format
+          : `Télécharger`}
       </button>
       {error ? <p className="field-error">{error}</p> : null}
       <div className="pdf-capture" aria-hidden="true">

@@ -19,7 +19,6 @@ import {
 } from "@/lib/sizes";
 import {
   PAYWALL_ENABLED,
-  printTicket,
   ticketUnlocks,
   PRINT_OFFER_LABEL,
   PRINT_PRICE_LABEL,
@@ -50,7 +49,6 @@ export function VerseApp() {
   const [draft, setDraft] = useState<DraftPick>(DEFAULT_PICK);
   const [sizeId, setSizeId] = useState(DEFAULT_SIZE_ID);
   const [paidTicket, setPaidTicket] = useState<string | null>(null);
-  const [payBusy, setPayBusy] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
   const printSize = getPrintSize(sizeId);
   const verticalSize = getOrientedSize(printSize, "vertical");
@@ -107,7 +105,6 @@ export function VerseApp() {
     [bible, liveChoice],
   );
   const reference = bible && liveChoice ? formatReference(bible.books, liveChoice) : "";
-  const ticket = liveChoice ? printTicket(liveChoice) : null;
   const isPaid =
     Boolean(liveChoice) &&
     (!PAYWALL_ENABLED || Boolean(paidTicket && ticketUnlocks(paidTicket, liveChoice)));
@@ -143,27 +140,6 @@ export function VerseApp() {
       cancelled = true;
     };
   }, []);
-
-  const startCheckout = async () => {
-    if (!ticket || !reference) return;
-    setPayBusy(true);
-    setPayError(null);
-    try {
-      const response = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ticket, reference }),
-      });
-      const data = (await response.json()) as { url?: string; error?: string };
-      if (!response.ok || !data.url) {
-        throw new Error(data.error || "Paiement indisponible.");
-      }
-      window.location.href = data.url;
-    } catch (cause) {
-      setPayError(cause instanceof Error ? cause.message : "Paiement indisponible.");
-      setPayBusy(false);
-    }
-  };
 
   const updateDraft = (next: DraftPick) => {
     setDraft(next);
@@ -223,18 +199,7 @@ export function VerseApp() {
                 <span>un paiement, {PRINT_OFFER_LABEL}, prêts à imprimer</span>
               </p>
             </div>
-            {isPaid ? (
-              <PdfPack text={text} reference={reference} verseRef={liveChoice} />
-            ) : (
-              <button
-                className="print-button validate-button"
-                type="button"
-                disabled={payBusy}
-                onClick={() => void startCheckout()}
-              >
-                {payBusy ? "Redirection…" : "Obtenir l'impression"}
-              </button>
-            )}
+            <PdfPack text={text} reference={reference} verseRef={liveChoice} />
           </div>
           {payError ? <p className="app-chrome field-error">{payError}</p> : null}
         </>
