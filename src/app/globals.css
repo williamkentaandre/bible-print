@@ -648,11 +648,12 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .lifestyle-ref {
   flex: 0 0 auto;
-  margin: 0.4em 0 0;
+  margin: 0.25em 0 0;
   font-family: var(--roman);
-  font-size: max(5px, 3.4cqi);
+  font-weight: 500;
   letter-spacing: 0.03em;
   color: #333;
+  line-height: 1.15;
 }
 
 .lifestyle-label {

@@ -25,7 +25,12 @@ function inkBounds(element: HTMLElement): DOMRect | null {
   return new DOMRect(left, top, right - left, bottom - top);
 }
 
-export function useFitText(text: string, min: number, max: number) {
+export function useFitText(
+  text: string,
+  min: number,
+  max: number,
+  onFit?: (size: number) => void,
+) {
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -67,6 +72,7 @@ export function useFitText(text: string, min: number, max: number) {
       }
 
       element.style.fontSize = `${best}px`;
+      onFit?.(best);
     };
 
     const start = () => {
@@ -86,7 +92,7 @@ export function useFitText(text: string, min: number, max: number) {
       cancelled = true;
       observer.disconnect();
     };
-  }, [text, min, max]);
+  }, [text, min, max, onFit]);
 
   return ref;
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback, useState } from "react";
 import { breakVerseLines, pickComposition, quoteLines } from "@/lib/composition";
 import { hangStyle, LIFESTYLE_SCENES, sceneStyle, type FrameFinish } from "@/lib/scenes";
 import type { PrintSize } from "@/lib/sizes";
@@ -23,7 +24,11 @@ function LifestyleArt({
 }: LifestyleCarouselProps) {
   const composition = pickComposition(verseRef, text, 1, size.orientation);
   const lines = quoteLines(breakVerseLines(text, size.orientation));
-  const verseEl = useFitText(lines.join("\n"), 4, 64);
+  const [refSize, setRefSize] = useState(3);
+  const onFit = useCallback((sizePx: number) => {
+    setRefSize(Math.max(2.2, sizePx * 0.2));
+  }, []);
+  const verseEl = useFitText(lines.join("\n"), 4, 64, onFit);
 
   return (
     <div
@@ -43,7 +48,9 @@ function LifestyleArt({
               ))}
             </div>
           </div>
-          <p className="lifestyle-ref">{reference}</p>
+          <p className="lifestyle-ref" style={{ fontSize: `${refSize}px` }}>
+            {reference}
+          </p>
         </div>
       </div>
     </div>
