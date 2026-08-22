@@ -401,6 +401,54 @@ export function VerseApp() {
         ) : null}
       </section>
 
+      <section className="app-chrome faq" aria-label="Questions fréquentes">
+        <h2>Questions</h2>
+        <div className="faq-list">
+          <details className="faq-item">
+            <summary>Vous envoyez une affiche ?</summary>
+            <p>
+              Non. Rien n’est imprimé ni expédié. Vous téléchargez les PDF, puis vous
+              faites tirer le format choisi chez un imprimeur.
+            </p>
+          </details>
+          <details className="faq-item">
+            <summary>Comment je l’imprime ?</summary>
+            <p>
+              Chez n’importe quel imprimeur : boutique photo, copyshop, grand magasin.
+              Donnez le PDF du format que vous voulez accrocher.
+            </p>
+          </details>
+          <details className="faq-item">
+            <summary>Et le cadre ?</summary>
+            <p>
+              Les tailles sont courantes. Une fois la feuille tirée, un cadre aux bonnes
+              dimensions se trouve facilement.
+            </p>
+          </details>
+          <details className="faq-item">
+            <summary>Que contient le fichier à 5 € ?</summary>
+            <p>
+              Les 12 PDF de votre verset : toutes les tailles, vertical et horizontal.
+              Un paiement, tous les formats.
+            </p>
+          </details>
+          <details className="faq-item">
+            <summary>Le texte est-il fidèle ?</summary>
+            <p>
+              Oui. Louis Segond 1910, domaine public. Vous pouvez aussi choisir
+              n’importe quel autre verset avant de télécharger.
+            </p>
+          </details>
+          <details className="faq-item">
+            <summary>Le cadre des photos est-il fourni ?</summary>
+            <p>
+              Non. Le double filet doré est dans le PDF. Le cadre mural des photos
+              d’intérieur n’est qu’un aperçu, pour voir le verset chez vous.
+            </p>
+          </details>
+        </div>
+      </section>
+
       <footer className="app-chrome site-footer">
         <ul className="trust-row">
           <li>Paiement sécurisé</li>
