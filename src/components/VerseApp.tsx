@@ -41,7 +41,6 @@ export function VerseApp() {
   const [error, setError] = useState<string | null>(null);
   const [draft, setDraft] = useState<DraftPick>(DEFAULT_PICK);
   const [sizeId, setSizeId] = useState(DEFAULT_SIZE_ID);
-  const [frameFinish, setFrameFinish] = useState<"oak" | "gold">("oak");
   const [paidTicket, setPaidTicket] = useState<string | null>(null);
   const [payBusy, setPayBusy] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
@@ -238,14 +237,14 @@ export function VerseApp() {
               reference={reference}
               verseRef={liveChoice}
               size={printSize}
-              finish={frameFinish}
+              finish="gold"
             />
             <LifestyleCarousel
               text={text}
               reference={reference}
               verseRef={liveChoice}
               size={printSize}
-              finish={frameFinish}
+              finish="gold"
             />
           </div>
           <p className="app-chrome size-caption">
@@ -400,19 +399,6 @@ export function VerseApp() {
                   </option>
                 ))}
               </optgroup>
-            </select>
-          </label>
-        ) : null}
-
-        {verseReady ? (
-          <label className="field field-wide">
-            <span>Cadre d’aperçu</span>
-            <select
-              value={frameFinish}
-              onChange={(event) => setFrameFinish(event.target.value as "oak" | "gold")}
-            >
-              <option value="oak">Chêne clair</option>
-              <option value="gold">Or fin</option>
             </select>
           </label>
         ) : null}
