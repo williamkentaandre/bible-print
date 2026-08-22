@@ -200,83 +200,6 @@ export function VerseApp() {
         </p>
       </section>
 
-      {liveChoice ? (
-        <>
-          {isPaid ? (
-            <style>{`
-              @media print {
-                @page { size: ${printSize.widthIn}in ${printSize.heightIn}in; margin: 0; }
-                .print-sheet,
-                .print-sheet .sheet-scale {
-                  width: ${printSize.widthIn}in !important;
-                  height: ${printSize.heightIn}in !important;
-                }
-              }
-            `}</style>
-          ) : null}
-          <div className="app-chrome buy-bar">
-            <div className="buy-copy">
-              <p className="buy-kicker">Votre composition</p>
-              <p className="buy-ref">{reference}</p>
-              <p className="buy-price">
-                <span>{PRINT_FULFILLMENT_LABEL}</span>
-              </p>
-            </div>
-            {isPaid ? (
-              <PdfPack text={text} reference={reference} verseRef={liveChoice} />
-            ) : (
-              <EmailGate ticket={printTicket(liveChoice)} reference={reference} />
-            )}
-          </div>
-          {payError ? <p className="app-chrome field-error">{payError}</p> : null}
-        </>
-      ) : null}
-
-      {liveChoice ? (
-        <>
-          <div className="app-chrome showroom">
-            <div className="closeups">
-              <CloseupTableau
-                text={text}
-                reference={reference}
-                verseRef={liveChoice}
-                size={verticalSize}
-                finish="gold"
-                label="Vertical"
-              />
-              <CloseupTableau
-                text={text}
-                reference={reference}
-                verseRef={liveChoice}
-                size={horizontalSize}
-                finish="gold"
-                label="Horizontal"
-              />
-            </div>
-            <LifestyleCarousel
-              text={text}
-              reference={reference}
-              verseRef={liveChoice}
-              verticalSize={verticalSize}
-              horizontalSize={horizontalSize}
-              finish="gold"
-            />
-          </div>
-          <p className="app-chrome size-caption">
-            Vertical et horizontal, tels qu’ils peuvent habiter le salon et la chambre.
-          </p>
-          <div className="print-sheet" aria-hidden="true">
-            <VerseSheet
-              key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}`}
-              text={text}
-              reference={reference}
-              verseRef={liveChoice}
-              size={printSize}
-            />
-          </div>
-        </>
-      ) : null}
-
       <section className="app-chrome configure">
         <h2>Personnaliser</h2>
         <div
@@ -427,6 +350,83 @@ export function VerseApp() {
           </p>
         ) : null}
       </section>
+
+      {liveChoice ? (
+        <>
+          {isPaid ? (
+            <style>{`
+              @media print {
+                @page { size: ${printSize.widthIn}in ${printSize.heightIn}in; margin: 0; }
+                .print-sheet,
+                .print-sheet .sheet-scale {
+                  width: ${printSize.widthIn}in !important;
+                  height: ${printSize.heightIn}in !important;
+                }
+              }
+            `}</style>
+          ) : null}
+          <div className="app-chrome buy-bar">
+            <div className="buy-copy">
+              <p className="buy-kicker">Votre composition</p>
+              <p className="buy-ref">{reference}</p>
+              <p className="buy-price">
+                <span>{PRINT_FULFILLMENT_LABEL}</span>
+              </p>
+            </div>
+            {isPaid ? (
+              <PdfPack text={text} reference={reference} verseRef={liveChoice} />
+            ) : (
+              <EmailGate ticket={printTicket(liveChoice)} reference={reference} />
+            )}
+          </div>
+          {payError ? <p className="app-chrome field-error">{payError}</p> : null}
+        </>
+      ) : null}
+
+      {liveChoice ? (
+        <>
+          <div className="app-chrome showroom">
+            <div className="closeups">
+              <CloseupTableau
+                text={text}
+                reference={reference}
+                verseRef={liveChoice}
+                size={verticalSize}
+                finish="gold"
+                label="Vertical"
+              />
+              <CloseupTableau
+                text={text}
+                reference={reference}
+                verseRef={liveChoice}
+                size={horizontalSize}
+                finish="gold"
+                label="Horizontal"
+              />
+            </div>
+            <LifestyleCarousel
+              text={text}
+              reference={reference}
+              verseRef={liveChoice}
+              verticalSize={verticalSize}
+              horizontalSize={horizontalSize}
+              finish="gold"
+            />
+          </div>
+          <p className="app-chrome size-caption">
+            Vertical et horizontal, tels qu’ils peuvent habiter le salon et la chambre.
+          </p>
+          <div className="print-sheet" aria-hidden="true">
+            <VerseSheet
+              key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}`}
+              text={text}
+              reference={reference}
+              verseRef={liveChoice}
+              size={printSize}
+            />
+          </div>
+        </>
+      ) : null}
 
       <section className="app-chrome faq" aria-label="Questions fréquentes">
         <h2>Questions</h2>
