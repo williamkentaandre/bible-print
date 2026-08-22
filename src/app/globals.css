@@ -271,11 +271,62 @@ input[type="number"]::-webkit-inner-spin-button {
   width: min(100%, 920px);
 }
 
+.room {
+  display: flex;
+  justify-content: center;
+  padding: 2.4rem 1.2rem 2.8rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24), transparent 28%),
+    #e9e4db;
+  border: 1px solid rgba(196, 165, 116, 0.18);
+}
+
+.picture-frame {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.picture-frame[data-finish="oak"] {
+  padding: 15px;
+  background-color: #cbb089;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(92, 62, 32, 0.16) 0 1px,
+      rgba(255, 236, 204, 0.22) 2px,
+      transparent 3px,
+      rgba(120, 82, 42, 0.12) 5px,
+      transparent 8px
+    ),
+    linear-gradient(180deg, #ddc6a0 0%, #c4a478 48%, #b08958 100%);
+  box-shadow:
+    0 22px 48px rgba(40, 24, 10, 0.28),
+    inset 0 0 0 1px rgba(255, 236, 210, 0.35),
+    inset 0 0 0 4px rgba(78, 48, 22, 0.28);
+}
+
+.picture-frame[data-finish="gold"] {
+  padding: 7px;
+  background:
+    linear-gradient(
+      155deg,
+      #f4e6b8 0%,
+      #d4b36a 28%,
+      #a07a32 52%,
+      #ead08a 78%,
+      #b89040 100%
+    );
+  box-shadow:
+    0 18px 40px rgba(40, 24, 10, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 0 0 1px rgba(90, 62, 20, 0.35);
+}
+
 .preview-frame {
   width: 100%;
   overflow: hidden;
-  border-radius: 2px;
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.38);
+  background: #fff;
 }
 
 .sheet-scale {
@@ -287,54 +338,11 @@ input[type="number"]::-webkit-inner-spin-button {
   --ink: #111111;
   --muted: #4a4a4a;
   --foil: #c6a14d;
-  position: relative;
   width: var(--sheet-width, 8.3in);
   height: var(--sheet-height, 11.7in);
-  background-color: #8a5330;
-  background-image:
-    repeating-linear-gradient(
-      88deg,
-      rgba(28, 14, 6, 0.34) 0px,
-      rgba(28, 14, 6, 0.08) 1px,
-      rgba(210, 160, 95, 0.2) 2px,
-      rgba(120, 70, 32, 0.12) 4px,
-      rgba(250, 220, 170, 0.16) 5px,
-      rgba(70, 38, 16, 0.24) 7px,
-      rgba(160, 100, 48, 0.1) 11px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      transparent 0 20px,
-      rgba(255, 230, 190, 0.07) 21px,
-      transparent 24px
-    ),
-    linear-gradient(
-      145deg,
-      #4a2814 0%,
-      #a86b38 28%,
-      #6e3d1c 52%,
-      #c48a48 74%,
-      #3e2010 100%
-    );
+  background: var(--paper);
   color: var(--ink);
-  padding: 13mm;
-  box-shadow:
-    inset 0 0 0 1.5px rgba(255, 226, 180, 0.3),
-    inset 0 0 0 6px rgba(42, 20, 8, 0.52),
-    inset 0 0 0 8px rgba(196, 150, 88, 0.24),
-    inset 0 10px 18px rgba(255, 220, 170, 0.12),
-    inset 0 -14px 22px rgba(20, 8, 0, 0.38);
-}
-
-.sheet::after {
-  content: "";
-  position: absolute;
-  inset: 9.6mm;
-  border: 1.35mm solid rgba(48, 24, 10, 0.55);
-  box-shadow:
-    0 0 0 0.55mm rgba(210, 176, 112, 0.5),
-    inset 0 0 0 0.55mm rgba(198, 161, 77, 0.85);
-  pointer-events: none;
+  padding: 16mm 18mm 18mm;
 }
 
 .sheet[data-palette="blanc"] {
@@ -370,11 +378,10 @@ input[type="number"]::-webkit-inner-spin-button {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  background: var(--paper);
-  border: 1.6px solid var(--foil);
-  outline: 0.7px solid rgba(232, 208, 150, 0.95);
-  outline-offset: 2.2mm;
-  padding: 6mm 7mm 7mm;
+  border: 1.15px solid var(--foil);
+  outline: 0.55px solid var(--foil);
+  outline-offset: 3.4mm;
+  padding: 8mm 9mm 9mm;
 }
 
 .verse-stage {
@@ -422,16 +429,12 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .sheet[data-orientation="horizontal"] {
-  padding: 10mm 11mm;
-}
-
-.sheet[data-orientation="horizontal"]::after {
-  inset: 7.4mm;
+  padding: 12mm 16mm 13mm;
 }
 
 .sheet[data-orientation="horizontal"] .sheet-frame {
-  padding: 4.5mm 7mm 5.5mm;
-  outline-offset: 1.8mm;
+  padding: 6mm 8mm 7mm;
+  outline-offset: 2.6mm;
 }
 
 .sheet[data-orientation="horizontal"] .verse-stage {
@@ -494,6 +497,8 @@ input[type="number"]::-webkit-inner-spin-button {
 
   .app-shell,
   .preview-wrap,
+  .room,
+  .picture-frame,
   .preview-frame,
   .sheet-scale {
     display: block;
@@ -504,6 +509,8 @@ input[type="number"]::-webkit-inner-spin-button {
     overflow: hidden;
     border-radius: 0;
     box-shadow: none;
+    background: transparent !important;
+    border: 0;
   }
 
   .sheet {

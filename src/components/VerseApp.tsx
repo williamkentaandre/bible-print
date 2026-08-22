@@ -32,6 +32,7 @@ export function VerseApp() {
   const [error, setError] = useState<string | null>(null);
   const [draft, setDraft] = useState<DraftPick>(EMPTY_PICK);
   const [sizeId, setSizeId] = useState(DEFAULT_SIZE_ID);
+  const [frameFinish, setFrameFinish] = useState<"oak" | "gold">("oak");
   const [scale, setScale] = useState(0.55);
   const frameRef = useRef<HTMLDivElement>(null);
   const printSize = getPrintSize(sizeId);
@@ -67,7 +68,7 @@ export function VerseApp() {
     const observer = new ResizeObserver(updateScale);
     observer.observe(frame);
     return () => observer.disconnect();
-  }, [draft.verse, printSize.widthIn]);
+  }, [draft.verse, printSize.widthIn, frameFinish]);
 
   const book = draft.book != null ? bible?.books[draft.book] : undefined;
   const chapterCount = book?.chapters.length ?? 0;
@@ -265,6 +266,19 @@ export function VerseApp() {
             </select>
           </label>
         ) : null}
+
+        {verseReady ? (
+          <label className="field field-wide">
+            <span>Cadre d’aperçu</span>
+            <select
+              value={frameFinish}
+              onChange={(event) => setFrameFinish(event.target.value as "oak" | "gold")}
+            >
+              <option value="oak">Chêne clair</option>
+              <option value="gold">Or fin</option>
+            </select>
+          </label>
+        ) : null}
       </div>
 
       {!liveChoice ? (
@@ -284,6 +298,8 @@ export function VerseApp() {
               @page { size: ${printSize.widthIn}in ${printSize.heightIn}in; margin: 0; }
               .app-shell,
               .preview-wrap,
+              .room,
+              .picture-frame,
               .preview-frame,
               .sheet-scale {
                 width: ${printSize.widthIn}in !important;
@@ -291,23 +307,29 @@ export function VerseApp() {
               }
             }
           `}</style>
-          <p className="app-chrome size-caption">{formatSizeLabel(printSize)}</p>
+          <p className="app-chrome size-caption">
+            {formatSizeLabel(printSize)} · aperçu encadré, le cadre n’est pas imprimé
+          </p>
           <div className="preview-wrap">
-            <div className="preview-frame" ref={frameRef}>
-              <div
-                className="sheet-scale"
-                style={{
-                  transform: `scale(${scale})`,
-                  height: `${printSize.heightIn * scale}in`,
-                }}
-              >
-                <VerseSheet
-                  key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}`}
-                  text={text}
-                  reference={reference}
-                  verseRef={liveChoice}
-                  size={printSize}
-                />
+            <div className="room">
+              <div className="picture-frame" data-finish={frameFinish}>
+                <div className="preview-frame" ref={frameRef}>
+                  <div
+                    className="sheet-scale"
+                    style={{
+                      transform: `scale(${scale})`,
+                      height: `${printSize.heightIn * scale}in`,
+                    }}
+                  >
+                    <VerseSheet
+                      key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}`}
+                      text={text}
+                      reference={reference}
+                      verseRef={liveChoice}
+                      size={printSize}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>

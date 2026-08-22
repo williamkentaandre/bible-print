@@ -58,8 +58,8 @@ const PX_PER_MM = 96 / 25.4;
 
 export function innerVerseBox(size: PrintSize): { width: number; height: number } {
   const landscape = size.orientation === "horizontal";
-  const padXmm = landscape ? 28 : 26;
-  const padYmm = landscape ? 34 : 42;
+  const padXmm = landscape ? 26 : 24;
+  const padYmm = landscape ? 32 : 38;
   return {
     width: Math.max(120, size.widthIn * 96 - padXmm * 2 * PX_PER_MM),
     height: Math.max(120, size.heightIn * 96 - padYmm * PX_PER_MM),
