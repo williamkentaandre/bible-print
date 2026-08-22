@@ -17,7 +17,13 @@ import {
   getPrintSize,
   PRINT_SIZES,
 } from "@/lib/sizes";
-import { printTicket, ticketUnlocks, PRINT_OFFER_LABEL, PRINT_PRICE_LABEL } from "@/lib/print-ticket";
+import {
+  PAYWALL_ENABLED,
+  printTicket,
+  ticketUnlocks,
+  PRINT_OFFER_LABEL,
+  PRINT_PRICE_LABEL,
+} from "@/lib/print-ticket";
 import type { Bible, VerseChoice } from "@/lib/types";
 import { CloseupTableau } from "./CloseupTableau";
 import { LifestyleCarousel } from "./LifestyleCarousel";
@@ -102,7 +108,9 @@ export function VerseApp() {
   );
   const reference = bible && liveChoice ? formatReference(bible.books, liveChoice) : "";
   const ticket = liveChoice ? printTicket(liveChoice) : null;
-  const isPaid = Boolean(liveChoice && paidTicket && ticketUnlocks(paidTicket, liveChoice));
+  const isPaid =
+    Boolean(liveChoice) &&
+    (!PAYWALL_ENABLED || Boolean(paidTicket && ticketUnlocks(paidTicket, liveChoice)));
 
   useEffect(() => {
     document.body.classList.toggle("is-paid", isPaid);
