@@ -1,8 +1,12 @@
 import { ImageResponse } from "next/og";
+import { breakVerseLines, quoteLines } from "@/lib/composition";
 
 export const alt = "Bible Deco — Moi et ma maison, nous servirons l’Éternel. Josué 24:15";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+const VERSE = "Moi et ma maison, nous servirons l'Éternel.";
+const LINES = quoteLines(breakVerseLines(VERSE, "vertical"));
 
 async function loadFont(family: string, weight: number) {
   const css = await fetch(
@@ -44,10 +48,10 @@ export default async function Image() {
           style={{
             display: "flex",
             flexDirection: "column",
-            width: 372,
-            height: 520,
+            width: 400,
+            height: 540,
             background: "#ffffff",
-            padding: "22px 24px 20px",
+            padding: "20px 22px 18px",
           }}
         >
           <div
@@ -57,7 +61,7 @@ export default async function Image() {
               width: "100%",
               height: "100%",
               border: "1.5px solid #c6a14d",
-              padding: 7,
+              padding: 6,
             }}
           >
             <div
@@ -67,7 +71,7 @@ export default async function Image() {
                 width: "100%",
                 height: "100%",
                 border: "1px solid #c6a14d",
-                padding: "28px 22px 16px",
+                padding: "36px 20px 18px",
               }}
             >
               <div
@@ -76,61 +80,41 @@ export default async function Image() {
                   flexDirection: "column",
                   flexGrow: 1,
                   alignItems: "center",
-                  justifyContent: "center",
+                  justifyContent: "space-around",
                 }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    fontFamily: "Script",
-                    fontSize: 40,
-                    color: "#111111",
-                    textAlign: "center",
-                    lineHeight: 1.28,
-                  }}
-                >
-                  Moi et ma maison,
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    fontFamily: "Script",
-                    fontSize: 40,
-                    color: "#111111",
-                    textAlign: "center",
-                    lineHeight: 1.28,
-                    marginTop: 8,
-                  }}
-                >
-                  nous servirons l’Éternel.
-                </div>
+                {LINES.map((line) => (
+                  <div
+                    key={line}
+                    style={{
+                      display: "flex",
+                      fontFamily: "Script",
+                      fontSize: 38,
+                      color: "#111111",
+                      textAlign: "center",
+                      lineHeight: 1.32,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {line}
+                  </div>
+                ))}
               </div>
               <div
                 style={{
                   display: "flex",
                   justifyContent: "center",
+                  marginTop: 8,
                   fontFamily: "Roman",
-                  fontSize: 18,
+                  fontSize: 16,
                   color: "#111111",
-                  letterSpacing: 0.4,
+                  letterSpacing: 0.3,
                 }}
               >
                 Josué 24:15
               </div>
             </div>
           </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            marginTop: 18,
-            fontFamily: "Roman",
-            fontSize: 20,
-            letterSpacing: 4,
-            color: "#8a6a3e",
-          }}
-        >
-          Bible Deco
         </div>
       </div>
     ),
