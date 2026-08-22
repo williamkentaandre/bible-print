@@ -1,8 +1,8 @@
 import { clampSentence, getPrintedText as pickSentence } from "./sentences";
 import type { Bible, Book, VerseChoice, VerseRef } from "./types";
 
-export const DEFAULT_REF: VerseRef = { book: 42, chapter: 3, verse: 16 };
-export const DEFAULT_CHOICE: VerseChoice = { ...DEFAULT_REF, sentence: 0 };
+export const DEFAULT_REF: VerseRef = { book: 5, chapter: 24, verse: 15 };
+export const DEFAULT_CHOICE: VerseChoice = { ...DEFAULT_REF, sentence: 2 };
 
 export async function loadBible(): Promise<Bible> {
   const response = await fetch("/data/lsg.json");
