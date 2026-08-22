@@ -23,8 +23,8 @@ export default function Page() {
       </p>
       <h2>2. Prix et paiement</h2>
       <p>
-        Le prix est de {LEGAL.price} par verset, toutes taxes comprises selon le régime
-        applicable ({LEGAL.tva}). Le paiement est unique, par carte, via Stripe.
+        Le prix est de {LEGAL.price} par verset, TTC (TVA {LEGAL.tva}). Le paiement est
+        unique, par carte, via Stripe.
         La commande n’est confirmée qu’après encaissement.
       </p>
       <h2>3. Commande</h2>

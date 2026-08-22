@@ -10,9 +10,6 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <LegalChrome title="Mentions légales">
-      <p className="legal-note">
-        Les mentions entre crochets doivent être remplies avant d’encaisser.
-      </p>
       <h2>Éditeur</h2>
       <p>
         {LEGAL.siteName} — {LEGAL.siteUrl}
@@ -23,9 +20,13 @@ export default function Page() {
         <br />
         {LEGAL.editorAddress}
         <br />
+        SIREN : {LEGAL.siren}
+        <br />
         SIRET : {LEGAL.siret}
         <br />
-        {LEGAL.tva}
+        {LEGAL.rcs}
+        <br />
+        N° TVA : {LEGAL.tva}
       </p>
       <h2>Directeur de la publication</h2>
       <p>{LEGAL.publicationDirector}</p>
