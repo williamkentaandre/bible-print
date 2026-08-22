@@ -61,6 +61,14 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     type: "website",
     siteName: "Bible Deco",
+    images: [
+      {
+        url: "/opengraph-image?v=premium",
+        width: 1200,
+        height: 630,
+        alt: "Bible Deco — le verset que vous aimez, accroché chez vous.",
+      },
+    ],
   },
 };
 

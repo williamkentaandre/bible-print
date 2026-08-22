@@ -1,33 +1,11 @@
 import { ImageResponse } from "next/og";
-import { breakVerseLines, quoteLines } from "@/lib/composition";
 
-export const alt =
-  "Bible Deco — Josué 24:15 et Jean 3:16, accrochés au mur";
+export const alt = "Bible Deco — le verset que vous aimez, accroché chez vous.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+export const id = "premium-salon-v1";
 
-const JOSHUA = "Moi et ma maison, nous servirons l'Éternel.";
-const JOHN =
-  "Car Dieu a tant aimé le monde qu'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais qu'il ait la vie éternelle.";
-
-type Tableau = {
-  lines: string[];
-  reference: string;
-  fontSize: number;
-};
-
-const TABLEAUX: Tableau[] = [
-  {
-    lines: quoteLines(breakVerseLines(JOSHUA, "vertical")),
-    reference: "Josué 24:15",
-    fontSize: 44,
-  },
-  {
-    lines: quoteLines(breakVerseLines(JOHN, "vertical")),
-    reference: "Jean 3:16",
-    fontSize: 22,
-  },
-];
+const LINES = ["« Moi et ma maison,", "nous servirons", "l'Éternel. »"];
 
 async function loadFont(family: string, weight: number) {
   const css = await fetch(
@@ -61,32 +39,69 @@ export default async function Image() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: 36,
-          background: "linear-gradient(180deg, #e7dfd2 0%, #d8cfc0 55%, #cfc4b3 100%)",
+          background: "linear-gradient(180deg, #3d342a 0%, #241e18 52%, #161310 100%)",
         }}
       >
-        {TABLEAUX.map((tableau) => (
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: 1200,
+            height: 320,
+            display: "flex",
+            background:
+              "radial-gradient(ellipse at 50% 0%, rgba(212, 179, 106, 0.28) 0%, transparent 72%)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            top: 42,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           <div
-            key={tableau.reference}
             style={{
               display: "flex",
-              flexDirection: "column",
-              width: 390,
-              height: 546,
-              background:
-                "linear-gradient(155deg, #f4e6b8 0%, #d4b36a 28%, #a07a32 52%, #ead08a 78%, #b89040 100%)",
-              padding: 11,
-              boxShadow: "0 18px 36px rgba(42, 28, 14, 0.22)",
+              fontFamily: "Roman",
+              fontSize: 18,
+              letterSpacing: 11,
+              color: "#e4c57a",
+            }}
+          >
+            BIBLE DECO
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            width: 980,
+            height: 468,
+            padding: 13,
+            background:
+              "linear-gradient(155deg, #f6e8bc 0%, #d4b36a 26%, #8f6c2c 50%, #ead08a 76%, #b89040 100%)",
+            boxShadow: "0 30px 70px rgba(0, 0, 0, 0.5)",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              height: "100%",
+              background: "linear-gradient(180deg, #fffdf8 0%, #fffcf6 58%, #f4ead6 100%)",
+              padding: 14,
             }}
           >
             <div
               style={{
                 display: "flex",
-                flexDirection: "column",
                 width: "100%",
                 height: "100%",
-                background: "#ffffff",
-                padding: "10px 12px 8px",
+                border: "1.5px solid #c6a14d",
+                padding: 5,
               }}
             >
               <div
@@ -95,62 +110,53 @@ export default async function Image() {
                   flexDirection: "column",
                   width: "100%",
                   height: "100%",
-                  border: "1.5px solid #c6a14d",
-                  padding: 4,
+                  border: "1px solid #c6a14d",
+                  padding: "28px 40px 22px",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <div
                   style={{
                     display: "flex",
                     flexDirection: "column",
+                    flexGrow: 1,
                     width: "100%",
-                    height: "100%",
-                    border: "1px solid #c6a14d",
-                    padding: "10px 12px 8px",
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      flexGrow: 1,
-                      alignItems: "center",
-                      justifyContent: "space-around",
-                    }}
-                  >
-                    {tableau.lines.map((line) => (
-                      <div
-                        key={line}
-                        style={{
-                          display: "flex",
-                          fontFamily: "Script",
-                          fontSize: tableau.fontSize,
-                          color: "#111111",
-                          textAlign: "center",
-                          lineHeight: 1.2,
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {line}
-                      </div>
-                    ))}
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      fontFamily: "Roman",
-                      fontSize: 15,
-                      color: "#111111",
-                    }}
-                  >
-                    {tableau.reference}
-                  </div>
+                  {LINES.map((line) => (
+                    <div
+                      key={line}
+                      style={{
+                        display: "flex",
+                        fontFamily: "Script",
+                        fontSize: 62,
+                        color: "#1a1612",
+                        lineHeight: 1.18,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {line}
+                    </div>
+                  ))}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    fontFamily: "Roman",
+                    fontSize: 20,
+                    letterSpacing: 1,
+                    color: "#2a241c",
+                  }}
+                >
+                  Josué 24:15
                 </div>
               </div>
             </div>
           </div>
-        ))}
+        </div>
       </div>
     ),
     {
