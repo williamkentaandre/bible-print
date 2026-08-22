@@ -18,7 +18,6 @@ import {
   PRINT_SIZES,
 } from "@/lib/sizes";
 import {
-  CONTACT_EMAIL,
   PAYWALL_ENABLED,
   printTicket,
   ticketUnlocks,
@@ -30,6 +29,7 @@ import { CloseupTableau } from "./CloseupTableau";
 import { EmailGate } from "./EmailGate";
 import { LifestyleCarousel } from "./LifestyleCarousel";
 import { PdfPack } from "./PdfPack";
+import { SiteFooter } from "./SiteFooter";
 import { VerseSheet } from "./VerseSheet";
 
 type DraftPick = {
@@ -485,17 +485,7 @@ export function VerseApp() {
         </div>
       </section>
 
-      <footer className="app-chrome site-footer">
-        <ul className="trust-row">
-          <li>Paiement sécurisé</li>
-          <li>Calligraphie soignée</li>
-          <li>Louis Segond 1910</li>
-        </ul>
-        <p className="footnote">
-          {bible.translation} · {bible.copyright} ·{" "}
-          <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
-        </p>
-      </footer>
+      <SiteFooter extra={`${bible.translation} · ${bible.copyright}`} />
       <p className="print-denied" aria-hidden="true">
         Impression disponible après paiement ({PRINT_PRICE_LABEL}).
       </p>

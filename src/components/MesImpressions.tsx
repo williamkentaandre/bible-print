@@ -10,6 +10,7 @@ import {
 import { CONTACT_EMAIL, parseTicket } from "@/lib/print-ticket";
 import type { Bible } from "@/lib/types";
 import { PdfPack } from "./PdfPack";
+import { SiteFooter } from "./SiteFooter";
 
 type OrderRecord = {
   id: string;
@@ -173,11 +174,7 @@ export function MesImpressions() {
         </article>
       ))}
 
-      <footer className="app-chrome site-footer">
-        <p className="footnote">
-          Une question ? <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
-        </p>
-      </footer>
+      <SiteFooter extra={`Une question ? ${CONTACT_EMAIL}`} />
     </div>
   );
 }
