@@ -1,11 +1,11 @@
 "use client";
 
-import type { CSSProperties } from "react";
 import type { BackgroundId } from "@/lib/backgrounds";
 import { hangStyle, sceneStyle, type FrameFinish, type LifestyleScene } from "@/lib/scenes";
 import type { PrintSize } from "@/lib/sizes";
 import type { VerseRef } from "@/lib/types";
 import { ScaledSheet } from "./ScaledSheet";
+import { StudioExportSheet } from "./StudioExportSheet";
 
 type StudioPinProps = {
   mode: "scene" | "sheet";
@@ -37,23 +37,12 @@ export function StudioPin({
       <div className="studio-pin-art">
         {mode === "sheet" ? (
           <div className="studio-sheet-board" data-palette={palette}>
-            <div
-              className="studio-sheet-fit"
-              style={
-                {
-                  aspectRatio: `${size.widthIn} / ${size.heightIn}`,
-                  "--sheet-ratio": String(size.widthIn / size.heightIn),
-                } as CSSProperties
-              }
-            >
-              <ScaledSheet
-                text={text}
-                reference={reference}
-                verseRef={verseRef}
-                size={size}
-                palette={palette}
-              />
-            </div>
+            <StudioExportSheet
+              text={text}
+              reference={reference}
+              verseRef={verseRef}
+              palette={palette}
+            />
           </div>
         ) : (
           <div className="lifestyle-slide studio-pin-photo">

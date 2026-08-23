@@ -181,13 +181,8 @@
 .studio-sheet-board {
   flex: 1;
   min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 7%;
   overflow: hidden;
   background: #fffcf6;
-  container-type: size;
 }
 
 .studio-sheet-board[data-palette="blanc"] {
@@ -222,10 +217,163 @@
   background: #1a1814;
 }
 
-.studio-sheet-fit {
-  width: min(100cqw, calc(100cqh * var(--sheet-ratio, 0.71)));
-  max-height: 100cqh;
+.studio-export-pin {
+  width: 1000px;
+  height: 1500px;
+  display: flex;
+  flex-direction: column;
+  background: #fffcf6;
+}
+
+.studio-export-pin .studio-pin-credit {
+  height: 72px;
+  box-sizing: border-box;
+}
+
+.studio-sheet-board .studio-export-sheet {
+  width: 100%;
+  height: 100%;
+}
+
+.studio-export-sheet {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 6.5%;
+  background-color: var(--paper, #fffcf6);
+  background-image: var(--paper-image, none);
+  color: var(--ink, #16120e);
+  container-type: size;
+}
+
+.studio-export-sheet[data-script="vibes"] {
+  --script: var(--font-script-vibes), cursive;
+}
+
+.studio-export-sheet[data-script="allura"] {
+  --script: var(--font-script-allura), cursive;
+}
+
+.studio-export-sheet[data-script="alex"] {
+  --script: var(--font-script-alex), cursive;
+}
+
+.studio-export-sheet[data-script="pinyon"] {
+  --script: var(--font-script-pinyon), cursive;
+}
+
+.studio-export-sheet[data-palette="blanc"] {
+  --paper: #ffffff;
+  --ink: #111111;
+  --foil: #c6a14d;
+  --paper-image: none;
+}
+
+.studio-export-sheet[data-palette="ivoire"] {
+  --paper: #fffcf6;
+  --ink: #16120e;
+  --foil: #c6a14d;
+  --paper-image: linear-gradient(180deg, #fffdf8 0%, #fffcf6 55%, #f7f0e4 100%);
+}
+
+.studio-export-sheet[data-palette="creme"] {
+  --paper: #fffaf0;
+  --ink: #1a1612;
+  --foil: #c6a14d;
+  --paper-image: linear-gradient(180deg, #fffdf6 0%, #fff4dc 100%);
+}
+
+.studio-export-sheet[data-palette="parchemin"] {
+  --paper: #f0dfb8;
+  --ink: #2a2116;
+  --foil: #b58a3c;
+  --paper-image:
+    radial-gradient(ellipse at 18% 12%, rgba(255, 248, 230, 0.7), transparent 46%),
+    radial-gradient(ellipse at 86% 88%, rgba(150, 108, 58, 0.16), transparent 42%),
+    linear-gradient(168deg, #f7ebc8 0%, #ead4a4 48%, #e2c48a 100%);
+}
+
+.studio-export-sheet[data-palette="lin"] {
+  --paper: #efe4cf;
+  --ink: #231c14;
+  --foil: #b8924a;
+  --paper-image:
+    repeating-linear-gradient(0deg, rgba(120, 96, 64, 0.055) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(90deg, rgba(120, 96, 64, 0.04) 0 1px, transparent 1px 5px),
+    linear-gradient(180deg, #f6ecda 0%, #e7d7b8 100%);
+}
+
+.studio-export-sheet[data-palette="champagne"] {
+  --paper: #f3e2b4;
+  --ink: #2a2112;
+  --foil: #b48a2e;
+  --paper-image:
+    radial-gradient(ellipse at 30% 18%, rgba(255, 246, 214, 0.85), transparent 52%),
+    linear-gradient(158deg, #f8ebc4 0%, #e8c878 54%, #f0d59a 100%);
+}
+
+.studio-export-sheet[data-palette="sauge"] {
+  --paper: #dfe4d6;
+  --ink: #1c2218;
+  --foil: #a48b4a;
+  --paper-image:
+    radial-gradient(ellipse at 72% 12%, rgba(255, 255, 248, 0.42), transparent 48%),
+    linear-gradient(180deg, #e8ecdf 0%, #c9d2be 100%);
+}
+
+.studio-export-sheet[data-palette="encre"] {
+  --paper: #1a1814;
+  --ink: #f3ead8;
+  --foil: #d4b36a;
+  --paper-image: radial-gradient(ellipse at 50% 28%, #2c281f 0%, #141210 72%);
+}
+
+.studio-export-frame {
+  flex: 1;
+  min-height: 0;
+  box-sizing: border-box;
+  border: 2px solid var(--foil, #c6a14d);
+  padding: 2.6%;
+  display: flex;
+}
+
+.studio-export-inner {
+  flex: 1;
+  min-height: 0;
+  box-sizing: border-box;
+  border: 2px solid var(--foil, #c6a14d);
+  display: flex;
+  flex-direction: column;
+  padding: 7% 8% 6%;
+}
+
+.studio-export-stage {
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
+  display: flex;
+}
+
+.studio-export-sheet .verse-text {
+  width: 100%;
+  height: 100%;
+}
+
+.studio-export-footer {
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  padding-top: 4.5%;
+  text-align: center;
+}
+
+.studio-export-ref {
+  margin: 0;
+  font-family: var(--roman);
+  font-weight: 500;
+  font-size: clamp(16px, 4.2cqi, 28px);
+  letter-spacing: 0.04em;
+  color: var(--ink, #16120e);
 }
 
 .studio-pin-credit {
@@ -266,12 +414,15 @@
 
 .studio-sheet-capture {
   position: fixed;
-  left: 0;
+  left: -12000px;
   top: 0;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  opacity: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  opacity: 1;
   pointer-events: none;
   z-index: -1;
 }

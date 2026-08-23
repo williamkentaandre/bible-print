@@ -4,7 +4,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { FondPicker } from "@/components/FondPicker";
 import { StudioPin } from "@/components/StudioPin";
-import { VerseSheet } from "@/components/VerseSheet";
+import {
+  PIN_CREDIT_H,
+  PIN_H,
+  PIN_W,
+  printExportSize,
+  StudioExportSheet,
+} from "@/components/StudioExportSheet";
 import { getBackground, DEFAULT_BACKGROUND, type BackgroundId } from "@/lib/backgrounds";
 import {
   clampChoice,
@@ -33,10 +39,8 @@ type DraftPick = {
   sentence: number;
 };
 
-const PIN_WIDTH = 1000;
-const PIN_HEIGHT = 1500;
-const PIN_OUT_W = PIN_WIDTH * 2;
-const PIN_OUT_H = PIN_HEIGHT * 2;
+const PIN_WIDTH = PIN_W;
+const PIN_HEIGHT = PIN_H;
 const ZOOM_MIN = 0.5;
 const ZOOM_MAX = 1.75;
 const ZOOM_STEP = 0.15;
@@ -45,49 +49,25 @@ function wait(ms: number) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
 }
 
-function revealSheetCapture(doc: Document) {
-  const capture = doc.querySelector(".studio-sheet-capture");
-  if (!(capture instanceof HTMLElement)) return;
-  capture.style.width = "auto";
-  capture.style.height = "auto";
-  capture.style.overflow = "visible";
-  capture.style.opacity = "1";
-  capture.style.contain = "none";
-}
-
-function composeSheetPin(
-  sheet: HTMLCanvasElement,
-  paper: string,
-  withCredit: boolean,
-): HTMLCanvasElement {
-  const pin = document.createElement("canvas");
-  pin.width = PIN_OUT_W;
-  pin.height = PIN_OUT_H;
-  const ctx = pin.getContext("2d");
-  if (!ctx) throw new Error("Canvas indisponible.");
-  ctx.fillStyle = paper;
-  ctx.fillRect(0, 0, PIN_OUT_W, PIN_OUT_H);
-
-  const creditH = withCredit ? 120 : 0;
-  const padX = Math.round(PIN_OUT_W * 0.08);
-  const padY = Math.round(PIN_OUT_H * 0.06);
-  const maxW = PIN_OUT_W - padX * 2;
-  const maxH = PIN_OUT_H - padY * 2 - creditH;
-  const fit = Math.min(maxW / sheet.width, maxH / sheet.height);
-  const width = sheet.width * fit;
-  const height = sheet.height * fit;
-  const x = (PIN_OUT_W - width) / 2;
-  const y = padY + (maxH - height) / 2;
-  ctx.drawImage(sheet, x, y, width, height);
-
-  if (withCredit) {
-    ctx.fillStyle = "#2a241c";
-    ctx.font = '500 42px "EB Garamond", Palatino, serif';
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("bibledeco.com", PIN_OUT_W / 2, PIN_OUT_H - creditH / 2);
+async function rasterize(element: HTMLElement, backgroundColor: string) {
+  if (document.fonts?.ready) await document.fonts.ready;
+  await wait(60);
+  await new Promise((resolve) => requestAnimationFrame(() => resolve(null)));
+  for (let attempt = 0; attempt < 25; attempt += 1) {
+    const verse = element.querySelector(".verse-text");
+    if (verse instanceof HTMLElement && parseFloat(verse.style.fontSize) > 8) break;
+    await wait(40);
   }
-  return pin;
+  await wait(180);
+  const { default: html2canvas } = await import("html2canvas");
+  return html2canvas(element, {
+    scale: 2,
+    width: element.offsetWidth,
+    height: element.offsetHeight,
+    backgroundColor,
+    useCORS: true,
+    logging: false,
+  });
 }
 
 function clampZoom(value: number) {
@@ -139,12 +119,16 @@ export function PinStudio() {
   const [busy, setBusy] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const captureRef = useRef<HTMLDivElement>(null);
+  const exportPinRef = useRef<HTMLDivElement>(null);
+  const printCardRef = useRef<HTMLDivElement>(null);
   const printSize = getPrintSize(sizeId);
   const scene = LIFESTYLE_SCENES.find((item) => item.id === sceneId) ?? LIFESTYLE_SCENES[0];
   const framedSize = getOrientedSize(printSize, scene.orientation);
   const sheetSize = getOrientedSize(printSize, "vertical");
   const pinSize = mode === "sheet" ? sheetSize : framedSize;
   const zoom = zoomByScene[scene.id] ?? 1;
+  const printPx = printExportSize(pinSize);
+  const exportSheetH = credit ? PIN_H - PIN_CREDIT_H : PIN_H;
 
   useEffect(() => {
     let cancelled = false;
@@ -200,32 +184,20 @@ export function PinStudio() {
   const reference = bible && liveChoice ? formatReference(bible.books, liveChoice) : "";
 
   const captureCanvas = async (kind: "scene" | "sheet" = mode) => {
-    if (document.fonts?.ready) await document.fonts.ready;
-    await wait(80);
-    await new Promise((resolve) => requestAnimationFrame(() => resolve(null)));
-    const sheetNode = document.querySelector(".studio-sheet-capture .sheet");
-    if (!(sheetNode instanceof HTMLElement)) {
-      throw new Error("Feuille introuvable.");
-    }
-    await wait(320);
-
-    const { default: html2canvas } = await import("html2canvas");
     const paper = getBackground(palette).capture;
-    const sheet = await html2canvas(sheetNode, {
-      scale: 2,
-      backgroundColor: paper,
-      useCORS: true,
-      logging: false,
-      onclone: revealSheetCapture,
-    });
-
     if (kind === "sheet") {
-      return composeSheetPin(sheet, paper, credit);
+      const pin = exportPinRef.current;
+      if (!pin) throw new Error("Épingle introuvable.");
+      return rasterize(pin, paper);
     }
 
+    const card = printCardRef.current;
     const root = captureRef.current;
-    if (!root) throw new Error("Aperçu introuvable.");
+    if (!card || !root) throw new Error("Aperçu introuvable.");
+    const sheet = await rasterize(card, paper);
     const sheetUrl = sheet.toDataURL("image/png");
+    const { default: html2canvas } = await import("html2canvas");
+    await wait(80);
     return html2canvas(root, {
       scale: 2,
       width: PIN_WIDTH,
@@ -629,14 +601,32 @@ export function PinStudio() {
       {liveChoice ? (
         <>
           <div className="studio-sheet-capture" aria-hidden="true">
-            <VerseSheet
-              key={`${pinSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}-${palette}`}
-              text={text}
-              reference={reference}
-              verseRef={liveChoice}
-              size={pinSize}
-              palette={palette}
-            />
+            <div
+              ref={exportPinRef}
+              className="studio-export-pin"
+              data-palette={palette}
+              style={{ background: getBackground(palette).capture }}
+            >
+              <StudioExportSheet
+                text={text}
+                reference={reference}
+                verseRef={liveChoice}
+                palette={palette}
+                width={PIN_W}
+                height={exportSheetH}
+              />
+              {credit ? <p className="studio-pin-credit">bibledeco.com</p> : null}
+            </div>
+            <div ref={printCardRef}>
+              <StudioExportSheet
+                text={text}
+                reference={reference}
+                verseRef={liveChoice}
+                palette={palette}
+                width={printPx.width}
+                height={printPx.height}
+              />
+            </div>
           </div>
           <div className="studio-capture" aria-hidden="true">
             <div ref={captureRef}>
