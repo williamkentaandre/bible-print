@@ -77,7 +77,6 @@ input[type="number"]::-webkit-inner-spin-button {
 .account-email,
 .order-card,
 .site-footer,
-.size-caption,
 .field-error,
 .hint {
   width: min(100%, 1080px);
@@ -1182,17 +1181,6 @@ html.is-capturing-pdf body {
   text-overflow: ellipsis;
 }
 
-.size-caption {
-  margin: 0;
-  font-size: 0.8rem;
-  color: var(--muted);
-  text-align: center;
-}
-
-  .caption-narrow {
-  display: none;
-}
-
 .atelier {
   display: grid;
   grid-template-columns: 1fr;
@@ -1804,19 +1792,6 @@ html.is-capturing-pdf body {
 
   .fond-swatch {
     font-size: 0.7rem;
-  }
-
-  .size-caption {
-    font-size: 0.92rem;
-    color: #4f4940;
-  }
-
-  .caption-wide {
-    display: none;
-  }
-
-  .caption-narrow {
-    display: inline;
   }
 
   .toolbar.has-ref {

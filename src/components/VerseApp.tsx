@@ -476,7 +476,6 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
             `}</style>
           ) : null}
           {payError ? <p className="app-chrome field-error">{payError}</p> : null}
-          <p className="app-chrome size-caption">{copy.sizeCaption}</p>
           <div className="print-sheet" aria-hidden="true">
             <VerseSheet
               key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}-${palette}`}

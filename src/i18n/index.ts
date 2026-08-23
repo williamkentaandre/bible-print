@@ -50,7 +50,6 @@ export type AppCopy = {
   composition: string;
   fulfillment: string;
   offer: string;
-  sizeCaption: string;
   faqTitle: string;
   faqLabel: string;
   faq: { q: string; a: string }[];
@@ -192,7 +191,6 @@ const fr: AppCopy = {
   fulfillment:
     "12 PDF, toutes tailles. Vous faites tirer le format choisi chez un imprimeur, le cadre se trouve ensuite.",
   offer: "12 PDF, toutes tailles",
-  sizeCaption: "Tel qu’il peut habiter le salon et la chambre.",
   faqTitle: "Questions",
   faqLabel: "Questions fréquentes",
   faq: [
@@ -420,7 +418,6 @@ const en: AppCopy = {
   fulfillment:
     "12 PDFs, every size. You print the format you want at a shop, then find a frame.",
   offer: "12 PDFs, every size",
-  sizeCaption: "As it might live in the living room and the bedroom.",
   faqTitle: "Questions",
   faqLabel: "Frequently asked questions",
   faq: [
