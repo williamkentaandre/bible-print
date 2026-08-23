@@ -23,6 +23,8 @@ export type AppCopy = {
   printsNav: string;
   backHome: string;
   introTitle: string;
+  introQuote: string;
+  introCite: string;
   introLead: string;
   customize: string;
   book: string;
@@ -143,7 +145,10 @@ const fr: AppCopy = {
   printsNav: "Mes impressions",
   backHome: "Retour à l’atelier",
   introTitle: "Le verset que vous aimez, accroché chez vous.",
-  introLead: "Calligraphie soignée, filet doré. Vous voyez déjà le rendu dans la pièce.",
+  introQuote: "Tu les écriras sur les poteaux de ta maison et sur tes portes.",
+  introCite: "Deutéronome 6:9",
+  introLead:
+    "N’importe quel verset de la Bible. Calligraphié, chez vous — pour que la Parole habite la maison, et l’âme.",
   customize: "Personnaliser",
   book: "Livre",
   chooseBook: "Choisir un livre",
@@ -168,6 +173,10 @@ const fr: AppCopy = {
   faqTitle: "Questions",
   faqLabel: "Questions fréquentes",
   faq: [
+    {
+      q: "N’importe quel verset ?",
+      a: "Oui. Toute la Bible, de la Genèse à l’Apocalypse. Celui que vous accrochez habite la maison — et l’âme.",
+    },
     {
       q: "Recevrai-je une affiche ?",
       a: "Non. Rien n’est imprimé ni expédié. Vous téléchargez les PDF, puis vous faites tirer le format choisi chez un imprimeur.",
@@ -306,7 +315,10 @@ const en: AppCopy = {
   printsNav: "My prints",
   backHome: "Back to the studio",
   introTitle: "The verse you love, on your wall.",
-  introLead: "Fine calligraphy, a gold fillet. You already see it in the room.",
+  introQuote: "And thou shalt write them upon the posts of thy house, and on thy gates.",
+  introCite: "Deuteronomy 6:9",
+  introLead:
+    "Any verse in the Bible. Calligraphed, in your home — so the Word lives in the house, and in the soul.",
   customize: "Customise",
   book: "Book",
   chooseBook: "Choose a book",
@@ -331,6 +343,10 @@ const en: AppCopy = {
   faqTitle: "Questions",
   faqLabel: "Frequently asked questions",
   faq: [
+    {
+      q: "Any verse at all?",
+      a: "Yes. The whole Bible, from Genesis to Revelation. The verse you hang lives in the house — and in the soul.",
+    },
     {
       q: "Will I receive a poster?",
       a: "No. Nothing is printed or posted. You download the PDFs, then have the format you want printed locally.",

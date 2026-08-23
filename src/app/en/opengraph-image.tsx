@@ -3,9 +3,9 @@ import { ImageResponse } from "next/og";
 export const alt = "Bible Deco — the verse you love, on your wall.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const id = "premium-salon-en-v1";
+export const id = "premium-deut-en-v1";
 
-const LINES = ["“As for me and my house,", "we will serve", "the Lord.”"];
+const LINES = ["“Write them upon the posts", "of thy house,", "and on thy gates.”"];
 
 async function loadFont(family: string, weight: number) {
   const css = await fetch(
@@ -151,7 +151,7 @@ export default async function Image() {
                     color: "#2a241c",
                   }}
                 >
-                  Joshua 24:15
+                  Deuteronomy 6:9
                 </div>
               </div>
             </div>

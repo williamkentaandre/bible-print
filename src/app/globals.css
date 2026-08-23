@@ -146,6 +146,33 @@ a.brand-mark {
   color: var(--muted);
 }
 
+.intro-verse {
+  margin: 1.15rem auto 0;
+  max-width: 34rem;
+  padding: 0;
+  border: 0;
+}
+
+.intro-verse p {
+  margin: 0;
+  font-family: var(--roman);
+  font-style: italic;
+  font-size: clamp(1.12rem, 2.4vw, 1.35rem);
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.intro-verse cite {
+  display: block;
+  margin: 0.45rem 0 0;
+  font-family: var(--ui);
+  font-style: normal;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
 .buy-bar {
   display: flex;
   align-items: center;

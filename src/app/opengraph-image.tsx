@@ -3,9 +3,9 @@ import { ImageResponse } from "next/og";
 export const alt = "Bible Deco — le verset que vous aimez, accroché chez vous.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const id = "premium-salon-v1";
+export const id = "premium-deut-v1";
 
-const LINES = ["« Moi et ma maison,", "nous servirons", "l'Éternel. »"];
+const LINES = ["« Tu les écriras", "sur les poteaux de ta maison", "et sur tes portes. »"];
 
 async function loadFont(family: string, weight: number) {
   const css = await fetch(
@@ -151,7 +151,7 @@ export default async function Image() {
                     color: "#2a241c",
                   }}
                 >
-                  Josué 24:15
+                  Deutéronome 6:9
                 </div>
               </div>
             </div>

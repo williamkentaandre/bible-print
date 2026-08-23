@@ -204,6 +204,10 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
 
       <section className="app-chrome intro">
         <h1>{copy.introTitle}</h1>
+        <blockquote className="intro-verse">
+          <p>{copy.introQuote}</p>
+          <cite>{copy.introCite}</cite>
+        </blockquote>
         <p>{copy.introLead}</p>
       </section>
 
