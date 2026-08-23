@@ -380,6 +380,7 @@ const en: AppCopy = {
   legalTerms: "Terms",
   legalPrivacy: "Privacy",
   fondLabel: "Background",
+  fondChange: "Change background",
   fondClassical: "Classic",
   fondOriginal: "Original",
   fondNames: {

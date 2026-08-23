@@ -14,9 +14,16 @@ type FondPickerProps = {
 
 export function FondPicker({ value, onChange, locale = "fr" }: FondPickerProps) {
   const copy = getCopy(locale);
+  const currentName = copy.fondNames[value] ?? value;
+
   return (
-    <div className="fond-picker">
-      <p className="fond-picker-label">{copy.fondLabel}</p>
+    <details className="fond-picker">
+      <summary className="fond-picker-summary">
+        <span className="fond-chip fond-chip-mini" data-palette={value} />
+        <span>
+          {copy.fondLabel} · {currentName}
+        </span>
+      </summary>
       <div className="fond-groups">
         <FondGroup
           title={copy.fondClassical}
@@ -33,7 +40,7 @@ export function FondPicker({ value, onChange, locale = "fr" }: FondPickerProps) 
           locale={locale}
         />
       </div>
-    </div>
+    </details>
   );
 }
 
