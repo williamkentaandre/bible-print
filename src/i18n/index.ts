@@ -165,7 +165,7 @@ const fr: AppCopy = {
   introQuote: "Tu les écriras sur les poteaux de ta maison et sur tes portes.",
   introCite: "Deutéronome 6:9",
   introLead:
-    "N’importe quel verset de la Bible. Calligraphié, chez vous - pour que la Parole habite la maison.",
+    "N’importe quel verset de la Bible. Calligraphié chez vous, pour que la Parole habite la maison.",
   customize: "Votre verset",
   pickPath: "Livre, puis chapitre, puis verset.",
   book: "Livre",
@@ -285,7 +285,7 @@ const fr: AppCopy = {
   emailPlaceholder: "vous@email.fr",
   continue: "Continuer",
   emailHint: "Pour recevoir vos fichiers si vous téléchargez.",
-  packLead: "Vous recevrez 12 PDF - chaque taille en vertical et en horizontal :",
+  packLead: "Vous recevrez 12 PDF, chaque taille en vertical et en horizontal :",
   payDownload: "Payer et télécharger",
   wait: "Un instant…",
   payHint: "Paiement unique, puis les PDF dans Mes impressions.",
