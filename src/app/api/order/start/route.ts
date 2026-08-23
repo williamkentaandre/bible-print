@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCopy, parseLocale } from "@/i18n";
+import { saveContact } from "@/lib/contacts";
 import { sendLoginEmail } from "@/lib/mail";
 import { createCheckout, hasPaidTicket, listPaidOrders } from "@/lib/orders";
 import { isPrintTicket } from "@/lib/print-ticket";
@@ -29,6 +30,15 @@ export async function POST(request: NextRequest) {
 
   const origin = request.headers.get("origin") || request.nextUrl.origin;
   const intent = body.intent === "login" ? "login" : "buy";
+  const ticket = body.ticket?.trim() ?? "";
+  const reference = body.reference?.trim() || copy.api.verseFallback;
+
+  await saveContact({
+    email,
+    locale,
+    source: intent === "login" ? "login" : "checkout",
+    reference,
+  });
 
   if (intent === "login") {
     const orders = await listPaidOrders(email);
@@ -42,8 +52,6 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  const ticket = body.ticket?.trim() ?? "";
-  const reference = body.reference?.trim() || copy.api.verseFallback;
   if (!isPrintTicket(ticket)) {
     return NextResponse.json({ error: copy.api.badSelection }, { status: 400 });
   }

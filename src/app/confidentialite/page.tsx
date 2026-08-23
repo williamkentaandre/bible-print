@@ -17,7 +17,7 @@ export default function Page() {
       </p>
       <h2>Données collectées</h2>
       <ul>
-        <li>Email, pour créer l’espace Mes impressions et envoyer le lien de téléchargement.</li>
+        <li>Email, pour créer l’espace Mes impressions, envoyer le lien de téléchargement, et conserver un contact si nous devons vous écrire au sujet du service.</li>
         <li>Verset commandé et historique d’achat, pour retrouver vos fichiers.</li>
         <li>
           Données de paiement traitées par Stripe. {LEGAL.siteName} ne stocke pas votre
@@ -28,14 +28,15 @@ export default function Page() {
       <h2>Finalités et base légale</h2>
       <p>
         Exécution du contrat (livrer les PDF, accès à Mes impressions), intérêt légitime
-        (sécurité du compte, prévention de la fraude) et obligation légale (facturation,
-        comptabilité). Aucune prospection n’est envoyée sans votre accord.
+        (sécurité du compte, prévention de la fraude, relation client) et obligation légale
+        (facturation, comptabilité). La liste n’est pas vendue. Vous pouvez demander
+        l’effacement de votre email à tout moment.
       </p>
       <h2>Destinataires</h2>
       <ul>
         <li>Stripe, pour le paiement.</li>
         <li>Resend, pour l’envoi des emails transactionnels.</li>
-        <li>{LEGAL.hostName}, pour l’hébergement du site.</li>
+        <li>{LEGAL.hostName}, pour l’hébergement du site et de la base de contacts.</li>
       </ul>
       <p>
         Ces prestataires peuvent être situés hors de l’Union européenne. Des garanties
@@ -43,9 +44,10 @@ export default function Page() {
       </p>
       <h2>Durée de conservation</h2>
       <p>
-        L’email et les commandes sont conservés le temps nécessaire au service et aux
-        obligations comptables (en principe 10 ans pour les pièces de vente). Les
-        cookies de session durent au plus 30 jours.
+        L’email est conservé dans une base interne pour le service et la relation
+        client, jusqu’à une demande de suppression. Les commandes le sont aussi le
+        temps des obligations comptables (en principe 10 ans pour les pièces de vente).
+        Les cookies de session durent au plus 30 jours.
       </p>
       <h2>Cookies</h2>
       <p>

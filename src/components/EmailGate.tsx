@@ -64,6 +64,12 @@ export function EmailGate({ ticket, reference, locale = "fr" }: EmailGateProps) 
           setError(null);
           setMessage(null);
           setStep("pay");
+          void fetch("/api/contacts", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, locale, reference, source: "lead" }),
+            keepalive: true,
+          });
           return;
         }
         void submit("buy");

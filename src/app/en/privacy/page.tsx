@@ -17,7 +17,7 @@ export default function Page() {
       </p>
       <h2>Data collected</h2>
       <ul>
-        <li>Email, to create the My prints space and send the download link.</li>
+        <li>Email, to create the My prints space, send the download link, and keep a contact if we need to write to you about the service.</li>
         <li>The verse ordered and purchase history, so you can find your files.</li>
         <li>
           Payment data processed by Stripe. {LEGAL.siteName} does not store your card
@@ -28,14 +28,15 @@ export default function Page() {
       <h2>Purposes and legal basis</h2>
       <p>
         Performance of the contract (deliver the PDFs, access to My prints),
-        legitimate interest (account security, fraud prevention) and legal obligation
-        (invoicing, accounts). No marketing is sent without your consent.
+        legitimate interest (account security, fraud prevention, customer relationship)
+        and legal obligation (invoicing, accounts). The list is not sold. You may ask
+        for your email to be deleted at any time.
       </p>
       <h2>Recipients</h2>
       <ul>
         <li>Stripe, for payment.</li>
         <li>Resend, for transactional emails.</li>
-        <li>{LEGAL.hostName}, for website hosting.</li>
+        <li>{LEGAL.hostName}, for website hosting and the contacts database.</li>
       </ul>
       <p>
         These providers may be located outside the European Union. Appropriate
@@ -43,9 +44,10 @@ export default function Page() {
       </p>
       <h2>Retention</h2>
       <p>
-        Email and orders are kept for as long as needed for the service and
-        accounting duties (in principle 10 years for sales records). Session cookies
-        last at most 30 days.
+        Email is kept in an internal database for the service and customer
+        relationship, until a deletion request. Orders are also kept for accounting
+        duties (in principle 10 years for sales records). Session cookies last at most
+        30 days.
       </p>
       <h2>Cookies</h2>
       <p>

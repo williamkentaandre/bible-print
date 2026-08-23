@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { parseLocale } from "@/i18n";
+import { saveContact } from "@/lib/contacts";
 import { sendReadyEmail } from "@/lib/mail";
 import { getStripe } from "@/lib/stripe-client";
 
@@ -34,8 +35,16 @@ export async function POST(request: NextRequest) {
       if (email) {
         const origin = process.env.NEXT_PUBLIC_SITE_URL || "https://bibledeco.com";
         const reference = session.metadata?.reference || "Votre verset";
+        const locale = parseLocale(session.metadata?.locale);
+        await saveContact({
+          email,
+          locale,
+          source: "paid",
+          reference,
+          paid: true,
+        });
         try {
-          await sendReadyEmail(email, origin, reference, parseLocale(session.metadata?.locale));
+          await sendReadyEmail(email, origin, reference, locale);
         } catch {
           // ignore
         }

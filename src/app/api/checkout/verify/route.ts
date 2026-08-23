@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { parseLocale } from "@/i18n";
+import { saveContact } from "@/lib/contacts";
 import { sendReadyEmail } from "@/lib/mail";
 import { getStripe } from "@/lib/stripe-client";
 import { setSessionEmail } from "@/lib/session";
@@ -25,8 +26,16 @@ export async function GET(request: NextRequest) {
     await setSessionEmail(email);
     const origin = request.nextUrl.origin;
     const reference = session.metadata?.reference || "Votre verset";
+    const locale = parseLocale(session.metadata?.locale);
+    await saveContact({
+      email,
+      locale,
+      source: "paid",
+      reference,
+      paid: true,
+    });
     try {
-      await sendReadyEmail(email, origin, reference, parseLocale(session.metadata?.locale));
+      await sendReadyEmail(email, origin, reference, locale);
     } catch {
       // Le lien reste disponible dans Mes impressions.
     }
