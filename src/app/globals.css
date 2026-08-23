@@ -244,6 +244,34 @@ a.brand-mark {
   min-width: min(100%, 16.5rem);
 }
 
+.buy-cta {
+  margin-top: auto;
+  padding: 0.95rem 1rem 1.05rem;
+  background: var(--panel);
+  border: 1.5px solid var(--foil);
+  box-shadow:
+    0 1px 0 rgba(255, 250, 242, 0.7) inset,
+    0 16px 36px rgba(138, 106, 62, 0.18);
+  position: sticky;
+  bottom: 0.65rem;
+  z-index: 8;
+}
+
+.buy-cta .buy-ref {
+  margin: 0.2rem 0 0.8rem;
+  font-size: 1.28rem;
+}
+
+.buy-cta .email-gate,
+.buy-cta .pdf-actions {
+  min-width: 0;
+  width: 100%;
+}
+
+.buy-cta .text-link {
+  font-size: 0.8rem;
+}
+
 .email-hint {
   margin: 0;
   font-size: 0.82rem;
@@ -819,6 +847,47 @@ html.is-capturing-pdf body {
 .print-button:disabled {
   opacity: 0.65;
   cursor: wait;
+}
+
+.print-button.cta-button {
+  height: 58px;
+  width: 100%;
+  background: linear-gradient(180deg, #e2c67a 0%, var(--foil) 46%, #b08940 100%);
+  color: #2a241c;
+  font-size: 1.16rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  box-shadow:
+    0 1px 0 rgba(255, 250, 242, 0.55) inset,
+    0 12px 28px rgba(166, 129, 48, 0.45);
+}
+
+.print-button.cta-button:hover:not(:disabled) {
+  background: linear-gradient(180deg, #ebcf86 0%, #c6a14d 55%, #a07c4a 100%);
+}
+
+.print-button.cta-button.is-ready {
+  animation: cta-glow 1.8s ease-in-out infinite;
+}
+
+@keyframes cta-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 1px 0 rgba(255, 250, 242, 0.55) inset,
+      0 12px 28px rgba(166, 129, 48, 0.45);
+  }
+  50% {
+    box-shadow:
+      0 1px 0 rgba(255, 250, 242, 0.7) inset,
+      0 16px 38px rgba(198, 161, 77, 0.7);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .print-button.cta-button.is-ready {
+    animation: none;
+  }
 }
 
 .validate-button {
@@ -1499,6 +1568,10 @@ html.is-capturing-pdf body {
     text-align: center;
     padding: 0.85rem 0.95rem;
     gap: 0.75rem;
+  }
+
+  .buy-cta {
+    margin-top: 0.85rem;
   }
 
   .buy-bar .validate-button,

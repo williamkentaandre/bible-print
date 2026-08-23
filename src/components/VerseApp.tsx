@@ -58,6 +58,7 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
   const [payError, setPayError] = useState<string | null>(null);
   const chapterSelect = useRef<HTMLSelectElement>(null);
   const verseSelect = useRef<HTMLSelectElement>(null);
+  const buyCta = useRef<HTMLDivElement>(null);
   const skipPickFocus = useRef(true);
   const printSize = getPrintSize(sizeId);
   const verticalSize = getOrientedSize(printSize, "vertical");
@@ -104,6 +105,10 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
     }
     if (draft.chapter != null && draft.verse == null) {
       verseSelect.current?.focus();
+      return;
+    }
+    if (draft.verse != null) {
+      buyCta.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
   }, [draft.book, draft.chapter, draft.verse]);
 
@@ -417,6 +422,28 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
         </div>
 
         <FondPicker value={palette} onChange={setPalette} locale={locale} />
+
+        {liveChoice ? (
+          <div className="buy-cta" ref={buyCta}>
+            <p className="buy-kicker">{copy.composition}</p>
+            <p className="buy-ref">{reference}</p>
+            {isPaid ? (
+              <PdfPack
+                text={text}
+                reference={reference}
+                verseRef={liveChoice}
+                palette={palette}
+                locale={locale}
+              />
+            ) : (
+              <EmailGate
+                ticket={printTicket(liveChoice, palette)}
+                reference={reference}
+                locale={locale}
+              />
+            )}
+          </div>
+        ) : null}
       </section>
 
       {liveChoice ? (
@@ -447,32 +474,8 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
               }
             `}</style>
           ) : null}
-          <p className="app-chrome size-caption">{copy.sizeCaption}</p>
-          <div className="app-chrome buy-bar">
-            <div className="buy-copy">
-              <p className="buy-kicker">{copy.composition}</p>
-              <p className="buy-ref">{reference}</p>
-              <p className="buy-price">
-                <span>{copy.fulfillment}</span>
-              </p>
-            </div>
-            {isPaid ? (
-              <PdfPack
-                text={text}
-                reference={reference}
-                verseRef={liveChoice}
-                palette={palette}
-                locale={locale}
-              />
-            ) : (
-              <EmailGate
-                ticket={printTicket(liveChoice, palette)}
-                reference={reference}
-                locale={locale}
-              />
-            )}
-          </div>
           {payError ? <p className="app-chrome field-error">{payError}</p> : null}
+          <p className="app-chrome size-caption">{copy.sizeCaption}</p>
           <div className="print-sheet" aria-hidden="true">
             <VerseSheet
               key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}-${palette}`}

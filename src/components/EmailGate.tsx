@@ -89,7 +89,11 @@ export function EmailGate({ ticket, reference, locale = "fr" }: EmailGateProps) 
               onChange={(event) => setEmail(event.target.value)}
             />
           </label>
-          <button className="print-button validate-button" type="submit" disabled={busy}>
+          <button
+            className="print-button validate-button cta-button is-ready"
+            type="submit"
+            disabled={busy}
+          >
             {copy.continue}
           </button>
           <p className="email-hint">{copy.emailHint}</p>
@@ -100,7 +104,7 @@ export function EmailGate({ ticket, reference, locale = "fr" }: EmailGateProps) 
           <p className="pay-step-price">
             {PRINT_PRICE_LABEL} <span>{copy.offer}</span>
           </p>
-          <button className="print-button validate-button" type="submit" disabled={busy}>
+          <button className="print-button validate-button cta-button is-ready" type="submit" disabled={busy}>
             {busy ? copy.wait : copy.payDownload}
           </button>
           <p className="email-hint">{copy.payHint}</p>
