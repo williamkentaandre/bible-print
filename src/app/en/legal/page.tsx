@@ -3,7 +3,7 @@ import { LegalChrome } from "@/components/LegalChrome";
 import { LEGAL } from "@/lib/legal";
 
 export const metadata: Metadata = {
-  title: "Legal notice — Bible Deco",
+  title: "Legal notice – Bible Deco",
   description: "Publisher, host and contact for Bible Deco.",
 };
 
@@ -12,7 +12,7 @@ export default function Page() {
     <LegalChrome title="Legal notice" locale="en">
       <h2>Publisher</h2>
       <p>
-        {LEGAL.siteName} — {LEGAL.siteUrl}
+        {LEGAL.siteName} – {LEGAL.siteUrl}
         <br />
         {LEGAL.editorName}
         <br />

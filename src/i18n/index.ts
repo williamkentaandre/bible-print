@@ -139,7 +139,7 @@ const fr: AppCopy = {
     description:
       "Choisissez un verset, voyez-le chez vous, téléchargez 12 PDF prêts à faire tirer.",
     ogDescription: "Le verset que vous aimez, accroché chez vous.",
-    ogAlt: "Bible Deco — le verset que vous aimez, accroché chez vous.",
+    ogAlt: "Bible Deco – le verset que vous aimez, accroché chez vous.",
   },
   brand: "Bible Deco",
   printsNav: "Mes impressions",
@@ -148,7 +148,7 @@ const fr: AppCopy = {
   introQuote: "Tu les écriras sur les poteaux de ta maison et sur tes portes.",
   introCite: "Deutéronome 6:9",
   introLead:
-    "N’importe quel verset de la Bible. Calligraphié, chez vous — pour que la Parole habite la maison, et l’âme.",
+    "N’importe quel verset de la Bible. Calligraphié, chez vous – pour que la Parole habite la maison, et l’âme.",
   customize: "Personnaliser",
   book: "Livre",
   chooseBook: "Choisir un livre",
@@ -175,7 +175,7 @@ const fr: AppCopy = {
   faq: [
     {
       q: "N’importe quel verset ?",
-      a: "Oui. Toute la Bible, de la Genèse à l’Apocalypse. Celui que vous accrochez habite la maison — et l’âme.",
+      a: "Oui. Toute la Bible, de la Genèse à l’Apocalypse. Celui que vous accrochez habite la maison – et l’âme.",
     },
     {
       q: "Recevrai-je une affiche ?",
@@ -309,7 +309,7 @@ const en: AppCopy = {
     title: "Bible Deco",
     description: "Choose a verse, see it in your home, download 12 print-ready PDFs.",
     ogDescription: "The verse you love, on your wall.",
-    ogAlt: "Bible Deco — the verse you love, on your wall.",
+    ogAlt: "Bible Deco – the verse you love, on your wall.",
   },
   brand: "Bible Deco",
   printsNav: "My prints",
@@ -318,7 +318,7 @@ const en: AppCopy = {
   introQuote: "And thou shalt write them upon the posts of thy house, and on thy gates.",
   introCite: "Deuteronomy 6:9",
   introLead:
-    "Any verse in the Bible. Calligraphed, in your home — so the Word lives in the house, and in the soul.",
+    "Any verse in the Bible. Calligraphed, in your home – so the Word lives in the house, and in the soul.",
   customize: "Customise",
   book: "Book",
   chooseBook: "Choose a book",
@@ -345,7 +345,7 @@ const en: AppCopy = {
   faq: [
     {
       q: "Any verse at all?",
-      a: "Yes. The whole Bible, from Genesis to Revelation. The verse you hang lives in the house — and in the soul.",
+      a: "Yes. The whole Bible, from Genesis to Revelation. The verse you hang lives in the house – and in the soul.",
     },
     {
       q: "Will I receive a poster?",

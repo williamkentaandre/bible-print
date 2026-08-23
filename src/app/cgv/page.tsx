@@ -3,7 +3,7 @@ import { LegalChrome } from "@/components/LegalChrome";
 import { LEGAL } from "@/lib/legal";
 
 export const metadata: Metadata = {
-  title: "Conditions générales de vente — Bible Deco",
+  title: "Conditions générales de vente – Bible Deco",
   description: "CGV de Bible Deco : 12 PDF, prix, livraison numérique, rétractation.",
 };
 

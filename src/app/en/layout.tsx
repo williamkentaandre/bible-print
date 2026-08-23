@@ -14,7 +14,7 @@ export const metadata: Metadata = {
         url: "/en/opengraph-image?v=premium",
         width: 1200,
         height: 630,
-        alt: "Bible Deco — the verse you love, on your wall.",
+        alt: "Bible Deco – the verse you love, on your wall.",
       },
     ],
   },
