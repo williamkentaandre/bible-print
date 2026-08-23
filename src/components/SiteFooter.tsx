@@ -11,6 +11,7 @@ export function SiteFooter({ extra, locale = "fr" }: SiteFooterProps) {
   return (
     <footer className="app-chrome site-footer">
       <ul className="trust-row">
+        <li>{copy.trustGuarantee}</li>
         <li>{copy.trustReady}</li>
         <li>{copy.trustCalligraphy}</li>
         <li>{copy.trustTranslation}</li>

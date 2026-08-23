@@ -46,20 +46,27 @@ export default function Page() {
         immatériel dont l’exécution a commencé avec votre accord. En lançant le
         téléchargement, vous renoncez à ce droit pour cette commande.
       </p>
-      <h2>6. Utilisation des fichiers</h2>
+      <h2>6. Garantie commerciale « satisfait ou remboursé »</h2>
+      <p>
+        Indépendamment du droit de rétractation, {LEGAL.siteName} offre une garantie
+        commerciale : si les fichiers ne vous conviennent pas, écrivez à{" "}
+        <a href={`mailto:${LEGAL.contactEmail}`}>{LEGAL.contactEmail}</a>. La commande
+        est alors remboursée.
+      </p>
+      <h2>7. Utilisation des fichiers</h2>
       <p>
         Les PDF sont destinés à un usage personnel (impression et encadrement chez
         vous). Toute revente, diffusion ou usage commercial des fichiers est interdit.
         Le texte Louis Segond 1910 est libre de droits.
       </p>
-      <h2>7. Responsabilité</h2>
+      <h2>8. Responsabilité</h2>
       <p>
         {LEGAL.siteName} n’est pas responsable de l’impression réalisée par un tiers,
         ni du choix ou de la qualité d’un cadre. En cas de fichier illisible, contactez{" "}
         <a href={`mailto:${LEGAL.contactEmail}`}>{LEGAL.contactEmail}</a> : un nouvel
         accès pourra être ouvert.
       </p>
-      <h2>8. Réclamations et médiation</h2>
+      <h2>9. Réclamations et médiation</h2>
       <p>
         Écrivez à <a href={`mailto:${LEGAL.contactEmail}`}>{LEGAL.contactEmail}</a>.
         Si le litige n’est pas résolu, vous pouvez recourir à un médiateur de la
@@ -70,7 +77,7 @@ export default function Page() {
         </a>
         .
       </p>
-      <h2>9. Droit applicable</h2>
+      <h2>10. Droit applicable</h2>
       <p>Droit français. Tribunaux compétents selon les règles en vigueur.</p>
     </LegalChrome>
   );

@@ -45,20 +45,27 @@ export default function Page() {
         whose performance has begun with your agreement. By starting the download,
         you waive that right for this order.
       </p>
-      <h2>6. Use of the files</h2>
+      <h2>6. Commercial guarantee: satisfied or refunded</h2>
+      <p>
+        Independently of the right of withdrawal, {LEGAL.siteName} offers a
+        commercial guarantee: if the files are not right for you, write to{" "}
+        <a href={`mailto:${LEGAL.contactEmail}`}>{LEGAL.contactEmail}</a>. The order
+        is then refunded.
+      </p>
+      <h2>7. Use of the files</h2>
       <p>
         The PDFs are for personal use (printing and framing at home). Resale,
         distribution or commercial use of the files is forbidden. The King James
         Version text is in the public domain.
       </p>
-      <h2>7. Liability</h2>
+      <h2>8. Liability</h2>
       <p>
         {LEGAL.siteName} is not responsible for printing done by a third party, nor
         for the choice or quality of a frame. If a file cannot be read, write to{" "}
         <a href={`mailto:${LEGAL.contactEmail}`}>{LEGAL.contactEmail}</a>: a new
         access may be opened.
       </p>
-      <h2>8. Complaints and mediation</h2>
+      <h2>9. Complaints and mediation</h2>
       <p>
         Write to <a href={`mailto:${LEGAL.contactEmail}`}>{LEGAL.contactEmail}</a>.
         If the dispute is not resolved, you may use a consumer mediator under articles
@@ -68,7 +75,7 @@ export default function Page() {
         </a>
         .
       </p>
-      <h2>9. Governing law</h2>
+      <h2>10. Governing law</h2>
       <p>French law. Competent courts under the rules in force.</p>
     </LegalChrome>
   );

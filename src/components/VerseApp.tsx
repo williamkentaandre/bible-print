@@ -30,6 +30,7 @@ import { FondPicker } from "./FondPicker";
 import { LifestyleCarousel } from "./LifestyleCarousel";
 import { PdfPack } from "./PdfPack";
 import { SiteFooter } from "./SiteFooter";
+import { Testimonials } from "./Testimonials";
 import { VerseSheet } from "./VerseSheet";
 
 type DraftPick = {
@@ -489,6 +490,8 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
           </div>
         </>
       ) : null}
+
+      <Testimonials locale={locale} />
 
       <section className="app-chrome faq" aria-label={copy.faqLabel}>
         <h2>{copy.faqTitle}</h2>

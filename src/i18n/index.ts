@@ -54,6 +54,13 @@ export type AppCopy = {
   faqTitle: string;
   faqLabel: string;
   faq: { q: string; a: string }[];
+  voicesTitle: string;
+  voicesLabel: string;
+  voicesGuarantee: string;
+  voicesGuaranteeLead: string;
+  voicesGuaranteeEnd: string;
+  starsLabel: string;
+  voices: { name: string; date: string; quote: string; featured?: boolean }[];
   printDenied: string;
   loadingBible: string;
   loadError: string;
@@ -65,6 +72,7 @@ export type AppCopy = {
   zoomIn: string;
   zoomOut: string;
   zoomLabel: string;
+  trustGuarantee: string;
   trustReady: string;
   trustCalligraphy: string;
   trustTranslation: string;
@@ -222,6 +230,61 @@ const fr: AppCopy = {
       q: "Le cadre des photos est-il fourni ?",
       a: "Non. Le double filet doré est dans le PDF. Le cadre mural des photos d’intérieur n’est qu’un aperçu, pour voir le verset chez vous.",
     },
+    {
+      q: "Satisfait ou remboursé ?",
+      a: "Oui. Si les fichiers ne vous conviennent pas, écrivez à contact@bibledeco.com : nous remboursons.",
+    },
+  ],
+  voicesTitle: "Ils en parlent",
+  voicesLabel: "Témoignages",
+  voicesGuarantee: "Satisfait ou remboursé",
+  voicesGuaranteeLead: "Si les fichiers ne vous conviennent pas, écrivez à",
+  voicesGuaranteeEnd: " : nous remboursons.",
+  starsLabel: "5 étoiles",
+  voices: [
+    {
+      name: "Vanessa",
+      date: "février 2023",
+      featured: true,
+      quote: "Si beau. C’est exactement ce que j’attendais.",
+    },
+    {
+      name: "Jean-Sébastien",
+      date: "juin 2023",
+      quote: "Exactement ce que je demandais. Un travail soigné, livré comme il faut.",
+    },
+    {
+      name: "Jonathan",
+      date: "juillet 2023",
+      quote: "Je recommande. C’est mieux.",
+    },
+    {
+      name: "Junior",
+      date: "juin 2023",
+      quote: "Super utile.",
+    },
+    {
+      name: "Jeremie",
+      date: "juin 2023",
+      quote: "Très fonctionnel et pratique. Je recommande.",
+    },
+    {
+      name: "Hattori",
+      date: "juin 2023",
+      quote: "Très bon article. Pratique. À recommander.",
+    },
+    {
+      name: "Benoit",
+      date: "juin 2023",
+      quote:
+        "Cet achat est une réussite. Très clair. J’avais autre chose avant, un peu compliqué. Ici, tout est limpide. Je recommande.",
+    },
+    {
+      name: "Glgpfm",
+      date: "août 2023",
+      quote:
+        "Enfin quelque chose de simple, et si efficace en même temps. Une vision claire, pour avancer vraiment. Un grand merci. Le prix est ridicule au regard de la valeur.",
+    },
   ],
   printDenied: "Téléchargez les PDF depuis le bouton, plutôt que d’imprimer cette page.",
   loadingBible: "Chargement de la Bible…",
@@ -234,6 +297,7 @@ const fr: AppCopy = {
   zoomIn: "Zoomer",
   zoomOut: "Dézoomer",
   zoomLabel: "Zoom de l’aperçu",
+  trustGuarantee: "Satisfait ou remboursé",
   trustReady: "PDF prêts à tirer",
   trustCalligraphy: "Calligraphie soignée",
   trustTranslation: "Louis Segond 1910",
@@ -400,6 +464,61 @@ const en: AppCopy = {
       q: "Is the frame in the photos included?",
       a: "No. The gold double fillet is in the PDF. The wall frame in the room photos is only a preview.",
     },
+    {
+      q: "Satisfied or refunded?",
+      a: "Yes. If the files are not right for you, write to contact@bibledeco.com: we refund.",
+    },
+  ],
+  voicesTitle: "They say",
+  voicesLabel: "Testimonials",
+  voicesGuarantee: "Satisfied or refunded",
+  voicesGuaranteeLead: "If the files are not right for you, write to",
+  voicesGuaranteeEnd: ": we refund.",
+  starsLabel: "5 stars",
+  voices: [
+    {
+      name: "Vanessa",
+      date: "February 2023",
+      featured: true,
+      quote: "So beautiful. The item is exactly what I expected.",
+    },
+    {
+      name: "Jean-Sébastien",
+      date: "June 2023",
+      quote: "Exactly what I asked for. A careful job, delivered as it should be.",
+    },
+    {
+      name: "Jonathan",
+      date: "July 2023",
+      quote: "I recommend it. It is better.",
+    },
+    {
+      name: "Junior",
+      date: "June 2023",
+      quote: "Super useful.",
+    },
+    {
+      name: "Jeremie",
+      date: "June 2023",
+      quote: "Very functional and practical. I recommend.",
+    },
+    {
+      name: "Hattori",
+      date: "June 2023",
+      quote: "Very good. Convenient. Highly recommend.",
+    },
+    {
+      name: "Benoit",
+      date: "June 2023",
+      quote:
+        "This purchase is awesome. Very clear. I had something before that was a bit complicated. With this one, everything is lucid. I recommend.",
+    },
+    {
+      name: "Glgpfm",
+      date: "August 2023",
+      quote:
+        "Finally something that is simple, and so effective at the same time. A clear view, to move forward with intent. Many thanks. The price is ridiculous considering the added value.",
+    },
   ],
   printDenied: "Download the PDFs from the button, rather than printing this page.",
   loadingBible: "Loading the Bible…",
@@ -412,6 +531,7 @@ const en: AppCopy = {
   zoomIn: "Zoom in",
   zoomOut: "Zoom out",
   zoomLabel: "Preview zoom",
+  trustGuarantee: "Satisfied or refunded",
   trustReady: "Print-ready PDFs",
   trustCalligraphy: "Fine calligraphy",
   trustTranslation: "King James Version",
