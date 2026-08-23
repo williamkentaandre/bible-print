@@ -167,7 +167,7 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .studio-pin-photo {
@@ -181,7 +181,7 @@
 .studio-sheet-board {
   flex: 1;
   min-height: 0;
-  overflow: hidden;
+  overflow: visible;
   background: #fffcf6;
 }
 
@@ -223,11 +223,7 @@
   display: flex;
   flex-direction: column;
   background: #fffcf6;
-}
-
-.studio-export-pin .studio-pin-credit {
-  height: 72px;
-  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .studio-sheet-board .studio-export-sheet {
@@ -240,6 +236,7 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
+  overflow: visible;
   padding: 6.5%;
   background-color: var(--paper, #fffcf6);
   background-image: var(--paper-image, none);
@@ -336,6 +333,7 @@
   border: 2px solid var(--foil, #c6a14d);
   padding: 2.6%;
   display: flex;
+  overflow: visible;
 }
 
 .studio-export-inner {
@@ -345,26 +343,61 @@
   border: 2px solid var(--foil, #c6a14d);
   display: flex;
   flex-direction: column;
-  padding: 7% 8% 6%;
+  padding: 6.5% 8% 7%;
+  overflow: visible;
 }
 
 .studio-export-stage {
   flex: 1;
   min-height: 0;
-  overflow: hidden;
+  overflow: visible;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Keep all script ink inside this box so capture never clips the last line. */
+  padding: 0.45em 0.25em 1.35em;
+  box-sizing: border-box;
 }
 
 .studio-export-sheet .verse-text {
   width: 100%;
-  height: 100%;
+  height: auto;
+  max-height: 100%;
+  overflow: visible;
+  justify-content: center;
+  gap: 0.1em;
+  line-height: 1.58;
+}
+
+.studio-export-sheet .verse-line {
+  overflow: visible;
+  line-height: 1.58;
+  padding-bottom: 0.08em;
+}
+
+.studio-export-sheet .verse-line:last-child {
+  /* Padding lives on the stage, not outside it. */
+  padding-bottom: 0.2em;
 }
 
 .studio-export-footer {
   flex: 0 0 auto;
   box-sizing: border-box;
-  padding-top: 4.5%;
+  padding-top: 1.8%;
   text-align: center;
+}
+
+.studio-export-pin .studio-pin-credit {
+  height: 72px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+  font-size: 28px;
+  line-height: 1;
 }
 
 .studio-export-ref {

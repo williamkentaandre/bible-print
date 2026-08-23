@@ -51,22 +51,31 @@ function wait(ms: number) {
 
 async function rasterize(element: HTMLElement, backgroundColor: string) {
   if (document.fonts?.ready) await document.fonts.ready;
-  await wait(60);
+  await wait(80);
   await new Promise((resolve) => requestAnimationFrame(() => resolve(null)));
-  for (let attempt = 0; attempt < 25; attempt += 1) {
+  for (let attempt = 0; attempt < 30; attempt += 1) {
     const verse = element.querySelector(".verse-text");
     if (verse instanceof HTMLElement && parseFloat(verse.style.fontSize) > 8) break;
     await wait(40);
   }
-  await wait(180);
+  await wait(240);
   const { default: html2canvas } = await import("html2canvas");
+  const width = Math.max(element.offsetWidth, element.scrollWidth);
+  const height = Math.max(element.offsetHeight, element.scrollHeight);
   return html2canvas(element, {
     scale: 2,
-    width: element.offsetWidth,
-    height: element.offsetHeight,
+    width,
+    height,
     backgroundColor,
     useCORS: true,
     logging: false,
+    onclone: (doc) => {
+      for (const node of doc.querySelectorAll(
+        ".studio-export-stage, .studio-export-sheet .verse-text, .studio-export-sheet .verse-line",
+      )) {
+        if (node instanceof HTMLElement) node.style.overflow = "visible";
+      }
+    },
   });
 }
 

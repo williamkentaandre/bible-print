@@ -31,7 +31,8 @@ export function StudioExportSheet({
   const composition = pickComposition(verseRef, text, 1, landscape ? "horizontal" : "vertical");
   const lines = quoteLines(breakVerseLines(text, landscape ? "horizontal" : "vertical"), "fr");
   const max = Math.round((height ?? 900) * 0.16);
-  const verseEl = useFitText(lines.join("\n"), 22, Math.max(48, max));
+  // Script fonts drop below the line box; keep room so the last line is not clipped.
+  const verseEl = useFitText(lines.join("\n"), 22, Math.max(48, max), { bottomPad: 0.55 });
 
   return (
     <article

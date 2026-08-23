@@ -33,12 +33,21 @@ function inkInLayout(element: HTMLElement, stage: HTMLElement) {
   return { left, right, top, bottom };
 }
 
+export type FitTextOptions = {
+  onFit?: (size: number) => void;
+  /** Extra bottom clearance as a fraction of font size (script descenders). */
+  bottomPad?: number;
+};
+
 export function useFitText(
   text: string,
   min: number,
   max: number,
-  onFit?: (size: number) => void,
+  onFitOrOptions?: ((size: number) => void) | FitTextOptions,
 ) {
+  const options: FitTextOptions =
+    typeof onFitOrOptions === "function" ? { onFit: onFitOrOptions } : (onFitOrOptions ?? {});
+  const { onFit, bottomPad = 0 } = options;
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -56,11 +65,12 @@ export function useFitText(
       if (!ink) return false;
 
       const flourish = Math.max(4, size * 0.08);
+      const bottom = Math.max(flourish, size * bottomPad);
       return (
         ink.left >= flourish &&
         ink.right <= width - flourish &&
         ink.top >= flourish &&
-        ink.bottom <= height - flourish
+        ink.bottom <= height - bottom
       );
     };
 
@@ -102,7 +112,7 @@ export function useFitText(
       cancelled = true;
       observer.disconnect();
     };
-  }, [text, min, max, onFit]);
+  }, [text, min, max, onFit, bottomPad]);
 
   return ref;
 }
