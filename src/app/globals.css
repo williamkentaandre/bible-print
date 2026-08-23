@@ -660,6 +660,27 @@ html.is-capturing-pdf body {
   box-shadow: 0 0 0 3px rgba(138, 106, 62, 0.12);
 }
 
+.field-pending span {
+  color: var(--gold);
+}
+
+.field-pending select {
+  border-color: var(--gold);
+  background: #fff8ee;
+  box-shadow: 0 0 0 3px rgba(138, 106, 62, 0.2);
+  animation: field-await 1.8s ease-in-out infinite;
+}
+
+@keyframes field-await {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgba(138, 106, 62, 0.16);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(138, 106, 62, 0.28);
+  }
+}
+
 .print-button,
 .ghost-button {
   height: 42px;

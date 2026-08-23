@@ -256,8 +256,7 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
         </label>
 
         {draft.book != null ? (
-          <label className="field field-narrow">
-            <span>{copy.chapter}</span>
+          <label className={`field field-narrow${draft.chapter == null ? " field-pending" : ""}`}>
             <select
               value={draft.chapter ?? ""}
               onChange={(event) =>
@@ -282,8 +281,7 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
         ) : null}
 
         {draft.chapter != null ? (
-          <label className="field field-narrow">
-            <span>{copy.verse}</span>
+          <label className={`field field-narrow${draft.verse == null ? " field-pending" : ""}`}>
             <select
               value={draft.verse ?? ""}
               onChange={(event) =>
