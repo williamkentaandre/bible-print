@@ -27,6 +27,7 @@ export type AppCopy = {
   introCite: string;
   introLead: string;
   customize: string;
+  pickPath: string;
   book: string;
   chooseBook: string;
   oldTestament: string;
@@ -34,6 +35,10 @@ export type AppCopy = {
   chapter: string;
   verse: string;
   choose: string;
+  chooseChapter: string;
+  chooseVerse: string;
+  waitBook: string;
+  waitChapter: string;
   sentence: string;
   wholeVerse: string;
   size: string;
@@ -152,7 +157,8 @@ const fr: AppCopy = {
   introCite: "Deutéronome 6:9",
   introLead:
     "N’importe quel verset de la Bible. Calligraphié, chez vous – pour que la Parole habite la maison, et l’âme.",
-  customize: "Personnaliser",
+  customize: "Votre verset",
+  pickPath: "Livre, puis chapitre, puis verset.",
   book: "Livre",
   chooseBook: "Choisir un livre",
   oldTestament: "Ancien Testament",
@@ -160,14 +166,18 @@ const fr: AppCopy = {
   chapter: "Chapitre",
   verse: "Verset",
   choose: "Choisir",
+  chooseChapter: "Choisir le chapitre",
+  chooseVerse: "Choisir le verset",
+  waitBook: "D’abord le livre",
+  waitChapter: "D’abord le chapitre",
   sentence: "Phrase",
   wholeVerse: "Tout le verset",
   size: "Taille",
   vertical: "Vertical",
   horizontal: "Horizontal",
-  hintBook: "Commencez par choisir un livre.",
-  hintChapter: "Choisissez ensuite le chapitre.",
-  hintVerse: "Choisissez ensuite le verset.",
+  hintBook: "Choisissez un livre",
+  hintChapter: "Choisissez le chapitre",
+  hintVerse: "Choisissez le verset",
   composition: "Votre composition",
   fulfillment:
     "12 PDF, toutes tailles. Vous faites tirer le format choisi chez un imprimeur, le cadre se trouve ensuite.",
@@ -325,7 +335,8 @@ const en: AppCopy = {
   introCite: "Deuteronomy 6:9",
   introLead:
     "Any verse in the Bible. Calligraphed, in your home – so the Word lives in the house, and in the soul.",
-  customize: "Customise",
+  customize: "Your verse",
+  pickPath: "Book, then chapter, then verse.",
   book: "Book",
   chooseBook: "Choose a book",
   oldTestament: "Old Testament",
@@ -333,14 +344,18 @@ const en: AppCopy = {
   chapter: "Chapter",
   verse: "Verse",
   choose: "Choose",
+  chooseChapter: "Choose the chapter",
+  chooseVerse: "Choose the verse",
+  waitBook: "First, the book",
+  waitChapter: "First, the chapter",
   sentence: "Sentence",
   wholeVerse: "Whole verse",
   size: "Size",
   vertical: "Portrait",
   horizontal: "Landscape",
-  hintBook: "Start by choosing a book.",
-  hintChapter: "Then choose the chapter.",
-  hintVerse: "Then choose the verse.",
+  hintBook: "Choose a book",
+  hintChapter: "Choose the chapter",
+  hintVerse: "Choose the verse",
   composition: "Your piece",
   fulfillment:
     "12 PDFs, every size. You print the format you want at a shop, then find a frame.",

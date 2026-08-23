@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   clampChoice,
   DEFAULT_CHOICE,
@@ -56,6 +56,9 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
   const [paidTicket, setPaidTicket] = useState<string | null>(null);
   const [ownedTickets, setOwnedTickets] = useState<string[]>([]);
   const [payError, setPayError] = useState<string | null>(null);
+  const chapterSelect = useRef<HTMLSelectElement>(null);
+  const verseSelect = useRef<HTMLSelectElement>(null);
+  const skipPickFocus = useRef(true);
   const printSize = getPrintSize(sizeId);
   const verticalSize = getOrientedSize(printSize, "vertical");
   const horizontalSize = getOrientedSize(printSize, "horizontal");
@@ -89,6 +92,20 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
   const verseCount =
     book && draft.chapter != null ? (book.chapters[draft.chapter - 1]?.length ?? 0) : 0;
   const verseReady = draft.book != null && draft.chapter != null && draft.verse != null;
+
+  useEffect(() => {
+    if (skipPickFocus.current) {
+      skipPickFocus.current = false;
+      return;
+    }
+    if (draft.book != null && draft.chapter == null) {
+      chapterSelect.current?.focus();
+      return;
+    }
+    if (draft.chapter != null && draft.verse == null) {
+      verseSelect.current?.focus();
+    }
+  }, [draft.book, draft.chapter, draft.verse]);
 
   const liveChoice = useMemo((): VerseChoice | null => {
     if (!bible || draft.book == null || draft.chapter == null || draft.verse == null) {
@@ -212,14 +229,46 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
 
       <div className={`app-chrome atelier${liveChoice ? " has-preview" : ""}`}>
         <section className="configure">
-        <h2>{copy.customize}</h2>
-        <div
-          className={`toolbar picker ${
-            draft.verse != null ? "has-ref" : draft.chapter != null ? "has-chapter" : "book-only"
-          }`}
+        <h2 className={liveChoice ? undefined : "is-next"}>
+          {draft.book == null
+            ? copy.hintBook
+            : draft.chapter == null
+              ? copy.hintChapter
+              : draft.verse == null
+                ? copy.hintVerse
+                : copy.customize}
+        </h2>
+        <ol className="pick-steps" aria-label={copy.pickPath}>
+          <li
+            className={
+              draft.book == null ? "is-now" : "is-done"
+            }
+          >
+            <span className="step-num">1</span>
+            {copy.book}
+          </li>
+          <li
+            className={
+              draft.book == null ? "is-wait" : draft.chapter == null ? "is-now" : "is-done"
+            }
+          >
+            <span className="step-num">2</span>
+            {copy.chapter}
+          </li>
+          <li
+            className={
+              draft.chapter == null ? "is-wait" : draft.verse == null ? "is-now" : "is-done"
+            }
+          >
+            <span className="step-num">3</span>
+            {copy.verse}
+          </li>
+        </ol>
+        <div className="toolbar picker has-ref">
+        <label
+          className={`field field-grow${draft.book == null ? " field-pending" : " field-done"}`}
         >
-        <label className="field field-grow">
-          <span>{copy.book}</span>
+          <span className="field-legend">{copy.book}</span>
           <select
             value={draft.book ?? ""}
             onChange={(event) =>
@@ -255,60 +304,76 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
           </select>
         </label>
 
-        {draft.book != null ? (
-          <label className={`field field-narrow${draft.chapter == null ? " field-pending" : ""}`}>
-            <span>{copy.chapter}</span>
-            <select
-              value={draft.chapter ?? ""}
-              onChange={(event) =>
-                updateDraft({
-                  ...draft,
-                  chapter: Number(event.target.value),
-                  verse: null,
-                  sentence: 0,
-                })
-              }
-            >
-              <option value="" disabled>
-                {copy.choose}
+        <label
+          className={`field field-narrow${
+            draft.book == null
+              ? " field-wait"
+              : draft.chapter == null
+                ? " field-pending"
+                : " field-done"
+          }`}
+        >
+          <span className="field-legend">{copy.chapter}</span>
+          <select
+            ref={chapterSelect}
+            value={draft.chapter ?? ""}
+            disabled={draft.book == null}
+            onChange={(event) =>
+              updateDraft({
+                ...draft,
+                chapter: Number(event.target.value),
+                verse: null,
+                sentence: 0,
+              })
+            }
+          >
+            <option value="" disabled>
+              {draft.book == null ? copy.waitBook : copy.chooseChapter}
+            </option>
+            {Array.from({ length: chapterCount }, (_, index) => (
+              <option key={index + 1} value={index + 1}>
+                {index + 1}
               </option>
-              {Array.from({ length: chapterCount }, (_, index) => (
-                <option key={index + 1} value={index + 1}>
-                  {index + 1}
-                </option>
-              ))}
-            </select>
-          </label>
-        ) : null}
+            ))}
+          </select>
+        </label>
 
-        {draft.chapter != null ? (
-          <label className={`field field-narrow${draft.verse == null ? " field-pending" : ""}`}>
-            <span>{copy.verse}</span>
-            <select
-              value={draft.verse ?? ""}
-              onChange={(event) =>
-                updateDraft({
-                  ...draft,
-                  verse: Number(event.target.value),
-                  sentence: 0,
-                })
-              }
-            >
-              <option value="" disabled>
-                {copy.choose}
+        <label
+          className={`field field-narrow${
+            draft.chapter == null
+              ? " field-wait"
+              : draft.verse == null
+                ? " field-pending"
+                : " field-done"
+          }`}
+        >
+          <span className="field-legend">{copy.verse}</span>
+          <select
+            ref={verseSelect}
+            value={draft.verse ?? ""}
+            disabled={draft.chapter == null}
+            onChange={(event) =>
+              updateDraft({
+                ...draft,
+                verse: Number(event.target.value),
+                sentence: 0,
+              })
+            }
+          >
+            <option value="" disabled>
+              {draft.chapter == null ? copy.waitChapter : copy.chooseVerse}
+            </option>
+            {Array.from({ length: verseCount }, (_, index) => (
+              <option key={index + 1} value={index + 1}>
+                {index + 1}
               </option>
-              {Array.from({ length: verseCount }, (_, index) => (
-                <option key={index + 1} value={index + 1}>
-                  {index + 1}
-                </option>
-              ))}
-            </select>
-          </label>
-        ) : null}
+            ))}
+          </select>
+        </label>
 
         {verseReady && draftSentences.length > 1 ? (
           <label className="field field-wide">
-            <span>{copy.sentence}</span>
+            <span className="field-legend">{copy.sentence}</span>
             <select
               value={draft.sentence}
               onChange={(event) =>
@@ -330,7 +395,7 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
 
         {verseReady ? (
           <label className="field field-wide">
-            <span>{copy.size}</span>
+            <span className="field-legend">{copy.size}</span>
             <select value={sizeId} onChange={(event) => setSizeId(event.target.value)}>
               <optgroup label={copy.vertical}>
                 {PRINT_SIZES.filter((size) => size.orientation === "vertical").map((size) => (
@@ -352,16 +417,6 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
         </div>
 
         <FondPicker value={palette} onChange={setPalette} locale={locale} />
-
-        {!liveChoice ? (
-          <p className="hint">
-            {draft.book == null
-              ? copy.hintBook
-              : draft.chapter == null
-                ? copy.hintChapter
-                : copy.hintVerse}
-          </p>
-        ) : null}
       </section>
 
       {liveChoice ? (
