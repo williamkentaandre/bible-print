@@ -81,6 +81,7 @@ export type AppCopy = {
   legalTerms: string;
   legalPrivacy: string;
   fondLabel: string;
+  fondHint: string;
   fondClassical: string;
   fondOriginal: string;
   fondNames: Record<string, string>;
@@ -299,6 +300,7 @@ const fr: AppCopy = {
   legalTerms: "CGV",
   legalPrivacy: "Confidentialité",
   fondLabel: "Fond",
+  fondHint: "Cliquez ici pour changer de fond.",
   fondClassical: "Classiques",
   fondOriginal: "Originaux",
   fondNames: {
@@ -526,6 +528,7 @@ const en: AppCopy = {
   legalTerms: "Terms",
   legalPrivacy: "Privacy",
   fondLabel: "Background",
+  fondHint: "Click here to change the background.",
   fondClassical: "Classic",
   fondOriginal: "Original",
   fondNames: {

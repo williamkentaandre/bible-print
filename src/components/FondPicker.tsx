@@ -17,13 +17,14 @@ export function FondPicker({ value, onChange, locale = "fr" }: FondPickerProps) 
   const currentName = copy.fondNames[value] ?? value;
 
   return (
-    <details className="fond-picker">
-      <summary className="fond-picker-summary">
+    <div className="fond-picker">
+      <p className="fond-legend">
         <span className="fond-chip fond-chip-mini" data-palette={value} />
         <span>
           {copy.fondLabel} · {currentName}
         </span>
-      </summary>
+      </p>
+      <p className="fond-hint">{copy.fondHint}</p>
       <div className="fond-groups">
         <FondGroup
           title={copy.fondClassical}
@@ -40,7 +41,7 @@ export function FondPicker({ value, onChange, locale = "fr" }: FondPickerProps) 
           locale={locale}
         />
       </div>
-    </details>
+    </div>
   );
 }
 
@@ -61,7 +62,7 @@ function FondGroup({
   return (
     <div className="fond-group">
       <p className="fond-group-title">{title}</p>
-      <div className="fond-swatches" role="list">
+      <div className="fond-swatches">
         {backgroundsIn(group).map((item) => {
           const selected = item.id === value;
           const name = copy.fondNames[item.id] ?? item.label;
@@ -69,7 +70,6 @@ function FondGroup({
             <button
               key={item.id}
               type="button"
-              role="listitem"
               className="fond-swatch"
               data-selected={selected ? "true" : "false"}
               aria-pressed={selected}
