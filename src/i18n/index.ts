@@ -57,6 +57,9 @@ export type AppCopy = {
   lifestyleLabel: string;
   sceneSalon: string;
   sceneChambre: string;
+  zoomIn: string;
+  zoomOut: string;
+  zoomLabel: string;
   trustReady: string;
   trustCalligraphy: string;
   trustTranslation: string;
@@ -218,6 +221,9 @@ const fr: AppCopy = {
   lifestyleLabel: "Aperçus du verset dans un intérieur",
   sceneSalon: "Salon",
   sceneChambre: "Chambre",
+  zoomIn: "Zoomer",
+  zoomOut: "Dézoomer",
+  zoomLabel: "Zoom de l’aperçu",
   trustReady: "PDF prêts à tirer",
   trustCalligraphy: "Calligraphie soignée",
   trustTranslation: "Louis Segond 1910",
@@ -388,6 +394,9 @@ const en: AppCopy = {
   lifestyleLabel: "The verse previewed in a room",
   sceneSalon: "Living room",
   sceneChambre: "Bedroom",
+  zoomIn: "Zoom in",
+  zoomOut: "Zoom out",
+  zoomLabel: "Preview zoom",
   trustReady: "Print-ready PDFs",
   trustCalligraphy: "Fine calligraphy",
   trustTranslation: "King James Version",

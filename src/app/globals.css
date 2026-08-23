@@ -888,6 +888,52 @@ html.is-capturing-pdf body {
   top: calc(var(--zoom-y, 42%) * (1 - var(--zoom)));
   background-size: cover;
   background-position: center;
+  transition:
+    width 0.28s ease,
+    height 0.28s ease,
+    left 0.28s ease,
+    top 0.28s ease;
+}
+
+.lifestyle-zoom {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  display: flex;
+  border: 1px solid rgba(42, 36, 28, 0.12);
+  background: rgba(255, 252, 247, 0.94);
+}
+
+.lifestyle-zoom button {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.lifestyle-zoom button + button {
+  border-left: 1px solid rgba(42, 36, 28, 0.12);
+}
+
+.lifestyle-zoom button:hover:not(:disabled) {
+  color: var(--gold);
+}
+
+.lifestyle-zoom button:disabled {
+  opacity: 0.32;
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lifestyle-scene {
+    transition: none;
+  }
 }
 
 .lifestyle-hang {

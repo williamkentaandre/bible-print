@@ -76,13 +76,16 @@ export const LIFESTYLE_PAIR: LifestyleScene[] = [
   LIFESTYLE_SCENES.find((scene) => scene.id === "chambre")!,
 ];
 
-export function sceneStyle(scene: LifestyleScene): CSSProperties {
+export function sceneStyle(scene: LifestyleScene, zoomFactor = 1): CSSProperties {
+  const zoom = Math.max(1.05, Math.round(scene.zoom * zoomFactor * 100) / 100);
   return {
     backgroundImage: `url(${scene.src})`,
     "--zoom-x": scene.left,
     "--zoom-y": `calc(100% - ${scene.bottom} - 7%)`,
-    "--scene-zoom": String(scene.zoom),
-    "--scene-zoom-mobile": String(Math.max(1.55, scene.zoom * 0.58)),
+    "--scene-zoom": String(zoom),
+    "--scene-zoom-mobile": String(
+      Math.max(1.12, Math.round(scene.zoom * 0.58 * zoomFactor * 100) / 100),
+    ),
   } as CSSProperties;
 }
 
