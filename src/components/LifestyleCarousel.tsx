@@ -34,7 +34,7 @@ export function LifestyleCarousel({
     id === "salon" ? copy.sceneSalon : id === "chambre" ? copy.sceneChambre : fallback;
 
   return (
-    <div className="app-chrome lifestyle-pair" aria-label={copy.lifestyleLabel}>
+    <div className="lifestyle-pair" aria-label={copy.lifestyleLabel}>
       {LIFESTYLE_PAIR.map((scene) => {
         const size = scene.orientation === "horizontal" ? horizontalSize : verticalSize;
         return (

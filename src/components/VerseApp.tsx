@@ -25,7 +25,6 @@ import {
   ticketUnlocks,
 } from "@/lib/print-ticket";
 import type { Bible, VerseChoice } from "@/lib/types";
-import { CloseupTableau } from "./CloseupTableau";
 import { EmailGate } from "./EmailGate";
 import { FondPicker } from "./FondPicker";
 import { LifestyleCarousel } from "./LifestyleCarousel";
@@ -211,7 +210,8 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
         <p>{copy.introLead}</p>
       </section>
 
-      <section className="app-chrome configure">
+      <div className={`app-chrome atelier${liveChoice ? " has-preview" : ""}`}>
+        <section className="configure">
         <h2>{copy.customize}</h2>
         <div
           className={`toolbar picker ${
@@ -365,6 +365,20 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
       </section>
 
       {liveChoice ? (
+        <LifestyleCarousel
+          text={text}
+          reference={reference}
+          verseRef={liveChoice}
+          verticalSize={verticalSize}
+          horizontalSize={horizontalSize}
+          finish="gold"
+          palette={palette}
+          locale={locale}
+        />
+      ) : null}
+      </div>
+
+      {liveChoice ? (
         <>
           {isPaid ? (
             <style>{`
@@ -378,6 +392,7 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
               }
             `}</style>
           ) : null}
+          <p className="app-chrome size-caption">{copy.sizeCaption}</p>
           <div className="app-chrome buy-bar">
             <div className="buy-copy">
               <p className="buy-kicker">{copy.composition}</p>
@@ -403,46 +418,6 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
             )}
           </div>
           {payError ? <p className="app-chrome field-error">{payError}</p> : null}
-        </>
-      ) : null}
-
-      {liveChoice ? (
-        <>
-          <div className="app-chrome showroom">
-            <div className="closeups">
-              <CloseupTableau
-                text={text}
-                reference={reference}
-                verseRef={liveChoice}
-                size={verticalSize}
-                finish="gold"
-                label={copy.vertical}
-                palette={palette}
-                locale={locale}
-              />
-              <CloseupTableau
-                text={text}
-                reference={reference}
-                verseRef={liveChoice}
-                size={horizontalSize}
-                finish="gold"
-                label={copy.horizontal}
-                palette={palette}
-                locale={locale}
-              />
-            </div>
-            <LifestyleCarousel
-              text={text}
-              reference={reference}
-              verseRef={liveChoice}
-              verticalSize={verticalSize}
-              horizontalSize={horizontalSize}
-              finish="gold"
-              palette={palette}
-              locale={locale}
-            />
-          </div>
-          <p className="app-chrome size-caption">{copy.sizeCaption}</p>
           <div className="print-sheet" aria-hidden="true">
             <VerseSheet
               key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}-${palette}`}
