@@ -88,6 +88,7 @@ export type AppCopy = {
   emailPlaceholder: string;
   continue: string;
   emailHint: string;
+  packLead: string;
   payDownload: string;
   wait: string;
   payHint: string;
@@ -314,6 +315,7 @@ const fr: AppCopy = {
   emailPlaceholder: "vous@email.fr",
   continue: "Continuer",
   emailHint: "Pour recevoir vos fichiers si vous téléchargez.",
+  packLead: "Vous recevrez 12 PDF — chaque taille en vertical et en horizontal :",
   payDownload: "Payer et télécharger",
   wait: "Un instant…",
   payHint: "Paiement unique, puis les PDF dans Mes impressions.",
@@ -540,6 +542,7 @@ const en: AppCopy = {
   emailPlaceholder: "you@email.com",
   continue: "Continue",
   emailHint: "So we can send your files if you download.",
+  packLead: "You will receive 12 PDFs — each size in portrait and landscape:",
   payDownload: "Pay and download",
   wait: "One moment…",
   payHint: "One payment, then the PDFs in My prints.",

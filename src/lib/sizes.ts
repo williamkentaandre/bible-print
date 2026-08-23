@@ -45,6 +45,13 @@ export const PRINT_SIZES: PrintSize[] = BASE_SIZES.flatMap((size) => [
 
 export const PRINT_FORMAT_COUNT = PRINT_SIZES.length;
 
+export function listedPrintFormats(): { inchesLabel: string; metricLabel: string }[] {
+  return PRINT_SIZES.filter((size) => size.orientation === "vertical").map((size) => ({
+    inchesLabel: size.inchesLabel,
+    metricLabel: size.metricLabel,
+  }));
+}
+
 export const DEFAULT_SIZE_ID = "20x28-vertical";
 
 export function getPrintSize(id: string): PrintSize {

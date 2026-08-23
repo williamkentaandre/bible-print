@@ -296,6 +296,33 @@ a.brand-mark {
   color: var(--muted);
 }
 
+.pack-contents {
+  margin: 0.1rem 0 0.15rem;
+}
+
+.pack-lead {
+  margin: 0 0 0.4rem;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.pack-sizes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.28rem;
+}
+
+.pack-sizes li {
+  font-family: var(--roman);
+  font-size: 0.84rem;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
 .text-link {
   border: 0;
   background: none;

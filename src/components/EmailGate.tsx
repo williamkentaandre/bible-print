@@ -3,12 +3,29 @@
 import { useState } from "react";
 import { getCopy, type Locale } from "@/i18n";
 import { PRINT_PRICE_LABEL } from "@/lib/print-ticket";
+import { listedPrintFormats } from "@/lib/sizes";
 
 type EmailGateProps = {
   ticket: string;
   reference: string;
   locale?: Locale;
 };
+
+function PackContents({ locale }: { locale: Locale }) {
+  const copy = getCopy(locale);
+  return (
+    <div className="pack-contents">
+      <p className="pack-lead">{copy.packLead}</p>
+      <ul className="pack-sizes">
+        {listedPrintFormats().map((size) => (
+          <li key={size.inchesLabel}>
+            {size.inchesLabel} – {size.metricLabel}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export function EmailGate({ ticket, reference, locale = "fr" }: EmailGateProps) {
   const copy = getCopy(locale);
@@ -17,6 +34,7 @@ export function EmailGate({ ticket, reference, locale = "fr" }: EmailGateProps) 
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const emailReady = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   const submit = async (intent: "buy" | "login") => {
     setBusy(true);
@@ -89,6 +107,7 @@ export function EmailGate({ ticket, reference, locale = "fr" }: EmailGateProps) 
               onChange={(event) => setEmail(event.target.value)}
             />
           </label>
+          {emailReady ? <PackContents locale={locale} /> : <p className="email-hint">{copy.emailHint}</p>}
           <button
             className="print-button validate-button cta-button is-ready"
             type="submit"
@@ -96,14 +115,12 @@ export function EmailGate({ ticket, reference, locale = "fr" }: EmailGateProps) 
           >
             {copy.continue}
           </button>
-          <p className="email-hint">{copy.emailHint}</p>
         </>
       ) : (
         <>
           <p className="pay-step-email">{email}</p>
-          <p className="pay-step-price">
-            {PRINT_PRICE_LABEL} <span>{copy.offer}</span>
-          </p>
+          <p className="pay-step-price">{PRINT_PRICE_LABEL}</p>
+          <PackContents locale={locale} />
           <button className="print-button validate-button cta-button is-ready" type="submit" disabled={busy}>
             {busy ? copy.wait : copy.payDownload}
           </button>
