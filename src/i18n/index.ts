@@ -60,7 +60,7 @@ export type AppCopy = {
   voicesGuaranteeLead: string;
   voicesGuaranteeEnd: string;
   starsLabel: string;
-  voices: { name: string; date: string; quote: string; featured?: boolean }[];
+  voices: { name: string; quote: string; featured?: boolean }[];
   printDenied: string;
   loadingBible: string;
   loadError: string;
@@ -244,44 +244,36 @@ const fr: AppCopy = {
   voices: [
     {
       name: "Vanessa",
-      date: "février 2023",
       featured: true,
       quote: "Si beau. C’est exactement ce que j’attendais.",
     },
     {
       name: "Jean-Sébastien",
-      date: "juin 2023",
       quote: "Exactement ce que je demandais. Un travail soigné, livré comme il faut.",
     },
     {
       name: "Jonathan",
-      date: "juillet 2023",
       quote: "Je recommande. C’est mieux.",
     },
     {
       name: "Junior",
-      date: "juin 2023",
       quote: "Super utile.",
     },
     {
       name: "Jeremie",
-      date: "juin 2023",
       quote: "Très fonctionnel et pratique. Je recommande.",
     },
     {
       name: "Hattori",
-      date: "juin 2023",
       quote: "Très bon article. Pratique. À recommander.",
     },
     {
       name: "Benoit",
-      date: "juin 2023",
       quote:
         "Cet achat est une réussite. Très clair. J’avais autre chose avant, un peu compliqué. Ici, tout est limpide. Je recommande.",
     },
     {
       name: "Glgpfm",
-      date: "août 2023",
       quote:
         "Enfin quelque chose de simple, et si efficace en même temps. Une vision claire, pour avancer vraiment. Un grand merci. Le prix est ridicule au regard de la valeur.",
     },
@@ -478,44 +470,36 @@ const en: AppCopy = {
   voices: [
     {
       name: "Vanessa",
-      date: "February 2023",
       featured: true,
       quote: "So beautiful. The item is exactly what I expected.",
     },
     {
       name: "Jean-Sébastien",
-      date: "June 2023",
       quote: "Exactly what I asked for. A careful job, delivered as it should be.",
     },
     {
       name: "Jonathan",
-      date: "July 2023",
       quote: "I recommend it. It is better.",
     },
     {
       name: "Junior",
-      date: "June 2023",
       quote: "Super useful.",
     },
     {
       name: "Jeremie",
-      date: "June 2023",
       quote: "Very functional and practical. I recommend.",
     },
     {
       name: "Hattori",
-      date: "June 2023",
       quote: "Very good. Convenient. Highly recommend.",
     },
     {
       name: "Benoit",
-      date: "June 2023",
       quote:
         "This purchase is awesome. Very clear. I had something before that was a bit complicated. With this one, everything is lucid. I recommend.",
     },
     {
       name: "Glgpfm",
-      date: "August 2023",
       quote:
         "Finally something that is simple, and so effective at the same time. A clear view, to move forward with intent. Many thanks. The price is ridiculous considering the added value.",
     },

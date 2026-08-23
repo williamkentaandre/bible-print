@@ -682,14 +682,6 @@ html.is-capturing-pdf body {
   font-weight: 500;
 }
 
-.voice-hero time,
-.voice-card time {
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
 .voice-stars {
   margin: 0;
   font-size: 0.82rem;
