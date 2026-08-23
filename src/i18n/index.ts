@@ -165,7 +165,7 @@ const fr: AppCopy = {
   introQuote: "Tu les écriras sur les poteaux de ta maison et sur tes portes.",
   introCite: "Deutéronome 6:9",
   introLead:
-    "N’importe quel verset de la Bible. Calligraphié, chez vous - pour que la Parole habite la maison, et l’âme.",
+    "N’importe quel verset de la Bible. Calligraphié, chez vous - pour que la Parole habite la maison.",
   customize: "Votre verset",
   pickPath: "Livre, puis chapitre, puis verset.",
   book: "Livre",
@@ -196,7 +196,7 @@ const fr: AppCopy = {
   faq: [
     {
       q: "N’importe quel verset ?",
-      a: "Oui. Toute la Bible, de la Genèse à l’Apocalypse. Celui que vous accrochez habite la maison - et l’âme.",
+      a: "Oui. Toute la Bible, de la Genèse à l’Apocalypse. Celui que vous accrochez habite la maison.",
     },
     {
       q: "Recevrai-je une affiche ?",
@@ -362,7 +362,7 @@ const en: AppCopy = {
   introQuote: "And thou shalt write them upon the posts of thy house, and on thy gates.",
   introCite: "Deuteronomy 6:9",
   introLead:
-    "Any verse in the Bible. Calligraphed, in your home - so the Word lives in the house, and in the soul.",
+    "Any verse in the Bible. Calligraphed, in your home - so the Word lives in the house.",
   customize: "Your verse",
   pickPath: "Book, then chapter, then verse.",
   book: "Book",
@@ -393,7 +393,7 @@ const en: AppCopy = {
   faq: [
     {
       q: "Any verse at all?",
-      a: "Yes. The whole Bible, from Genesis to Revelation. The verse you hang lives in the house - and in the soul.",
+      a: "Yes. The whole Bible, from Genesis to Revelation. The verse you hang lives in the house.",
     },
     {
       q: "Will I receive a poster?",
