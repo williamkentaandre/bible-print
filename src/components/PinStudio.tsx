@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { FondPicker } from "@/components/FondPicker";
 import { StudioPin } from "@/components/StudioPin";
+import { VerseSheet } from "@/components/VerseSheet";
 import { getBackground, DEFAULT_BACKGROUND, type BackgroundId } from "@/lib/backgrounds";
 import {
   clampChoice,
@@ -34,12 +35,59 @@ type DraftPick = {
 
 const PIN_WIDTH = 1000;
 const PIN_HEIGHT = 1500;
+const PIN_OUT_W = PIN_WIDTH * 2;
+const PIN_OUT_H = PIN_HEIGHT * 2;
 const ZOOM_MIN = 0.5;
 const ZOOM_MAX = 1.75;
 const ZOOM_STEP = 0.15;
 
 function wait(ms: number) {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+function revealSheetCapture(doc: Document) {
+  const capture = doc.querySelector(".studio-sheet-capture");
+  if (!(capture instanceof HTMLElement)) return;
+  capture.style.width = "auto";
+  capture.style.height = "auto";
+  capture.style.overflow = "visible";
+  capture.style.opacity = "1";
+  capture.style.contain = "none";
+}
+
+function composeSheetPin(
+  sheet: HTMLCanvasElement,
+  paper: string,
+  withCredit: boolean,
+): HTMLCanvasElement {
+  const pin = document.createElement("canvas");
+  pin.width = PIN_OUT_W;
+  pin.height = PIN_OUT_H;
+  const ctx = pin.getContext("2d");
+  if (!ctx) throw new Error("Canvas indisponible.");
+  ctx.fillStyle = paper;
+  ctx.fillRect(0, 0, PIN_OUT_W, PIN_OUT_H);
+
+  const creditH = withCredit ? 120 : 0;
+  const padX = Math.round(PIN_OUT_W * 0.08);
+  const padY = Math.round(PIN_OUT_H * 0.06);
+  const maxW = PIN_OUT_W - padX * 2;
+  const maxH = PIN_OUT_H - padY * 2 - creditH;
+  const fit = Math.min(maxW / sheet.width, maxH / sheet.height);
+  const width = sheet.width * fit;
+  const height = sheet.height * fit;
+  const x = (PIN_OUT_W - width) / 2;
+  const y = padY + (maxH - height) / 2;
+  ctx.drawImage(sheet, x, y, width, height);
+
+  if (withCredit) {
+    ctx.fillStyle = "#2a241c";
+    ctx.font = '500 42px "EB Garamond", Palatino, serif';
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("bibledeco.com", PIN_OUT_W / 2, PIN_OUT_H - creditH / 2);
+  }
+  return pin;
 }
 
 function clampZoom(value: number) {
@@ -151,32 +199,58 @@ export function PinStudio() {
   );
   const reference = bible && liveChoice ? formatReference(bible.books, liveChoice) : "";
 
-  const captureCanvas = async () => {
-    const root = captureRef.current;
-    if (!root) throw new Error("Aperçu introuvable.");
+  const captureCanvas = async (kind: "scene" | "sheet" = mode) => {
     if (document.fonts?.ready) await document.fonts.ready;
     await wait(80);
     await new Promise((resolve) => requestAnimationFrame(() => resolve(null)));
-    for (let attempt = 0; attempt < 40; attempt += 1) {
-      if (root.querySelector(".sheet-scale")) break;
-      await wait(50);
+    const sheetNode = document.querySelector(".studio-sheet-capture .sheet");
+    if (!(sheetNode instanceof HTMLElement)) {
+      throw new Error("Feuille introuvable.");
     }
-    await wait(280);
+    await wait(320);
+
     const { default: html2canvas } = await import("html2canvas");
+    const paper = getBackground(palette).capture;
+    const sheet = await html2canvas(sheetNode, {
+      scale: 2,
+      backgroundColor: paper,
+      useCORS: true,
+      logging: false,
+      onclone: revealSheetCapture,
+    });
+
+    if (kind === "sheet") {
+      return composeSheetPin(sheet, paper, credit);
+    }
+
+    const root = captureRef.current;
+    if (!root) throw new Error("Aperçu introuvable.");
+    const sheetUrl = sheet.toDataURL("image/png");
     return html2canvas(root, {
       scale: 2,
       width: PIN_WIDTH,
       height: PIN_HEIGHT,
-      backgroundColor: mode === "sheet" ? getBackground(palette).capture : "#e6dfd3",
+      backgroundColor: "#e6dfd3",
       useCORS: true,
       logging: false,
       onclone: (doc) => {
         const capture = doc.querySelector(".studio-capture");
-        if (!(capture instanceof HTMLElement)) return;
-        capture.style.left = "0";
-        capture.style.top = "0";
-        capture.style.opacity = "1";
-        capture.style.position = "relative";
+        if (capture instanceof HTMLElement) {
+          capture.style.left = "0";
+          capture.style.top = "0";
+          capture.style.opacity = "1";
+          capture.style.position = "relative";
+        }
+        const frame = doc.querySelector(".studio-capture .preview-frame");
+        if (!(frame instanceof HTMLElement)) return;
+        const img = doc.createElement("img");
+        img.src = sheetUrl;
+        img.alt = "";
+        img.style.width = "100%";
+        img.style.height = "100%";
+        img.style.objectFit = "fill";
+        img.style.display = "block";
+        frame.replaceChildren(img);
       },
     });
   };
@@ -228,7 +302,7 @@ export function PinStudio() {
         flushSync(() => setSceneId(item.id));
         await wait(80);
         await new Promise((resolve) => requestAnimationFrame(() => resolve(null)));
-        const canvas = await captureCanvas();
+        const canvas = await captureCanvas("scene");
         const blob = await new Promise<Blob>((resolve, reject) => {
           canvas.toBlob(
             (file) => (file ? resolve(file) : reject(new Error("Image vide."))),
@@ -553,23 +627,35 @@ export function PinStudio() {
       </div>
 
       {liveChoice ? (
-        <div className="studio-capture" aria-hidden="true">
-          <div ref={captureRef}>
-            <StudioPin
-              key={`${mode}-${scene.id}-${pinSize.id}-${palette}-${finish}-${credit}`}
-              mode={mode}
-              scene={scene}
-              size={pinSize}
+        <>
+          <div className="studio-sheet-capture" aria-hidden="true">
+            <VerseSheet
+              key={`${pinSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}-${palette}`}
               text={text}
               reference={reference}
               verseRef={liveChoice}
+              size={pinSize}
               palette={palette}
-              finish={finish}
-              zoom={zoom}
-              credit={credit}
             />
           </div>
-        </div>
+          <div className="studio-capture" aria-hidden="true">
+            <div ref={captureRef}>
+              <StudioPin
+                key={`${mode}-${scene.id}-${pinSize.id}-${palette}-${finish}-${credit}`}
+                mode={mode}
+                scene={scene}
+                size={pinSize}
+                text={text}
+                reference={reference}
+                verseRef={liveChoice}
+                palette={palette}
+                finish={finish}
+                zoom={zoom}
+                credit={credit}
+              />
+            </div>
+          </div>
+        </>
       ) : null}
     </div>
   );
