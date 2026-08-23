@@ -75,7 +75,7 @@ export function formatSizeLabel(
   },
 ): string {
   const direction = size.orientation === "vertical" ? labels.vertical : labels.horizontal;
-  return `${size.inchesLabel} – ${size.metricLabel} (${direction})`;
+  return `${size.inchesLabel} - ${size.metricLabel} (${direction})`;
 }
 
 const PX_PER_MM = 96 / 25.4;

@@ -19,7 +19,7 @@ function PackContents({ locale }: { locale: Locale }) {
       <ul className="pack-sizes">
         {listedPrintFormats().map((size) => (
           <li key={size.inchesLabel}>
-            {size.inchesLabel} – {size.metricLabel}
+            {size.inchesLabel} - {size.metricLabel}
           </li>
         ))}
       </ul>

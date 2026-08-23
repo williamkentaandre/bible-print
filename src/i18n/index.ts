@@ -156,7 +156,7 @@ const fr: AppCopy = {
     description:
       "Choisissez un verset, voyez-le chez vous, téléchargez 12 PDF prêts à faire tirer.",
     ogDescription: "Le verset que vous aimez, accroché chez vous.",
-    ogAlt: "Bible Deco – le verset que vous aimez, accroché chez vous.",
+    ogAlt: "Bible Deco - le verset que vous aimez, accroché chez vous.",
   },
   brand: "Bible Deco",
   printsNav: "Mes impressions",
@@ -165,7 +165,7 @@ const fr: AppCopy = {
   introQuote: "Tu les écriras sur les poteaux de ta maison et sur tes portes.",
   introCite: "Deutéronome 6:9",
   introLead:
-    "N’importe quel verset de la Bible. Calligraphié, chez vous – pour que la Parole habite la maison, et l’âme.",
+    "N’importe quel verset de la Bible. Calligraphié, chez vous - pour que la Parole habite la maison, et l’âme.",
   customize: "Votre verset",
   pickPath: "Livre, puis chapitre, puis verset.",
   book: "Livre",
@@ -196,7 +196,7 @@ const fr: AppCopy = {
   faq: [
     {
       q: "N’importe quel verset ?",
-      a: "Oui. Toute la Bible, de la Genèse à l’Apocalypse. Celui que vous accrochez habite la maison – et l’âme.",
+      a: "Oui. Toute la Bible, de la Genèse à l’Apocalypse. Celui que vous accrochez habite la maison - et l’âme.",
     },
     {
       q: "Recevrai-je une affiche ?",
@@ -285,7 +285,7 @@ const fr: AppCopy = {
   emailPlaceholder: "vous@email.fr",
   continue: "Continuer",
   emailHint: "Pour recevoir vos fichiers si vous téléchargez.",
-  packLead: "Vous recevrez 12 PDF — chaque taille en vertical et en horizontal :",
+  packLead: "Vous recevrez 12 PDF - chaque taille en vertical et en horizontal :",
   payDownload: "Payer et télécharger",
   wait: "Un instant…",
   payHint: "Paiement unique, puis les PDF dans Mes impressions.",
@@ -353,7 +353,7 @@ const en: AppCopy = {
     title: "Bible Deco",
     description: "Choose a verse, see it in your home, download 12 print-ready PDFs.",
     ogDescription: "The verse you love, on your wall.",
-    ogAlt: "Bible Deco – the verse you love, on your wall.",
+    ogAlt: "Bible Deco - the verse you love, on your wall.",
   },
   brand: "Bible Deco",
   printsNav: "My prints",
@@ -362,7 +362,7 @@ const en: AppCopy = {
   introQuote: "And thou shalt write them upon the posts of thy house, and on thy gates.",
   introCite: "Deuteronomy 6:9",
   introLead:
-    "Any verse in the Bible. Calligraphed, in your home – so the Word lives in the house, and in the soul.",
+    "Any verse in the Bible. Calligraphed, in your home - so the Word lives in the house, and in the soul.",
   customize: "Your verse",
   pickPath: "Book, then chapter, then verse.",
   book: "Book",
@@ -393,7 +393,7 @@ const en: AppCopy = {
   faq: [
     {
       q: "Any verse at all?",
-      a: "Yes. The whole Bible, from Genesis to Revelation. The verse you hang lives in the house – and in the soul.",
+      a: "Yes. The whole Bible, from Genesis to Revelation. The verse you hang lives in the house - and in the soul.",
     },
     {
       q: "Will I receive a poster?",
@@ -482,7 +482,7 @@ const en: AppCopy = {
   emailPlaceholder: "you@email.com",
   continue: "Continue",
   emailHint: "So we can send your files if you download.",
-  packLead: "You will receive 12 PDFs — each size in portrait and landscape:",
+  packLead: "You will receive 12 PDFs - each size in portrait and landscape:",
   payDownload: "Pay and download",
   wait: "One moment…",
   payHint: "One payment, then the PDFs in My prints.",

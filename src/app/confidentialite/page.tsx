@@ -3,7 +3,7 @@ import { LegalChrome } from "@/components/LegalChrome";
 import { LEGAL } from "@/lib/legal";
 
 export const metadata: Metadata = {
-  title: "Politique de confidentialité – Bible Deco",
+  title: "Politique de confidentialité - Bible Deco",
   description: "Données collectées par Bible Deco : email, paiement, cookies nécessaires.",
 };
 

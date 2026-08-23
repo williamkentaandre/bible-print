@@ -581,7 +581,7 @@ html.is-capturing-pdf body {
 }
 
 .faq-item[open] summary::after {
-  content: "–";
+  content: "-";
 }
 
 .faq-item p {
