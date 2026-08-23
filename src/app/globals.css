@@ -681,6 +681,12 @@ html.is-capturing-pdf body {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .field-pending select {
+    animation: none;
+  }
+}
+
 .print-button,
 .ghost-button {
   height: 42px;
