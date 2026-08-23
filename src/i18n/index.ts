@@ -169,7 +169,7 @@ const fr: AppCopy = {
   faqLabel: "Questions fréquentes",
   faq: [
     {
-      q: "Vous envoyez une affiche ?",
+      q: "Recevrai-je une affiche ?",
       a: "Non. Rien n’est imprimé ni expédié. Vous téléchargez les PDF, puis vous faites tirer le format choisi chez un imprimeur.",
     },
     {
@@ -332,7 +332,7 @@ const en: AppCopy = {
   faqLabel: "Frequently asked questions",
   faq: [
     {
-      q: "Do you ship a poster?",
+      q: "Will I receive a poster?",
       a: "No. Nothing is printed or posted. You download the PDFs, then have the format you want printed locally.",
     },
     {
