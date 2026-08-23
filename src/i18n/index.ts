@@ -247,36 +247,6 @@ const fr: AppCopy = {
       featured: true,
       quote: "Si beau. C’est exactement ce que j’attendais.",
     },
-    {
-      name: "Jean-Sébastien",
-      quote: "Exactement ce que je demandais. Un travail soigné, livré comme il faut.",
-    },
-    {
-      name: "Jonathan",
-      quote: "Je recommande. C’est mieux.",
-    },
-    {
-      name: "Junior",
-      quote: "Super utile.",
-    },
-    {
-      name: "Jeremie",
-      quote: "Très fonctionnel et pratique. Je recommande.",
-    },
-    {
-      name: "Hattori",
-      quote: "Très bon article. Pratique. À recommander.",
-    },
-    {
-      name: "Benoit",
-      quote:
-        "Cet achat est une réussite. Très clair. J’avais autre chose avant, un peu compliqué. Ici, tout est limpide. Je recommande.",
-    },
-    {
-      name: "Glgpfm",
-      quote:
-        "Enfin quelque chose de simple, et si efficace en même temps. Une vision claire, pour avancer vraiment. Un grand merci. Le prix est ridicule au regard de la valeur.",
-    },
   ],
   printDenied: "Téléchargez les PDF depuis le bouton, plutôt que d’imprimer cette page.",
   loadingBible: "Chargement de la Bible…",
@@ -473,36 +443,6 @@ const en: AppCopy = {
       name: "Vanessa",
       featured: true,
       quote: "So beautiful. The item is exactly what I expected.",
-    },
-    {
-      name: "Jean-Sébastien",
-      quote: "Exactly what I asked for. A careful job, delivered as it should be.",
-    },
-    {
-      name: "Jonathan",
-      quote: "I recommend it. It is better.",
-    },
-    {
-      name: "Junior",
-      quote: "Super useful.",
-    },
-    {
-      name: "Jeremie",
-      quote: "Very functional and practical. I recommend.",
-    },
-    {
-      name: "Hattori",
-      quote: "Very good. Convenient. Highly recommend.",
-    },
-    {
-      name: "Benoit",
-      quote:
-        "This purchase is awesome. Very clear. I had something before that was a bit complicated. With this one, everything is lucid. I recommend.",
-    },
-    {
-      name: "Glgpfm",
-      quote:
-        "Finally something that is simple, and so effective at the same time. A clear view, to move forward with intent. Many thanks. The price is ridiculous considering the added value.",
     },
   ],
   printDenied: "Download the PDFs from the button, rather than printing this page.",

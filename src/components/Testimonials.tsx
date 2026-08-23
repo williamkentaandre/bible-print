@@ -41,23 +41,25 @@ export function Testimonials({ locale = "fr" }: TestimonialsProps) {
         </figure>
       ) : null}
 
-      <ul className="voice-grid">
-        {others.map((voice) => (
-          <li key={voice.name}>
-            <figure className="voice-card">
-              <span className="voice-stars" aria-label={copy.starsLabel}>
-                ★★★★★
-              </span>
-              <blockquote>
-                <p>{voice.quote}</p>
-              </blockquote>
-              <figcaption>
-                <cite>{voice.name}</cite>
-              </figcaption>
-            </figure>
-          </li>
-        ))}
-      </ul>
+      {others.length > 0 ? (
+        <ul className="voice-grid">
+          {others.map((voice) => (
+            <li key={voice.name}>
+              <figure className="voice-card">
+                <span className="voice-stars" aria-label={copy.starsLabel}>
+                  ★★★★★
+                </span>
+                <blockquote>
+                  <p>{voice.quote}</p>
+                </blockquote>
+                <figcaption>
+                  <cite>{voice.name}</cite>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </section>
   );
 }
