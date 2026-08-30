@@ -3,7 +3,7 @@ import { getCopy, parseLocale } from "@/i18n";
 import { saveContact } from "@/lib/contacts";
 import { sendLoginEmail } from "@/lib/mail";
 import { createCheckout, hasPaidTicket, listPaidOrders } from "@/lib/orders";
-import { isPrintTicket } from "@/lib/print-ticket";
+import { isFreeVerse, isPrintTicket, parseTicket } from "@/lib/print-ticket";
 import { isEmail, normalizeEmail } from "@/lib/session";
 import { isStripeConfigured } from "@/lib/stripe-client";
 
@@ -54,6 +54,11 @@ export async function POST(request: NextRequest) {
 
   if (!isPrintTicket(ticket)) {
     return NextResponse.json({ error: copy.api.badSelection }, { status: 400 });
+  }
+
+  const choice = parseTicket(ticket);
+  if (choice && isFreeVerse(choice)) {
+    return NextResponse.json({ error: copy.api.freeVerse }, { status: 400 });
   }
 
   if (await hasPaidTicket(email, ticket)) {

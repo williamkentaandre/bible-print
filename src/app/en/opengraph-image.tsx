@@ -3,9 +3,12 @@ import { ImageResponse } from "next/og";
 export const alt = "Bible Deco - the verse you love, on your wall.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const id = "premium-deut-en-v1";
+export const id = "premium-jean-en-v1";
 
-const LINES = ["“Write them upon the posts", "of thy house,", "and on thy gates.”"];
+const LINES = [
+  "“For God so loved the world,",
+  "that he gave his only begotten Son.”",
+];
 
 async function loadFont(family: string, weight: number) {
   const css = await fetch(
@@ -151,7 +154,7 @@ export default async function Image() {
                     color: "#2a241c",
                   }}
                 >
-                  Deuteronomy 6:9
+                  John 3:16
                 </div>
               </div>
             </div>

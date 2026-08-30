@@ -20,6 +20,7 @@ import {
 import { DEFAULT_BACKGROUND, type BackgroundId } from "@/lib/backgrounds";
 import { getCopy, type Locale } from "@/i18n";
 import {
+  isFreeVerse,
   PAYWALL_ENABLED,
   printTicket,
   ticketUnlocks,
@@ -137,6 +138,7 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
   const isPaid = Boolean(
     liveChoice &&
       (!PAYWALL_ENABLED ||
+        isFreeVerse(liveChoice) ||
         (paidTicket && ticketUnlocks(paidTicket, liveChoice)) ||
         ownedTickets.some((ticket) => ticketUnlocks(ticket, liveChoice))),
   );

@@ -119,6 +119,7 @@ export type AppCopy = {
     emailNotConfigured: string;
     verseFallback: string;
     badSelection: string;
+    freeVerse: string;
     alreadyYoursSent: string;
     alreadyYoursOpen: string;
     payClosed: string;
@@ -162,8 +163,8 @@ const fr: AppCopy = {
   printsNav: "Mes impressions",
   backHome: "Retour à l’atelier",
   introTitle: "Le verset que vous aimez, accroché chez vous.",
-  introQuote: "Tu les écriras sur les poteaux de ta maison et sur tes portes.",
-  introCite: "Deutéronome 6:9",
+  introQuote: "Car Dieu a tant aimé le monde qu'il a donné son Fils unique.",
+  introCite: "Jean 3:16",
   introLead:
     "N’importe quel verset de la Bible. Calligraphié chez vous, pour que la Parole habite la maison.",
   customize: "Votre verset",
@@ -317,6 +318,7 @@ const fr: AppCopy = {
       "Email non configuré. Vérifiez RESEND_API_KEY, ou ouvrez Mes impressions sur ce navigateur.",
     verseFallback: "Verset",
     badSelection: "Sélection invalide.",
+    freeVerse: "Ce verset est gratuit. Téléchargez-le directement sur la page.",
     alreadyYoursSent: "Ce verset est déjà à vous. Un lien a été envoyé.",
     alreadyYoursOpen: "Ce verset est déjà à vous. Ouvrez Mes impressions.",
     payClosed: "Le paiement n’est pas encore ouvert. Réessayez dans un instant.",
@@ -359,8 +361,8 @@ const en: AppCopy = {
   printsNav: "My prints",
   backHome: "Back to the studio",
   introTitle: "The verse you love, on your wall.",
-  introQuote: "And thou shalt write them upon the posts of thy house, and on thy gates.",
-  introCite: "Deuteronomy 6:9",
+  introQuote: "For God so loved the world, that he gave his only begotten Son.",
+  introCite: "John 3:16",
   introLead:
     "Any verse in the Bible. Calligraphed, in your home - so the Word lives in the house.",
   customize: "Your verse",
@@ -513,6 +515,7 @@ const en: AppCopy = {
     emailNotConfigured: "Email is not configured. Open My prints in this browser.",
     verseFallback: "Verse",
     badSelection: "Invalid selection.",
+    freeVerse: "This verse is free. Download it directly from the page.",
     alreadyYoursSent: "This verse is already yours. A link has been sent.",
     alreadyYoursOpen: "This verse is already yours. Open My prints.",
     payClosed: "Payment is not open yet. Please try again shortly.",
