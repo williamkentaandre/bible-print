@@ -1,6 +1,9 @@
 import { isBackgroundId, type BackgroundId } from "./backgrounds";
-import type { VerseChoice } from "./types";
+import type { VerseChoice, VerseRef } from "./types";
 import { PRINT_FORMAT_COUNT } from "./sizes";
+
+/** Versets téléchargeables sans paiement (Jean / John 3:16). */
+const FREE_VERSES: VerseRef[] = [{ book: 42, chapter: 3, verse: 16 }];
 
 export const PRINT_PRICE_CENTS = 500;
 export const PRINT_PRICE_LABEL = "5 €";
@@ -40,4 +43,13 @@ export function isPrintTicket(value: string): boolean {
 export function ticketUnlocks(paidTicket: string, choice: VerseChoice): boolean {
   const key = verseTicket(choice);
   return paidTicket === key || paidTicket.startsWith(`${key}:`);
+}
+
+export function isFreeVerse(choice: VerseChoice): boolean {
+  return FREE_VERSES.some(
+    (ref) =>
+      ref.book === choice.book &&
+      ref.chapter === choice.chapter &&
+      ref.verse === choice.verse,
+  );
 }

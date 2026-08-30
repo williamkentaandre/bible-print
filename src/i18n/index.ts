@@ -119,6 +119,7 @@ export type AppCopy = {
     emailNotConfigured: string;
     verseFallback: string;
     badSelection: string;
+    freeVerse: string;
     alreadyYoursSent: string;
     alreadyYoursOpen: string;
     payClosed: string;
@@ -317,6 +318,7 @@ const fr: AppCopy = {
       "Email non configuré. Vérifiez RESEND_API_KEY, ou ouvrez Mes impressions sur ce navigateur.",
     verseFallback: "Verset",
     badSelection: "Sélection invalide.",
+    freeVerse: "Ce verset est gratuit. Téléchargez-le directement sur la page.",
     alreadyYoursSent: "Ce verset est déjà à vous. Un lien a été envoyé.",
     alreadyYoursOpen: "Ce verset est déjà à vous. Ouvrez Mes impressions.",
     payClosed: "Le paiement n’est pas encore ouvert. Réessayez dans un instant.",
@@ -513,6 +515,7 @@ const en: AppCopy = {
     emailNotConfigured: "Email is not configured. Open My prints in this browser.",
     verseFallback: "Verse",
     badSelection: "Invalid selection.",
+    freeVerse: "This verse is free. Download it directly from the page.",
     alreadyYoursSent: "This verse is already yours. A link has been sent.",
     alreadyYoursOpen: "This verse is already yours. Open My prints.",
     payClosed: "Payment is not open yet. Please try again shortly.",
