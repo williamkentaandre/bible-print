@@ -3,9 +3,12 @@ import { ImageResponse } from "next/og";
 export const alt = "Bible Deco - le verset que vous aimez, accroché chez vous.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const id = "premium-deut-v1";
+export const id = "premium-jean-v1";
 
-const LINES = ["« Tu les écriras", "sur les poteaux de ta maison", "et sur tes portes. »"];
+const LINES = [
+  "« Car Dieu a tant aimé le monde",
+  "qu'il a donné son Fils unique. »",
+];
 
 async function loadFont(family: string, weight: number) {
   const css = await fetch(
@@ -151,7 +154,7 @@ export default async function Image() {
                     color: "#2a241c",
                   }}
                 >
-                  Deutéronome 6:9
+                  Jean 3:16
                 </div>
               </div>
             </div>

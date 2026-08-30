@@ -1,9 +1,10 @@
 import { isBackgroundId, type BackgroundId } from "./backgrounds";
+import { DEFAULT_REF } from "./bible";
 import type { VerseChoice, VerseRef } from "./types";
 import { PRINT_FORMAT_COUNT } from "./sizes";
 
 /** Versets téléchargeables sans paiement (Jean / John 3:16). */
-const FREE_VERSES: VerseRef[] = [{ book: 42, chapter: 3, verse: 16 }];
+const FREE_VERSES: VerseRef[] = [DEFAULT_REF];
 
 export const PRINT_PRICE_CENTS = 500;
 export const PRINT_PRICE_LABEL = "5 €";

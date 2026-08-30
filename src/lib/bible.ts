@@ -2,7 +2,7 @@ import type { Locale } from "@/i18n";
 import { clampSentence, getPrintedText as pickSentence } from "./sentences";
 import type { Bible, Book, VerseChoice, VerseRef } from "./types";
 
-export const DEFAULT_REF: VerseRef = { book: 4, chapter: 6, verse: 9 };
+export const DEFAULT_REF: VerseRef = { book: 42, chapter: 3, verse: 16 };
 export const DEFAULT_CHOICE: VerseChoice = { ...DEFAULT_REF, sentence: 0 };
 
 export async function loadBible(locale: Locale = "fr"): Promise<Bible> {

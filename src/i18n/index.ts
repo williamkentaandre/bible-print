@@ -163,8 +163,8 @@ const fr: AppCopy = {
   printsNav: "Mes impressions",
   backHome: "Retour à l’atelier",
   introTitle: "Le verset que vous aimez, accroché chez vous.",
-  introQuote: "Tu les écriras sur les poteaux de ta maison et sur tes portes.",
-  introCite: "Deutéronome 6:9",
+  introQuote: "Car Dieu a tant aimé le monde qu'il a donné son Fils unique.",
+  introCite: "Jean 3:16",
   introLead:
     "N’importe quel verset de la Bible. Calligraphié chez vous, pour que la Parole habite la maison.",
   customize: "Votre verset",
@@ -361,8 +361,8 @@ const en: AppCopy = {
   printsNav: "My prints",
   backHome: "Back to the studio",
   introTitle: "The verse you love, on your wall.",
-  introQuote: "And thou shalt write them upon the posts of thy house, and on thy gates.",
-  introCite: "Deuteronomy 6:9",
+  introQuote: "For God so loved the world, that he gave his only begotten Son.",
+  introCite: "John 3:16",
   introLead:
     "Any verse in the Bible. Calligraphed, in your home - so the Word lives in the house.",
   customize: "Your verse",
