@@ -88,6 +88,9 @@ export type AppCopy = {
   emailPlaceholder: string;
   continue: string;
   emailHint: string;
+  freeEmailHint: string;
+  freeDownload: string;
+  freeDownloadSent: string;
   packLead: string;
   payDownload: string;
   wait: string;
@@ -120,6 +123,7 @@ export type AppCopy = {
     verseFallback: string;
     badSelection: string;
     freeVerse: string;
+    paidVerse: string;
     alreadyYoursSent: string;
     alreadyYoursOpen: string;
     payClosed: string;
@@ -136,6 +140,11 @@ export type AppCopy = {
     loginBody: string;
     loginCta: string;
     loginFooter: string;
+    freeDownloadSubject: string;
+    freeDownloadTitle: string;
+    freeDownloadBody: (reference: string) => string;
+    freeDownloadCta: string;
+    freeDownloadFooter: string;
   };
 };
 
@@ -286,6 +295,10 @@ const fr: AppCopy = {
   emailPlaceholder: "vous@email.fr",
   continue: "Continuer",
   emailHint: "Pour recevoir vos fichiers si vous téléchargez.",
+  freeEmailHint: "Indiquez votre email pour télécharger et recevoir vos PDF.",
+  freeDownload: "Télécharger gratuitement",
+  freeDownloadSent:
+    "C’est envoyé. Téléchargez ci-dessous, ou retrouvez le lien dans votre boîte mail.",
   packLead: "Vous recevrez 12 PDF, chaque taille en vertical et en horizontal :",
   payDownload: "Payer et télécharger",
   wait: "Un instant…",
@@ -318,7 +331,8 @@ const fr: AppCopy = {
       "Email non configuré. Vérifiez RESEND_API_KEY, ou ouvrez Mes impressions sur ce navigateur.",
     verseFallback: "Verset",
     badSelection: "Sélection invalide.",
-    freeVerse: "Ce verset est gratuit. Téléchargez-le directement sur la page.",
+    freeVerse: "Ce verset est gratuit. Indiquez votre email pour le télécharger.",
+    paidVerse: "Ce verset nécessite un paiement.",
     alreadyYoursSent: "Ce verset est déjà à vous. Un lien a été envoyé.",
     alreadyYoursOpen: "Ce verset est déjà à vous. Ouvrez Mes impressions.",
     payClosed: "Le paiement n’est pas encore ouvert. Réessayez dans un instant.",
@@ -335,6 +349,12 @@ const fr: AppCopy = {
     loginBody: "Cliquez pour ouvrir votre espace. Aucun mot de passe.",
     loginCta: "Ouvrir mes impressions",
     loginFooter: "Une question ?",
+    freeDownloadSubject: "Vos PDF sont prêts",
+    freeDownloadTitle: "Vos PDF sont prêts.",
+    freeDownloadBody: (reference) =>
+      `${reference} vous attend. Cliquez pour télécharger vos 12 PDF, ou revenez sur la page où vous les avez demandés.`,
+    freeDownloadCta: "Télécharger mes PDF",
+    freeDownloadFooter: "Une question ? Écrivez-nous à",
   },
 };
 
@@ -484,6 +504,9 @@ const en: AppCopy = {
   emailPlaceholder: "you@email.com",
   continue: "Continue",
   emailHint: "So we can send your files if you download.",
+  freeEmailHint: "Enter your email to download and receive your PDFs.",
+  freeDownload: "Download for free",
+  freeDownloadSent: "Done. Download below, or find the link in your inbox.",
   packLead: "You will receive 12 PDFs - each size in portrait and landscape:",
   payDownload: "Pay and download",
   wait: "One moment…",
@@ -515,7 +538,8 @@ const en: AppCopy = {
     emailNotConfigured: "Email is not configured. Open My prints in this browser.",
     verseFallback: "Verse",
     badSelection: "Invalid selection.",
-    freeVerse: "This verse is free. Download it directly from the page.",
+    freeVerse: "This verse is free. Enter your email to download it.",
+    paidVerse: "This verse requires payment.",
     alreadyYoursSent: "This verse is already yours. A link has been sent.",
     alreadyYoursOpen: "This verse is already yours. Open My prints.",
     payClosed: "Payment is not open yet. Please try again shortly.",
@@ -532,6 +556,12 @@ const en: AppCopy = {
     loginBody: "Click to open your space. No password.",
     loginCta: "Open my prints",
     loginFooter: "A question?",
+    freeDownloadSubject: "Your PDFs are ready",
+    freeDownloadTitle: "Your PDFs are ready.",
+    freeDownloadBody: (reference) =>
+      `${reference} is waiting. Click to download your 12 PDFs, or return to the page where you requested them.`,
+    freeDownloadCta: "Download my PDFs",
+    freeDownloadFooter: "A question? Write to us at",
   },
 };
 

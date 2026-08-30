@@ -1,7 +1,7 @@
 import { neon } from "@neondatabase/serverless";
 import { isEmail, normalizeEmail } from "./session";
 
-export type ContactSource = "lead" | "login" | "checkout" | "paid";
+export type ContactSource = "lead" | "login" | "checkout" | "paid" | "free_download";
 
 export type ContactRow = {
   email: string;
@@ -76,6 +76,7 @@ export async function saveContact(options: {
           WHEN contacts.paid OR EXCLUDED.paid THEN 'paid'
           WHEN EXCLUDED.source = 'checkout' OR contacts.source = 'checkout' THEN 'checkout'
           WHEN EXCLUDED.source = 'login' OR contacts.source = 'login' THEN 'login'
+          WHEN EXCLUDED.source = 'free_download' THEN 'free_download'
           ELSE contacts.source
         END
     `;

@@ -22,7 +22,10 @@ export async function POST(request: NextRequest) {
   }
 
   const source =
-    body.source === "login" || body.source === "checkout" || body.source === "paid"
+    body.source === "login" ||
+    body.source === "checkout" ||
+    body.source === "paid" ||
+    body.source === "free_download"
       ? body.source
       : "lead";
 

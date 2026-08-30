@@ -27,6 +27,7 @@ import {
 } from "@/lib/print-ticket";
 import type { Bible, VerseChoice } from "@/lib/types";
 import { EmailGate } from "./EmailGate";
+import { FreeEmailGate } from "./FreeEmailGate";
 import { FondPicker } from "./FondPicker";
 import { LifestyleCarousel } from "./LifestyleCarousel";
 import { PdfPack } from "./PdfPack";
@@ -58,6 +59,8 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
   const [paidTicket, setPaidTicket] = useState<string | null>(null);
   const [ownedTickets, setOwnedTickets] = useState<string[]>([]);
   const [payError, setPayError] = useState<string | null>(null);
+  const [freeUnlocked, setFreeUnlocked] = useState(false);
+  const [freeNotice, setFreeNotice] = useState<string | null>(null);
   const chapterSelect = useRef<HTMLSelectElement>(null);
   const verseSelect = useRef<HTMLSelectElement>(null);
   const buyCta = useRef<HTMLDivElement>(null);
@@ -138,10 +141,26 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
   const isPaid = Boolean(
     liveChoice &&
       (!PAYWALL_ENABLED ||
-        isFreeVerse(liveChoice) ||
+        (isFreeVerse(liveChoice) && freeUnlocked) ||
         (paidTicket && ticketUnlocks(paidTicket, liveChoice)) ||
         ownedTickets.some((ticket) => ticketUnlocks(ticket, liveChoice))),
   );
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/me")
+      .then(async (response) => {
+        if (cancelled || !response.ok) return;
+        const data = (await response.json()) as { email?: string };
+        if (data.email && liveChoice && isFreeVerse(liveChoice)) {
+          setFreeUnlocked(true);
+        }
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [liveChoice]);
 
   useEffect(() => {
     document.body.classList.toggle("is-paid", isPaid);
@@ -438,6 +457,16 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
                 palette={palette}
                 locale={locale}
               />
+            ) : liveChoice && isFreeVerse(liveChoice) ? (
+              <FreeEmailGate
+                ticket={printTicket(liveChoice, palette)}
+                reference={reference}
+                locale={locale}
+                onUnlocked={(message) => {
+                  setFreeUnlocked(true);
+                  if (message) setFreeNotice(message);
+                }}
+              />
             ) : (
               <EmailGate
                 ticket={printTicket(liveChoice, palette)}
@@ -478,6 +507,7 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
             `}</style>
           ) : null}
           {payError ? <p className="app-chrome field-error">{payError}</p> : null}
+          {freeNotice ? <p className="app-chrome confirm-copy">{freeNotice}</p> : null}
           <div className="print-sheet" aria-hidden="true">
             <VerseSheet
               key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}-${palette}`}
