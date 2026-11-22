@@ -152,12 +152,14 @@ function evenOutShortLines(groups: string[][]): string[][] {
 export function breakVerseLines(
   text: string,
   orientation: Orientation = "vertical",
+  linePressure = 0,
 ): string[] {
   const words = text.replace(/\s+/g, " ").trim().split(" ");
   if (words.length <= 1) return [text.trim()];
 
   const length = chars(words);
   const landscape = orientation === "horizontal";
+  const pressureChars = linePressure * 2;
   const charsPerLine = landscape
     ? length < 50
       ? 16
@@ -177,11 +179,12 @@ export function breakVerseLines(
           : length < 260
             ? 19
             : 22;
+  const effectiveChars = Math.max(8, charsPerLine - pressureChars);
   const minLines = 3;
-  const maxLines = landscape ? 5 : 6;
+  const maxLines = (landscape ? 5 : 6) + linePressure;
   const targetLines = Math.max(
     minLines,
-    Math.min(maxLines, Math.ceil(length / charsPerLine), Math.floor(words.length / 2)),
+    Math.min(maxLines, Math.ceil(length / effectiveChars), Math.floor(words.length / 2)),
   );
 
   return evenOutShortLines(balancedWordGroups(words, targetLines)).map((group) =>

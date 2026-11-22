@@ -1600,6 +1600,7 @@ html.is-capturing-pdf body {
   min-height: 0;
   border: 0.9px solid var(--foil);
   padding: 8mm 9mm 9mm;
+  overflow: hidden;
 }
 
 .verse-stage {

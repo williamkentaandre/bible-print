@@ -34,10 +34,12 @@ function inkInLayout(element: HTMLElement, stage: HTMLElement) {
 }
 
 export type FitTextOptions = {
-  onFit?: (size: number) => void;
+  onFit?: (size: number, fits: boolean) => void;
   /** Extra bottom clearance as a fraction of font size (script descenders). */
   bottomPad?: number;
 };
+
+const ABSOLUTE_MIN = 10;
 
 export function useFitText(
   text: string,
@@ -64,12 +66,13 @@ export function useFitText(
       const ink = inkInLayout(element, stage);
       if (!ink) return false;
 
-      const flourish = Math.max(4, size * 0.08);
-      const bottom = Math.max(flourish, size * bottomPad);
+      const side = Math.max(6, size * 0.11);
+      const top = Math.max(6, size * 0.1);
+      const bottom = Math.max(side, size * bottomPad);
       return (
-        ink.left >= flourish &&
-        ink.right <= width - flourish &&
-        ink.top >= flourish &&
+        ink.left >= side &&
+        ink.right <= width - side &&
+        ink.top >= top &&
         ink.bottom <= height - bottom
       );
     };
@@ -77,11 +80,12 @@ export function useFitText(
     const fit = () => {
       if (cancelled) return;
 
-      let low = min;
+      const searchMin = Math.min(min, max);
+      let low = searchMin;
       let high = max;
-      let best = min;
+      let best = searchMin;
 
-      for (let i = 0; i < 26; i += 1) {
+      for (let i = 0; i < 28; i += 1) {
         const mid = (low + high) / 2;
         if (fitsAt(mid)) {
           best = mid;
@@ -91,8 +95,12 @@ export function useFitText(
         }
       }
 
+      while (best > ABSOLUTE_MIN && !fitsAt(best)) {
+        best -= 0.35;
+      }
+
       element.style.fontSize = `${best}px`;
-      onFit?.(best);
+      onFit?.(best, fitsAt(best));
     };
 
     const start = () => {

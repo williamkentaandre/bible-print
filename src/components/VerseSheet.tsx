@@ -4,7 +4,7 @@ import type { Locale } from "@/i18n";
 import type { BackgroundId } from "@/lib/backgrounds";
 import { breakVerseLines, pickComposition, quoteLines } from "@/lib/composition";
 import { verseFontSize, type PrintSize } from "@/lib/sizes";
-import { useFitText } from "@/lib/use-fit-text";
+import { useFittedVerseLines } from "@/lib/use-fitted-verse-lines";
 import type { VerseRef } from "@/lib/types";
 import type { CSSProperties } from "react";
 
@@ -18,9 +18,16 @@ type VerseSheetProps = {
 
 export function VerseSheet({ text, verseRef, size, palette, locale = "fr" }: VerseSheetProps) {
   const composition = pickComposition(verseRef, text, 1, size.orientation);
-  const lines = quoteLines(breakVerseLines(text, size.orientation), locale);
-  const fontSize = verseFontSize(lines, size);
-  const verseEl = useFitText(lines.join("\n"), Math.max(36, fontSize * 0.85), Math.max(fontSize * 2.6, 280));
+  const seedLines = quoteLines(breakVerseLines(text, size.orientation), locale);
+  const seedSize = verseFontSize(seedLines, size);
+  const { lines, verseEl } = useFittedVerseLines(
+    text,
+    size.orientation,
+    locale,
+    Math.max(14, Math.min(seedSize * 0.85, composition.minSize)),
+    Math.max(seedSize, composition.maxSize),
+    { bottomPad: 0.55 },
+  );
 
   return (
     <article
@@ -39,7 +46,7 @@ export function VerseSheet({ text, verseRef, size, palette, locale = "fr" }: Ver
       <div className="sheet-frame">
         <div className="sheet-frame-inner">
           <div className="verse-stage">
-            <div ref={verseEl} className="verse-text" style={{ fontSize: `${fontSize}px` }}>
+            <div ref={verseEl} className="verse-text" style={{ fontSize: `${seedSize}px` }}>
               {lines.map((line, index) => (
                 <div key={`${index}-${line}`} className="verse-line">
                   {line}

@@ -2,8 +2,8 @@
 
 import type { CSSProperties } from "react";
 import type { BackgroundId } from "@/lib/backgrounds";
-import { breakVerseLines, pickComposition, quoteLines } from "@/lib/composition";
-import { useFitText } from "@/lib/use-fit-text";
+import { pickComposition } from "@/lib/composition";
+import { useFittedVerseLines } from "@/lib/use-fitted-verse-lines";
 import type { VerseRef } from "@/lib/types";
 
 export const PIN_W = 1000;
@@ -26,11 +26,12 @@ export function StudioExportSheet({
   height,
 }: StudioExportSheetProps) {
   const landscape = width != null && height != null ? width > height : false;
-  const composition = pickComposition(verseRef, text, 1, landscape ? "horizontal" : "vertical");
-  const lines = quoteLines(breakVerseLines(text, landscape ? "horizontal" : "vertical"), "fr");
+  const orientation = landscape ? "horizontal" : "vertical";
+  const composition = pickComposition(verseRef, text, 1, orientation);
   const max = Math.round((height ?? 900) * 0.16);
-  // Script fonts drop below the line box; keep room so the last line is not clipped.
-  const verseEl = useFitText(lines.join("\n"), 22, Math.max(48, max), { bottomPad: 0.55 });
+  const { lines, verseEl } = useFittedVerseLines(text, orientation, "fr", 14, Math.max(48, max), {
+    bottomPad: 0.55,
+  });
 
   return (
     <article
