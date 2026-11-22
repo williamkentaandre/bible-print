@@ -145,17 +145,6 @@ export default async function Image() {
                     </div>
                   ))}
                 </div>
-                <div
-                  style={{
-                    display: "flex",
-                    fontFamily: "Roman",
-                    fontSize: 20,
-                    letterSpacing: 1,
-                    color: "#2a241c",
-                  }}
-                >
-                  Jean 3:16
-                </div>
               </div>
             </div>
           </div>

@@ -12,7 +12,6 @@ type StudioPinProps = {
   scene: LifestyleScene;
   size: PrintSize;
   text: string;
-  reference: string;
   verseRef: VerseRef;
   palette: BackgroundId;
   finish: FrameFinish;
@@ -25,7 +24,6 @@ export function StudioPin({
   scene,
   size,
   text,
-  reference,
   verseRef,
   palette,
   finish,
@@ -39,7 +37,6 @@ export function StudioPin({
           <div className="studio-sheet-board" data-palette={palette}>
             <StudioExportSheet
               text={text}
-              reference={reference}
               verseRef={verseRef}
               palette={palette}
             />
@@ -55,7 +52,6 @@ export function StudioPin({
                 >
                   <ScaledSheet
                     text={text}
-                    reference={reference}
                     verseRef={verseRef}
                     size={size}
                     palette={palette}

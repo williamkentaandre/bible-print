@@ -9,14 +9,13 @@ import { VerseSheet } from "./VerseSheet";
 
 type ScaledSheetProps = {
   text: string;
-  reference: string;
   verseRef: VerseRef;
   size: PrintSize;
   palette: BackgroundId;
   locale?: Locale;
 };
 
-export function ScaledSheet({ text, reference, verseRef, size, palette, locale }: ScaledSheetProps) {
+export function ScaledSheet({ text, verseRef, size, palette, locale }: ScaledSheetProps) {
   const frameRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0);
 
@@ -49,7 +48,6 @@ export function ScaledSheet({ text, reference, verseRef, size, palette, locale }
         >
           <VerseSheet
             text={text}
-            reference={reference}
             verseRef={verseRef}
             size={size}
             palette={palette}

@@ -118,7 +118,6 @@ export function PdfPack({
         <VerseSheet
           key={`${captureSize.id}-${palette}`}
           text={text}
-          reference={reference}
           verseRef={verseRef}
           size={captureSize}
           palette={palette}
