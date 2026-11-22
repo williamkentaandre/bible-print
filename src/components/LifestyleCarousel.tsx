@@ -15,7 +15,6 @@ const ZOOM_STEP = 0.15;
 
 type LifestyleCarouselProps = {
   text: string;
-  reference: string;
   verseRef: VerseRef;
   verticalSize: PrintSize;
   horizontalSize: PrintSize;
@@ -30,7 +29,6 @@ function clampZoom(value: number) {
 
 export function LifestyleCarousel({
   text,
-  reference,
   verseRef,
   verticalSize,
   horizontalSize,
@@ -66,7 +64,6 @@ export function LifestyleCarousel({
                 <div className="lifestyle-art" data-finish={finish} data-orientation={size.orientation}>
                   <ScaledSheet
                     text={text}
-                    reference={reference}
                     verseRef={verseRef}
                     size={size}
                     palette={palette}

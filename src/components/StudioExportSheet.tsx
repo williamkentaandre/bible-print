@@ -12,7 +12,6 @@ export const PIN_CREDIT_H = 72;
 
 type StudioExportSheetProps = {
   text: string;
-  reference: string;
   verseRef: VerseRef;
   palette: BackgroundId;
   width?: number;
@@ -21,7 +20,6 @@ type StudioExportSheetProps = {
 
 export function StudioExportSheet({
   text,
-  reference,
   verseRef,
   palette,
   width,
@@ -57,9 +55,6 @@ export function StudioExportSheet({
               ))}
             </div>
           </div>
-          <footer className="studio-export-footer">
-            <p className="studio-export-ref">{reference}</p>
-          </footer>
         </div>
       </div>
     </article>

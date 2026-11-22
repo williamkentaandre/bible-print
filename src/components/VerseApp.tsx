@@ -481,7 +481,6 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
       {liveChoice ? (
         <LifestyleCarousel
           text={text}
-          reference={reference}
           verseRef={liveChoice}
           verticalSize={verticalSize}
           horizontalSize={horizontalSize}
@@ -512,7 +511,6 @@ export function VerseApp({ locale = "fr" }: { locale?: Locale }) {
             <VerseSheet
               key={`${printSize.id}-${liveChoice.book}-${liveChoice.chapter}-${liveChoice.verse}-${liveChoice.sentence}-${palette}`}
               text={text}
-              reference={reference}
               verseRef={liveChoice}
               size={printSize}
               palette={palette}

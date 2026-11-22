@@ -3,25 +3,20 @@
 import type { Locale } from "@/i18n";
 import type { BackgroundId } from "@/lib/backgrounds";
 import { breakVerseLines, pickComposition, quoteLines } from "@/lib/composition";
-import {
-  referenceFontSize,
-  verseFontSize,
-  type PrintSize,
-} from "@/lib/sizes";
+import { verseFontSize, type PrintSize } from "@/lib/sizes";
 import { useFitText } from "@/lib/use-fit-text";
 import type { VerseRef } from "@/lib/types";
 import type { CSSProperties } from "react";
 
 type VerseSheetProps = {
   text: string;
-  reference: string;
   verseRef: VerseRef;
   size: PrintSize;
   palette?: BackgroundId;
   locale?: Locale;
 };
 
-export function VerseSheet({ text, reference, verseRef, size, palette, locale = "fr" }: VerseSheetProps) {
+export function VerseSheet({ text, verseRef, size, palette, locale = "fr" }: VerseSheetProps) {
   const composition = pickComposition(verseRef, text, 1, size.orientation);
   const lines = quoteLines(breakVerseLines(text, size.orientation), locale);
   const fontSize = verseFontSize(lines, size);
@@ -33,12 +28,11 @@ export function VerseSheet({ text, reference, verseRef, size, palette, locale = 
       data-script={composition.script}
       data-palette={palette ?? composition.palette}
       data-orientation={size.orientation}
-      aria-label={`Verset ${reference}`}
+      aria-label="Verset"
       style={
         {
           "--sheet-width": `${size.widthIn}in`,
           "--sheet-height": `${size.heightIn}in`,
-          "--ref-size": `${referenceFontSize(size)}px`,
         } as CSSProperties
       }
     >
@@ -53,9 +47,6 @@ export function VerseSheet({ text, reference, verseRef, size, palette, locale = 
               ))}
             </div>
           </div>
-          <footer className="sheet-footer">
-            <p className="verse-ref">{reference}</p>
-          </footer>
         </div>
       </div>
     </article>

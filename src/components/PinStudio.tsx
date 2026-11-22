@@ -564,7 +564,6 @@ export function PinStudio() {
                 scene={scene}
                 size={pinSize}
                 text={text}
-                reference={reference}
                 verseRef={liveChoice}
                 palette={palette}
                 finish={finish}
@@ -618,7 +617,6 @@ export function PinStudio() {
             >
               <StudioExportSheet
                 text={text}
-                reference={reference}
                 verseRef={liveChoice}
                 palette={palette}
                 width={PIN_W}
@@ -629,7 +627,6 @@ export function PinStudio() {
             <div ref={printCardRef}>
               <StudioExportSheet
                 text={text}
-                reference={reference}
                 verseRef={liveChoice}
                 palette={palette}
                 width={printPx.width}
@@ -645,7 +642,6 @@ export function PinStudio() {
                 scene={scene}
                 size={pinSize}
                 text={text}
-                reference={reference}
                 verseRef={liveChoice}
                 palette={palette}
                 finish={finish}

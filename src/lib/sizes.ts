@@ -97,7 +97,3 @@ export function verseFontSize(lines: string[], size: PrintSize): number {
   const byHeight = box.height / (Math.max(lines.length, 1) * 1.28);
   return Math.max(32, Math.min(byWidth, byHeight));
 }
-
-export function referenceFontSize(size: PrintSize): number {
-  return Math.max(14, Math.min(42, size.heightIn * 1.4));
-}
